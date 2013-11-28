@@ -3,7 +3,7 @@
 Plugin Name: Auto Upload Images
 Plugin URI: http://p30design.net/1391/08/wp-auto-upload-images.html
 Description: Automatically upload external images of a post to wordpress upload directory
-Version: 1.4.1
+Version: 1.5
 Author: Ali Irani
 Author URI: http://p30design.net
 License: GPLv2 or later
@@ -11,14 +11,14 @@ License: GPLv2 or later
 
 class wp_auto_upload {
 
-	function __construct() {
+	public function __construct() {
 		add_action('save_post', array($this, 'auto_upload'));
 	}
 
 	/**
 	 * Automatically upload external images of a post to wordpress upload directory
 	 *
-	 * @param $post_id
+	 * @param int $post_id
 	 */
 	public function auto_upload( $post_id ) {
 
@@ -121,13 +121,14 @@ class wp_auto_upload {
 	 * Save image on wp_upload_dir
 	 * Add image to Media Library and attach to post
 	 *
-	 * @param $url
-	 * @param $post_id
-	 * @return new $url or false
+	 * @param string $url
+	 * @param int $post_id
+	 * @return string $out address or false
 	 */
 	public function wp_save_image($url, $post_id = 0) {
+		require_once(ABSPATH . 'wp-admin/includes/image.php');
+
 		$image_name = basename($url);
-		
 		$upload_dir = wp_upload_dir(date('Y/m'));
 		$path = $upload_dir['path'] . '/' . $image_name;
 		$new_image_url = $upload_dir['url'] . '/' . rawurlencode($image_name);
@@ -165,12 +166,16 @@ class wp_auto_upload {
 				'post_content' => '',
 				'post_status' => 'inherit'
 			);
-			wp_insert_attachment($attachment, $path, $post_id);
+			$attach_id = wp_insert_attachment($attachment, $path, $post_id);
+			$attach_data = wp_generate_attachment_metadata($attach_id, $path);
+			wp_update_attachment_metadata($attach_id, $attach_data);
 			
-			return $new_image_url;
+			$out = $new_image_url;
 		} else {
-			return false;
+			$out = false;
 		}
+
+		return $out;
 	}
 
 	/**

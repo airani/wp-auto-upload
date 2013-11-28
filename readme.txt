@@ -3,7 +3,7 @@ Contributors: airani
 Donate link: http://p30design.net/about/contact
 Tags: upload, auto, image, automaticlly, images, admin, post
 Requires at least: 2.7
-Tested up to: 3.5.1
+Tested up to: 3.7.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -28,6 +28,10 @@ Upload the "Auto Upload Images" plugin to your blog, Activate it.
 No, Just Activate it :)
 
 == Changelog ==
+
+= 1.5 =
+
+* Fixed Bug: Add image correctly to media library
 
 = 1.4.1 =
 
