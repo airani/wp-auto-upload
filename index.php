@@ -67,7 +67,7 @@ class wp_auto_upload {
 	 * @return array of urls or false
 	 */
 	public function wp_get_images_url( $content ) {
-		preg_match_all('/<img[^>]*src=("|\')([^(\?|#|"|\')]*)(\?|#)?[^("|\')]*("|\')[^>]*\/>/', $content, $urls, PREG_SET_ORDER);
+		preg_match_all('/<img[^>]*src=("|\')([^(\?|#|"|\')]*)(\?|#)?[^("|\')]*("|\')[^>]*\/?>/', $content, $urls, PREG_SET_ORDER);
 		
 		if(is_array($urls)) {
 			foreach ($urls as $url)
@@ -203,4 +203,4 @@ class wp_auto_upload {
 
 }
 
-$wp_auto_upload = new wp_auto_upload();
+new wp_auto_upload;
