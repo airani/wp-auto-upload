@@ -9,10 +9,18 @@ Author URI: http://p30design.net
 License: GPLv2 or later
 */
 
-class wp_auto_upload {
+class WP_Auto_Upload {
+
+	public $base_url;
+	public $options;
 
 	public function __construct() {
+		$defaults['base_url'] = get_bloginfo('url');
+		$this->options = get_option('aui-setting', $defaults);
+		$this->base_url = $this->wp_get_base_url($this->options['base_url']);
+
 		add_action('save_post', array($this, 'auto_upload'));
+		add_action('admin_menu', array($this, 'admin_menu'));
 	}
 
 	/**
@@ -37,11 +45,13 @@ class wp_auto_upload {
 
 		$images_url = $this->wp_get_images_url($content);
 		
-		if($images_url) {
+		if ($images_url) {
 			foreach ($images_url as $image_url) {
-				if(!$this->wp_is_myurl($image_url) && $new_image_url = $this->wp_save_image($image_url, $post_id)) {
-					$new_images_url[] = $new_image_url;
-					unset($new_image_url);
+				if (!$this->wp_is_myurl($image_url)) {
+					if ($new_image_url = $this->wp_save_image($image_url, $post_id))
+						$new_images_url[] = $new_image_url;
+					else
+						$new_images_url[] = $image_url;
 				} else {
 					$new_images_url[] = $image_url;
 				}
@@ -51,70 +61,15 @@ class wp_auto_upload {
 			
 			for ($i = 0; $i <= $total-1; $i++) {
 				$new_images_url[$i] = parse_url($new_images_url[$i]);
-				$content = preg_replace('/'. preg_quote($images_url[$i], '/') .'/', $new_images_url[$i]['path'], $content);
+				$base_url = $this->base_url == NULL ? NULL : "http://{$this->base_url}";
+				$new_image_url = $base_url . $new_images_url[$i]['path'];
+				$content = preg_replace('/'. preg_quote($images_url[$i], '/') .'/', $new_image_url, $content);
 			}
 			
 			remove_action( 'save_post', array($this, 'auto_upload') );
 			wp_update_post( array('ID' => $post_id, 'post_content' => $content) );
 			add_action( 'save_post', array($this, 'auto_upload') );
 		}
-	}
-
-	/**
-	 * Detect url of images which exists in content
-	 *
-	 * @param $content
-	 * @return array of urls or false
-	 */
-	public function wp_get_images_url( $content ) {
-		preg_match_all('/<img[^>]*src=("|\')([^(\?|#|"|\')]*)(\?|#)?[^("|\')]*("|\')[^>]*\/?>/', $content, $urls, PREG_SET_ORDER);
-		
-		if(is_array($urls)) {
-			foreach ($urls as $url)
-				$images_url[] = $url[2];
-		}
-
-		if (is_array($images_url)) {
-			$images_url = array_unique($images_url);
-			rsort($images_url);
-		}
-		
-		return isset($images_url) ? $images_url : false;
-	}
-
-	/**
-	 * Check url is internal or external
-	 *
-	 * @param $url
-	 * @return true or false
-	 */
-	public function wp_is_myurl( $url ) {
-		$url = $this->wp_get_base_url($url);
-		$myurl = $this->wp_get_base_url(get_bloginfo('url'));
-		
-		switch ($url) {	
-			case NULL:
-			case $myurl:
-				return true;
-				break;
-
-			default:
-				return false;
-				break;
-		}
-	}
-
-	/**
-	 * Give a $url and return Base of a $url
-	 *
-	 * @param $url
-	 * @return base of $url without wwww
-	 */
-	public function wp_get_base_url( $url ) {
-		$url = parse_url($url, PHP_URL_HOST); // Give base URL
-		$temp = preg_split('/^(www(2|3)?\.)/i', $url, -1, PREG_SPLIT_NO_EMPTY); // Delete www from URL
-		
-		return $temp[0];
 	}
 
 	/**
@@ -125,7 +80,7 @@ class wp_auto_upload {
 	 * @param int $post_id
 	 * @return string $out address or false
 	 */
-	public function wp_save_image($url, $post_id = 0) {
+	public function wp_save_image( $url, $post_id = 0 ) {
 		require_once(ABSPATH . 'wp-admin/includes/image.php');
 
 		$image_name = basename($url);
@@ -179,6 +134,67 @@ class wp_auto_upload {
 	}
 
 	/**
+	 * Detect url of images which exists in content
+	 *
+	 * @param $content
+	 * @return array of urls or false
+	 */
+	public function wp_get_images_url( $content ) {
+		preg_match_all('/<img[^>]*src=("|\')([^(\?|#|"|\')]*)(\?|#)?[^("|\')]*("|\')[^>]*\/?>/', $content, $urls, PREG_SET_ORDER);
+		
+		if(is_array($urls)) {
+			foreach ($urls as $url)
+				$images_url[] = $url[2];
+		}
+
+		if (is_array($images_url)) {
+			$images_url = array_unique($images_url);
+			rsort($images_url);
+		}
+		
+		return isset($images_url) ? $images_url : false;
+	}
+
+	/**
+	 * Check url is internal or external
+	 *
+	 * @param string $url
+	 * @param string $base_url base of site url
+	 * @return true or false
+	 */
+	public function wp_is_myurl( $url ) {
+		$url = $this->wp_get_base_url($url);
+		$base_url = $this->base_url;
+
+		if ($base_url == NULL)
+			$base_url = $this->wp_get_base_url(get_bloginfo('url'));
+		
+		switch ($url) {	
+			case NULL:
+			case $base_url:
+				return true;
+				break;
+
+			default:
+				return false;
+				break;
+		}
+	}
+
+	/**
+	 * Return base url without www
+	 *
+	 * @param string $url
+	 * @return string $temp base url
+	 */
+	public function wp_get_base_url( $url ) {
+		$url = parse_url($url, PHP_URL_HOST); // Give base URL
+		$temp = preg_split('/^(www(2|3)?\.)/i', $url, -1, PREG_SPLIT_NO_EMPTY); // Delete www from URL
+		
+		return $temp[0];
+	}
+
+	/**
 	 * return size of external file
 	 *
 	 * @param $file
@@ -201,6 +217,46 @@ class wp_auto_upload {
 			return false;
 	}
 
+	/**
+	 * Add settings page under options menu
+	 */
+	public function admin_menu() {
+		add_options_page('Auto Upload Images Settings','Auto Upload Images','manage_options','auto-upload', array($this, 'settings_page'));
+	}
+
+	/**
+	 * Settings page contents
+	 */	
+	public function settings_page() {
+		
+		if (isset($_POST['submit'])) {
+			$this->options['base_url'] = $_POST['base_url'];
+			update_option('aui-setting', $this->options);
+		}
+
+		?>
+		<div class="wrap">
+		    <?php screen_icon('options-general'); ?> <h2>Auto Upload Images Settings</h2>
+
+		    <form method="POST">
+		        <table class="form-table">
+		            <tr valign="top">
+		                <th scope="row">
+		                    <label for="base_url">
+		                        Base URL:
+		                    </label> 
+		                </th>
+		                <td>
+		                    <input type="text" name="base_url" value="<?php echo $this->options['base_url']; ?>" class="regular-text" dir="ltr" />
+		                    <p class="description">Address of your Site or CDN for images url Ex: <code>http://p30design.net</code>, <code>http://cdn.p30design.net</code>, <code>/</code></p>
+		                </td>
+		            </tr>
+		        </table>
+		        <?php submit_button(); ?>
+		    </form>
+		</div>
+		<?php
+	}
 }
 
-new wp_auto_upload;
+new WP_Auto_Upload;
