@@ -1,7 +1,7 @@
 === Auto Upload Images ===
 Contributors: airani
 Donate link: http://p30design.net/about/contact
-Tags: upload, auto, image, automaticlly, images, admin, post
+Tags: upload, auto, image, automaticlly, images, admin, post, save
 Requires at least: 2.7
 Tested up to: 3.7.1
 Stable tag: trunk
@@ -14,6 +14,7 @@ When you want to save post, this plugin search for images url which exists in po
 Automatically add image to Media Library and attach to post.
 
 <a href="http://p30design.net/1391/08/wp-auto-upload-images.html" title="plugin page" target="_blank">Official Plugin Page</a>
+<a href="https://github.com/airani/wp-auto-upload" target="_blank">Plugin on Github</a>
 
 == Installation ==
 
