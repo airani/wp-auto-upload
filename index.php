@@ -16,8 +16,11 @@ class WP_Auto_Upload {
 
 	public function __construct() {
 		$defaults['base_url'] = get_bloginfo('url');
+		$defaults['image_name'] = '%filename%';
 		$this->options = get_option('aui-setting', $defaults);
 		$this->base_url = $this->wp_get_base_url($this->options['base_url']);
+
+		$this->options = wp_parse_args($this->options, $defaults);
 
 		add_action('save_post', array($this, 'auto_upload'));
 		add_action('admin_menu', array($this, 'admin_menu'));
@@ -81,9 +84,8 @@ class WP_Auto_Upload {
 	 * @return string $out address or false
 	 */
 	public function wp_save_image( $url, $post_id = 0 ) {
-		require_once(ABSPATH . 'wp-admin/includes/image.php');
 
-		$image_name = basename($url);
+		$image_name = $this->get_image_name(basename($url));
 		$upload_dir = wp_upload_dir(date('Y/m'));
 		$path = $upload_dir['path'] . '/' . $image_name;
 		$new_image_url = $upload_dir['url'] . '/' . rawurlencode($image_name);
@@ -104,7 +106,7 @@ class WP_Auto_Upload {
 			}
 		}
 		
-		if(function_exists('curl_init')) {
+		if (function_exists('curl_init')) {
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);     
@@ -153,6 +155,42 @@ class WP_Auto_Upload {
 		}
 		
 		return isset($images_url) ? $images_url : false;
+	}
+
+	/**
+	 * Return custom image name
+	 * 
+	 * @param string $name orginal name
+	 * @return string new name of file
+	 */
+	public function get_image_name( $name ) {
+		preg_match('/(.*)?(\.+[^.]*)$/', $name, $matches);
+		$name = $matches[1];
+		$postfix = $matches[2];
+
+		$pattern = $this->options['image_name'];
+		preg_match_all('/%[^%]*%/', $pattern, $matches);
+
+		for ($i = 0; $i <= count($matches[0]); $i++) {
+			switch ($matches[0][$i]) {
+				case '%filename%':
+					$replacement = $name;
+					$pattern = preg_replace('/' . $matches[0][$i] . '/', $replacement, $pattern);
+					break;
+
+				case '%date%':
+					$replacement = date('Y-m-j');
+					$pattern = preg_replace('/' . $matches[0][$i] . '/', $replacement, $pattern);
+					break;
+
+				case '%url%':
+					$replacement = $this->wp_get_base_url(get_bloginfo('url'));
+					$pattern = preg_replace('/' . $matches[0][$i] . '/', $replacement, $pattern);
+					break;
+			}
+		}
+
+		return $pattern . $postfix;
 	}
 
 	/**
@@ -228,9 +266,10 @@ class WP_Auto_Upload {
 	 * Settings page contents
 	 */	
 	public function settings_page() {
-		
+
 		if (isset($_POST['submit'])) {
 			$this->options['base_url'] = $_POST['base_url'];
+			$this->options['image_name'] = $_POST['image_name'];
 			update_option('aui-setting', $this->options);
 		}
 
@@ -249,6 +288,17 @@ class WP_Auto_Upload {
 		                <td>
 		                    <input type="text" name="base_url" value="<?php echo $this->options['base_url']; ?>" class="regular-text" dir="ltr" />
 		                    <p class="description">Address of your Site or CDN for images url Ex: <code>http://p30design.net</code>, <code>http://cdn.p30design.net</code>, <code>/</code></p>
+		                </td>
+		            </tr>
+		            <tr valign="top">
+		                <th scope="row">
+		                    <label for="image_name">
+		                        Image Name:
+		                    </label> 
+		                </th>
+		                <td>
+		                    <input type="text" name="image_name" value="<?php echo $this->options['image_name']; ?>" class="regular-text" dir="ltr" />
+		                    <p class="description">Choose custom filename for save new images. You can use <code>%filename%</code>, <code>%url%</code>, <code>%date%</code> and whatever.</p>
 		                </td>
 		            </tr>
 		        </table>
