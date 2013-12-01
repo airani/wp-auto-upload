@@ -18,7 +18,7 @@ class WP_Auto_Upload {
 		$defaults['base_url'] = get_bloginfo('url');
 		$defaults['image_name'] = '%filename%';
 		$this->options = get_option('aui-setting', $defaults);
-		$this->base_url = $this->wp_get_base_url($this->options['base_url']);
+		$this->base_url = $this->get_base_url($this->options['base_url']);
 
 		$this->options = wp_parse_args($this->options, $defaults);
 
@@ -46,12 +46,12 @@ class WP_Auto_Upload {
 
 		$content = $wpdb->get_var( "SELECT post_content FROM wp_posts WHERE ID='$post_id' LIMIT 1" );
 
-		$images_url = $this->wp_get_images_url($content);
+		$images_url = $this->get_images_url($content);
 		
 		if ($images_url) {
 			foreach ($images_url as $image_url) {
-				if (!$this->wp_is_myurl($image_url)) {
-					if ($new_image_url = $this->wp_save_image($image_url, $post_id))
+				if (!$this->is_base_url($image_url)) {
+					if ($new_image_url = $this->save_image($image_url, $post_id))
 						$new_images_url[] = $new_image_url;
 					else
 						$new_images_url[] = $image_url;
@@ -83,7 +83,7 @@ class WP_Auto_Upload {
 	 * @param int $post_id
 	 * @return string $out address or false
 	 */
-	public function wp_save_image( $url, $post_id = 0 ) {
+	public function save_image( $url, $post_id = 0 ) {
 
 		$image_name = $this->get_image_name(basename($url));
 		$upload_dir = wp_upload_dir(date('Y/m'));
@@ -94,7 +94,7 @@ class WP_Auto_Upload {
 		
 		while ( $file_exists ) {
 			if ( file_exists($path) ) {
-				if ( $this->wp_get_exfilesize($url) == filesize($path) ) {
+				if ( $this->get_file_size($url) == filesize($path) ) {
 					return $new_image_url;
 				} else {
 					$i++;
@@ -141,7 +141,7 @@ class WP_Auto_Upload {
 	 * @param $content
 	 * @return array of urls or false
 	 */
-	public function wp_get_images_url( $content ) {
+	public function get_images_url( $content ) {
 		preg_match_all('/<img[^>]*src=("|\')([^(\?|#|"|\')]*)(\?|#)?[^("|\')]*("|\')[^>]*\/?>/', $content, $urls, PREG_SET_ORDER);
 		
 		if(is_array($urls)) {
@@ -184,7 +184,7 @@ class WP_Auto_Upload {
 					break;
 
 				case '%url%':
-					$replacement = $this->wp_get_base_url(get_bloginfo('url'));
+					$replacement = $this->get_base_url(get_bloginfo('url'));
 					$pattern = preg_replace('/' . $matches[0][$i] . '/', $replacement, $pattern);
 					break;
 			}
@@ -200,12 +200,12 @@ class WP_Auto_Upload {
 	 * @param string $base_url base of site url
 	 * @return true or false
 	 */
-	public function wp_is_myurl( $url ) {
-		$url = $this->wp_get_base_url($url);
+	public function is_base_url( $url ) {
+		$url = $this->get_base_url($url);
 		$base_url = $this->base_url;
 
 		if ($base_url == NULL)
-			$base_url = $this->wp_get_base_url(get_bloginfo('url'));
+			$base_url = $this->get_base_url(get_bloginfo('url'));
 		
 		switch ($url) {	
 			case NULL:
@@ -225,7 +225,7 @@ class WP_Auto_Upload {
 	 * @param string $url
 	 * @return string $temp base url
 	 */
-	public function wp_get_base_url( $url ) {
+	public function get_base_url( $url ) {
 		$url = parse_url($url, PHP_URL_HOST); // Give base URL
 		$temp = preg_split('/^(www(2|3)?\.)/i', $url, -1, PREG_SPLIT_NO_EMPTY); // Delete www from URL
 		
@@ -238,7 +238,7 @@ class WP_Auto_Upload {
 	 * @param $file
 	 * @return $size
 	 */
-	public function wp_get_exfilesize( $file ) {
+	public function get_file_size( $file ) {
 		$ch = curl_init($file);
 	    curl_setopt($ch, CURLOPT_NOBODY, true);
 	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
