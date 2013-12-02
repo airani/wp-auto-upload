@@ -50,7 +50,7 @@ class WP_Auto_Upload {
 		
 		if ($images_url) {
 			foreach ($images_url as $image_url) {
-				if (!$this->is_base_url($image_url)) {
+				if ($this->is_allowable_url($image_url)) {
 					if ($new_image_url = $this->save_image($image_url, $post_id))
 						$new_images_url[] = $new_image_url;
 					else
@@ -194,27 +194,35 @@ class WP_Auto_Upload {
 	}
 
 	/**
-	 * Check url is internal or external
+	 * Check url is allowable to upload
 	 *
 	 * @param string $url
 	 * @param string $base_url base of site url
-	 * @return true or false
+	 * @return bool
 	 */
-	public function is_base_url( $url ) {
+	public function is_allowable_url( $url ) {
 		$url = $this->get_base_url($url);
-		$base_url = $this->base_url;
+		$base_url = ($base_url == NULL) ? $this->get_base_url(get_bloginfo('url')) : $this->base_url;
+		$exclude_urls = $this->options['exclude_urls'];
 
-		if ($base_url == NULL)
-			$base_url = $this->get_base_url(get_bloginfo('url'));
+		// check exclude urls
+		if ($exclude_urls) {
+			preg_match_all('/.*\S/', $exclude_urls, $urls);
+
+			for ($i = 0; $i < count($urls[0]); $i++)
+				if ($url == $this->get_base_url($urls[0][$i]))
+					return false;
+		}
 		
+		// check base url
 		switch ($url) {	
 			case NULL:
 			case $base_url:
-				return true;
+				return false;
 				break;
 
 			default:
-				return false;
+				return true;
 				break;
 		}
 	}
@@ -223,13 +231,13 @@ class WP_Auto_Upload {
 	 * Return base url without www
 	 *
 	 * @param string $url
-	 * @return string $temp base url
+	 * @return string $out base url
 	 */
 	public function get_base_url( $url ) {
 		$url = parse_url($url, PHP_URL_HOST); // Give base URL
-		$temp = preg_split('/^(www(2|3)?\.)/i', $url, -1, PREG_SPLIT_NO_EMPTY); // Delete www from URL
+		$out = preg_split('/^(www(2|3)?\.)/i', $url, -1, PREG_SPLIT_NO_EMPTY); // Delete www from URL
 		
-		return $temp[0];
+		return $out[0];
 	}
 
 	/**
@@ -270,6 +278,7 @@ class WP_Auto_Upload {
 		if (isset($_POST['submit'])) {
 			$this->options['base_url'] = $_POST['base_url'];
 			$this->options['image_name'] = $_POST['image_name'];
+			$this->options['exclude_urls'] = $_POST['exclude_urls'];
 			update_option('aui-setting', $this->options);
 		}
 
@@ -300,6 +309,17 @@ class WP_Auto_Upload {
 		                    <input type="text" name="image_name" value="<?php echo $this->options['image_name']; ?>" class="regular-text" dir="ltr" />
 		                    <p class="description">Choose custom filename for save new images. You can use <code>%filename%</code>, <code>%url%</code>, <code>%date%</code> and whatever.</p>
 		                </td>
+		            </tr>
+		            <tr valign="top">
+		            	<th scope="row">
+		            		<label for="exclude_urls">
+		            			Exclude URLs:
+		            		</label>
+		            	</th>
+		            	<td>
+		            		<p>Please enter URLs (line by line) for exclude to upload images:</p>
+		            		<p><textarea name="exclude_urls" rows="10" cols="50" id="exclude_urls" class="large-text code" placeholder="http://p30design.net"><?php echo $this->options['exclude_urls']; ?></textarea></p>
+		            	</td>
 		            </tr>
 		        </table>
 		        <?php submit_button(); ?>
