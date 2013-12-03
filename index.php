@@ -6,6 +6,7 @@ Description: Automatically upload external images of a post to wordpress upload 
 Version: 1.5
 Author: Ali Irani
 Author URI: http://p30design.net
+Text Domain: auto-upload-images
 License: GPLv2 or later
 */
 
@@ -22,6 +23,7 @@ class WP_Auto_Upload {
 
 		$this->options = wp_parse_args($this->options, $defaults);
 
+		add_action('plugins_loaded', array($this, 'init'));
 		add_action('save_post', array($this, 'auto_upload'));
 		add_action('admin_menu', array($this, 'admin_menu'));
 	}
@@ -267,7 +269,7 @@ class WP_Auto_Upload {
 	 * Add settings page under options menu
 	 */
 	public function admin_menu() {
-		add_options_page('Auto Upload Images Settings','Auto Upload Images','manage_options','auto-upload', array($this, 'settings_page'));
+		add_options_page(__('Auto Upload Images Settings', 'auto-upload-images'),__('Auto Upload Images', 'auto-upload-images'),'manage_options','auto-upload', array($this, 'settings_page'));
 	}
 
 	/**
@@ -280,44 +282,51 @@ class WP_Auto_Upload {
 			$this->options['image_name'] = $_POST['image_name'];
 			$this->options['exclude_urls'] = $_POST['exclude_urls'];
 			update_option('aui-setting', $this->options);
+			$message = true;
 		}
 
 		?>
 		<div class="wrap">
-		    <?php screen_icon('options-general'); ?> <h2>Auto Upload Images Settings</h2>
+		    <?php screen_icon('options-general'); ?> <h2><?php _e('Auto Upload Images Settings', 'auto-upload-images'); ?></h2>
+		    
+		    <?php if ($message == true) : ?>
+			<div id="setting-error-settings_updated" class="updated settings-error">
+				<p><strong><?php _e('Settings Saved.', 'auto-upload-images'); ?></strong></p>
+			</div>
+			<?php endif; ?>
 
 		    <form method="POST">
 		        <table class="form-table">
 		            <tr valign="top">
 		                <th scope="row">
 		                    <label for="base_url">
-		                        Base URL:
+		                        <?php _e('Base URL:', 'auto-upload-images'); ?>
 		                    </label> 
 		                </th>
 		                <td>
 		                    <input type="text" name="base_url" value="<?php echo $this->options['base_url']; ?>" class="regular-text" dir="ltr" />
-		                    <p class="description">Address of your Site or CDN for images url Ex: <code>http://p30design.net</code>, <code>http://cdn.p30design.net</code>, <code>/</code></p>
+		                    <p class="description"><?php _e('If you need to choose a new base URL for the images that will be automatically uploaded. Ex:', 'auto-upload-images'); ?> <code>http://p30design.net</code>, <code>http://cdn.p30design.net</code>, <code>/</code></p>
 		                </td>
 		            </tr>
 		            <tr valign="top">
 		                <th scope="row">
 		                    <label for="image_name">
-		                        Image Name:
+		                        <?php _e('Image Name:', 'auto-upload-images'); ?>
 		                    </label> 
 		                </th>
 		                <td>
 		                    <input type="text" name="image_name" value="<?php echo $this->options['image_name']; ?>" class="regular-text" dir="ltr" />
-		                    <p class="description">Choose custom filename for save new images. You can use <code>%filename%</code>, <code>%url%</code>, <code>%date%</code> and whatever.</p>
+		                    <p class="description"><?php _e('Choose a custom filename for the new images will be uploaded. You can also use these shortcodes <code dir="ltr">%filename%</code>, <code dir="ltr">%url%</code>, <code dir="ltr">%date%</code>.', 'auto-upload-images'); ?></p>
 		                </td>
 		            </tr>
 		            <tr valign="top">
 		            	<th scope="row">
 		            		<label for="exclude_urls">
-		            			Exclude URLs:
+		            			<?php _e('Exclude URLs:', 'auto-upload-images'); ?>
 		            		</label>
 		            	</th>
 		            	<td>
-		            		<p>Please enter URLs (line by line) for exclude to upload images:</p>
+		            		<p><?php _e('Please enter the domain names to exclude to upload images: (One URL on each line)', 'auto-upload-images'); ?></p>
 		            		<p><textarea name="exclude_urls" rows="10" cols="50" id="exclude_urls" class="large-text code" placeholder="http://p30design.net"><?php echo $this->options['exclude_urls']; ?></textarea></p>
 		            	</td>
 		            </tr>
@@ -326,6 +335,13 @@ class WP_Auto_Upload {
 		    </form>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Initial plugin textdomain for localization
+	 */
+	public function init() {
+		load_plugin_textdomain('auto-upload-images', false, basename(dirname(__FILE__)) . '/lang');
 	}
 }
 
