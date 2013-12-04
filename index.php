@@ -322,11 +322,11 @@ class WP_Auto_Upload {
 		            <tr valign="top">
 		            	<th scope="row">
 		            		<label for="exclude_urls">
-		            			<?php _e('Exclude URLs:', 'auto-upload-images'); ?>
+		            			<?php _e('Exclude Domains:', 'auto-upload-images'); ?>
 		            		</label>
 		            	</th>
 		            	<td>
-		            		<p><?php _e('Please enter the domain names to exclude to upload images: (One URL on each line)', 'auto-upload-images'); ?></p>
+		            		<p><?php _e('Enter the domains you wish to be excluded from uploading images: (One domain per line)', 'auto-upload-images'); ?></p>
 		            		<p><textarea name="exclude_urls" rows="10" cols="50" id="exclude_urls" class="large-text code" placeholder="http://p30design.net"><?php echo $this->options['exclude_urls']; ?></textarea></p>
 		            	</td>
 		            </tr>

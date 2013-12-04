@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Auto Upload Images v1.5\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-12-04 03:21+0330\n"
+"PO-Revision-Date: 2013-12-05 00:15+0330\n"
 "Last-Translator: Ali Irani <irani.2007@gmail.com>\n"
 "Language-Team: P30Design <info@p30design.net>\n"
 "MIME-Version: 1.0\n"
@@ -43,10 +43,10 @@ msgid "Choose a custom filename for the new images will be uploaded. You can als
 msgstr ""
 
 #: wp-content\plugins\auto-upload-images/index.php:325
-msgid "Exclude URLs:"
+msgid "Exclude Domains:"
 msgstr ""
 
 #: wp-content\plugins\auto-upload-images/index.php:329
-msgid "Please enter the domain names to exclude to upload images: (One URL on each line)"
+msgid "Enter the domains you wish to be excluded from uploading images: (One domain per line)"
 msgstr ""
 
