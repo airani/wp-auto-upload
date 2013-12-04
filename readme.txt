@@ -47,7 +47,7 @@ You can exclude many domains from the upload.
 == Changelog ==
 
 = 1.5 =
-
+* [Updated] Optimize save post
 * [Added] Add language files (English, Persian)
 * [Added] Add option to choose exclude urls
 * [Added] Add option for choosing a custom filename

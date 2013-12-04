@@ -29,7 +29,7 @@ class WP_Auto_Upload {
 	}
 
 	/**
-	 * Automatically upload external images of a post to wordpress upload directory
+	 * Automatically upload external images of a post to Wordpress upload directory
 	 *
 	 * @param int $post_id
 	 */
@@ -48,32 +48,38 @@ class WP_Auto_Upload {
 
 		$content = $wpdb->get_var( "SELECT post_content FROM wp_posts WHERE ID='$post_id' LIMIT 1" );
 
-		$images_url = $this->get_images_url($content);
+		$image_urls = $this->get_image_urls($content);
 		
-		if ($images_url) {
-			foreach ($images_url as $image_url) {
+		if ($image_urls) {
+
+			foreach ($image_urls as $image_url) {
+
 				if ($this->is_allowable_url($image_url)) {
+
 					if ($new_image_url = $this->save_image($image_url, $post_id))
-						$new_images_url[] = $new_image_url;
+						$new_image_urls[] = $new_image_url;
 					else
-						$new_images_url[] = $image_url;
+						$new_image_urls[] = $image_url;
+
 				} else {
-					$new_images_url[] = $image_url;
+					$new_image_urls[] = $image_url;
 				}
 			}
 			
-			$total = count($new_images_url);
+			$total = count($new_image_urls);
 			
 			for ($i = 0; $i <= $total-1; $i++) {
-				$new_images_url[$i] = parse_url($new_images_url[$i]);
+				$new_image_urls[$i] = parse_url($new_image_urls[$i]);
 				$base_url = $this->base_url == NULL ? NULL : "http://{$this->base_url}";
-				$new_image_url = $base_url . $new_images_url[$i]['path'];
-				$content = preg_replace('/'. preg_quote($images_url[$i], '/') .'/', $new_image_url, $content);
+				$new_image_url = $base_url . $new_image_urls[$i]['path'];
+				$content = preg_replace('/'. preg_quote($image_urls[$i], '/') .'/', $new_image_url, $content);
 			}
 			
-			remove_action( 'save_post', array($this, 'auto_upload') );
-			wp_update_post( array('ID' => $post_id, 'post_content' => $content) );
-			add_action( 'save_post', array($this, 'auto_upload') );
+			$wpdb->update(
+				$wpdb->posts,
+				array( 'post_content' => $content ),
+				array( 'ID' => $post_id )
+			);
 		}
 	}
 
@@ -143,20 +149,20 @@ class WP_Auto_Upload {
 	 * @param $content
 	 * @return array of urls or false
 	 */
-	public function get_images_url( $content ) {
+	public function get_image_urls( $content ) {
 		preg_match_all('/<img[^>]*src=("|\')([^(\?|#|"|\')]*)(\?|#)?[^("|\')]*("|\')[^>]*\/?>/', $content, $urls, PREG_SET_ORDER);
 		
 		if(is_array($urls)) {
 			foreach ($urls as $url)
-				$images_url[] = $url[2];
+				$image_urls[] = $url[2];
 		}
 
-		if (is_array($images_url)) {
-			$images_url = array_unique($images_url);
-			rsort($images_url);
+		if (is_array($image_urls)) {
+			$image_urls = array_unique($image_urls);
+			rsort($image_urls);
 		}
 		
-		return isset($images_url) ? $images_url : false;
+		return isset($image_urls) ? $image_urls : false;
 	}
 
 	/**
@@ -196,7 +202,7 @@ class WP_Auto_Upload {
 	}
 
 	/**
-	 * Check url is allowable to upload
+	 * Check url is allowed to upload
 	 *
 	 * @param string $url
 	 * @param string $base_url base of site url
@@ -243,7 +249,7 @@ class WP_Auto_Upload {
 	}
 
 	/**
-	 * return size of external file
+	 * Return size of external file
 	 *
 	 * @param $file
 	 * @return $size
