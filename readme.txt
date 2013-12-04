@@ -16,12 +16,12 @@ Automatically add image to Media Library and attach to post.
 = Translators =
 
 * English
-* Persian (fa_IR) - [Ali Irani] (http://p30design.net)
+* Persian (fa_IR) - [Ali Irani](http://p30design.net)
 
 = Links =
 
-* [Official Plugin Page] (http://p30design.net/1391/08/wp-auto-upload-images.html)
-* [Plugin on Github] (https://github.com/airani/wp-auto-upload)
+* [Official Plugin Page](http://p30design.net/1391/08/wp-auto-upload-images.html)
+* [Plugin on Github](https://github.com/airani/wp-auto-upload)
 
 == Installation ==
 
