@@ -27,7 +27,6 @@ class WP_Auto_Upload {
 		add_action('save_post', array($this, 'auto_upload'));
 		add_action('admin_menu', array($this, 'admin_menu'));
 	}
-
 	/**
 	 * Automatically upload external images of a post to Wordpress upload directory
 	 *
@@ -46,7 +45,7 @@ class WP_Auto_Upload {
 			
 		global $wpdb;
 
-		$content = $wpdb->get_var( "SELECT post_content FROM wp_posts WHERE ID='$post_id' LIMIT 1" );
+		$content = $wpdb->get_var( "SELECT post_content FROM $wpdb->posts WHERE ID='$post_id' LIMIT 1" );
 
 		$image_urls = $this->get_image_urls($content);
 		
@@ -70,7 +69,7 @@ class WP_Auto_Upload {
 			
 			for ($i = 0; $i <= $total-1; $i++) {
 				$new_image_urls[$i] = parse_url($new_image_urls[$i]);
-				$base_url = $this->base_url == NULL ? NULL : "http://{$this->base_url}";
+				$base_url = $this->base_url == null ? null : "http://{$this->base_url}";
 				$new_image_url = $base_url . $new_image_urls[$i]['path'];
 				$content = preg_replace('/'. preg_quote($image_urls[$i], '/') .'/', $new_image_url, $content);
 			}
@@ -80,9 +79,10 @@ class WP_Auto_Upload {
 				array( 'post_content' => $content ),
 				array( 'ID' => $post_id )
 			);
-		}
-	}
 
+		}
+
+	}
 	/**
 	 * Save image on wp_upload_dir
 	 * Add image to Media Library and attach to post
@@ -161,7 +161,7 @@ class WP_Auto_Upload {
 			$image_urls = array_unique($image_urls);
 			rsort($image_urls);
 		}
-		
+
 		return isset($image_urls) ? $image_urls : false;
 	}
 
@@ -179,23 +179,27 @@ class WP_Auto_Upload {
 		$pattern = $this->options['image_name'];
 		preg_match_all('/%[^%]*%/', $pattern, $matches);
 
-		for ($i = 0; $i <= count($matches[0]); $i++) {
-			switch ($matches[0][$i]) {
+		foreach ($matches[0] as $match) { 
+			switch ($match) {
 				case '%filename%':
 					$replacement = $name;
-					$pattern = preg_replace('/' . $matches[0][$i] . '/', $replacement, $pattern);
+					$pattern = preg_replace('/' . $match . '/', $replacement, $pattern);
 					break;
 
 				case '%date%':
 					$replacement = date('Y-m-j');
-					$pattern = preg_replace('/' . $matches[0][$i] . '/', $replacement, $pattern);
+					$pattern = preg_replace('/' . $match . '/', $replacement, $pattern);
 					break;
 
 				case '%url%':
 					$replacement = $this->get_base_url(get_bloginfo('url'));
-					$pattern = preg_replace('/' . $matches[0][$i] . '/', $replacement, $pattern);
+					$pattern = preg_replace('/' . $match . '/', $replacement, $pattern);
+					break;
+
+				default:
 					break;
 			}
+
 		}
 
 		return $pattern . $postfix;
@@ -210,7 +214,7 @@ class WP_Auto_Upload {
 	 */
 	public function is_allowable_url( $url ) {
 		$url = $this->get_base_url($url);
-		$base_url = ($base_url == NULL) ? $this->get_base_url(get_bloginfo('url')) : $this->base_url;
+		$base_url = ($url == null) ? $this->get_base_url(site_url('url')) : $this->base_url;
 		$exclude_urls = $this->options['exclude_urls'];
 
 		// check exclude urls
@@ -221,10 +225,10 @@ class WP_Auto_Upload {
 				if ($url == $this->get_base_url($urls[0][$i]))
 					return false;
 		}
-		
+
 		// check base url
 		switch ($url) {	
-			case NULL:
+			case null:
 			case $base_url:
 				return false;
 				break;
@@ -289,9 +293,15 @@ class WP_Auto_Upload {
 			$this->options['exclude_urls'] = $_POST['exclude_urls'];
 			update_option('aui-setting', $this->options);
 			$message = true;
+		} else {
+			return;
 		}
-
+ 		
+		//Start the output buffer
+		ob_start(); 
+		
 		?>
+
 		<div class="wrap">
 		    <?php screen_icon('options-general'); ?> <h2><?php _e('Auto Upload Images Settings', 'auto-upload-images'); ?></h2>
 		    
@@ -340,9 +350,13 @@ class WP_Auto_Upload {
 		        <?php submit_button(); ?>
 		    </form>
 		</div>
+		
 		<?php
-	}
 
+		//Get output buffer contents
+		ob_get_flush();
+
+	}
 	/**
 	 * Initial plugin textdomain for localization
 	 */
@@ -350,5 +364,4 @@ class WP_Auto_Upload {
 		load_plugin_textdomain('auto-upload-images', false, basename(dirname(__FILE__)) . '/lang');
 	}
 }
-
 new WP_Auto_Upload;
