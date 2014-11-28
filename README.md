@@ -3,7 +3,7 @@
 **Donate link:** http://p30design.net/about/contact  
 **Tags:** upload, auto, automaticlly, image, images, admin, administrator, post, save, media, library  
 **Requires at least:** 2.7  
-**Tested up to:** 3.8  
+**Tested up to:** 4.0.1  
 **Stable tag:** trunk  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -17,6 +17,10 @@ Automatically add image to Media Library and attach to post.
 
 * English
 * Persian (fa_IR) - [Ali Irani](http://p30design.net)
+* Español (es) - [Diego Herrera](https://github.com/diegoh)
+* Russion (ru_RU) - [Артём Рябков](https://github.com/rad96)
+* German (de_DE) - [Till Zimmermann](https://github.com/tillz)
+
 
 ### Links ###
 
@@ -49,6 +53,13 @@ You can exclude many domains from the upload.
 
 
 ## Changelog ##
+
+### 1.6 ###
+* [Fixed] Fixed a bug in replace exclude urls
+* [Updated] Some optimize in code
+* [Added] Added Español translation. Thanks to [Diegoh](https://github.com/diegoh)
+* [Added] Added Russion translation. Thanks to [Артём](https://github.com/rad96)
+* [Added] Added German translation. Thanks to [Till](https://github.com/tillz)
 
 ### 1.5 ###
 * [Updated] Optimize save post
