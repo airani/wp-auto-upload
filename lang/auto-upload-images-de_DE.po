@@ -1,0 +1,68 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Auto Upload Images v1.5\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2014-09-14 20:20+0100\n"
+"Last-Translator: \n"
+"Language-Team: P30Design <info@p30design.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: D:\\wamp\\www\\wp3\\\n"
+"X-Generator: Poedit 1.6.9\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: de\n"
+"X-Poedit-SearchPath-0: wp-content\\plugins\\auto-upload-images\n"
+
+#: wp-content\plugins\auto-upload-images/index.php:272
+#: wp-content\plugins\auto-upload-images/index.php:290
+msgid "Auto Upload Images Settings"
+msgstr "Einstellungen Automatischer Bilderupload"
+
+#: wp-content\plugins\auto-upload-images/index.php:272
+msgid "Auto Upload Images"
+msgstr "Automatischer Bilderupload"
+
+#: wp-content\plugins\auto-upload-images/index.php:294
+msgid "Settings Saved."
+msgstr "Einstellungen gespeichert."
+
+#: wp-content\plugins\auto-upload-images/index.php:303
+msgid "Base URL:"
+msgstr "Basis URL:"
+
+#: wp-content\plugins\auto-upload-images/index.php:308
+msgid ""
+"If you need to choose a new base URL for the images that will be "
+"automatically uploaded. Ex:"
+msgstr ""
+"Wenn du eine eigene Basis-URL für automatisch hochgeladene Bilder benutzen "
+"möchtest, gebe diese hier ein. Zum Beispiel:"
+
+#: wp-content\plugins\auto-upload-images/index.php:314
+msgid "Image Name:"
+msgstr "Bennenung:"
+
+#: wp-content\plugins\auto-upload-images/index.php:319
+msgid ""
+"Choose a custom filename for the new images will be uploaded. You can also "
+"use these shortcodes <code dir=\"ltr\">%filename%</code>, <code dir=\"ltr\">"
+"%url%</code>, <code dir=\"ltr\">%date%</code>."
+msgstr ""
+"Hier kannst du einen eigenen Dateinamen setzen, mit dem neu hochgeladene "
+"Bilder benannt werden. Dafür kannst du auch die Platzhalter <code dir=\"ltr"
+"\">%filename%</code>, <code dir=\"ltr\">%url%</code> und <code dir=\"ltr\">"
+"%date%</code> verwenden."
+
+#: wp-content\plugins\auto-upload-images/index.php:325
+msgid "Exclude Domains:"
+msgstr "Ausgeschlossene Domains:"
+
+#: wp-content\plugins\auto-upload-images/index.php:329
+msgid ""
+"Enter the domains you wish to be excluded from uploading images: (One domain "
+"per line)"
+msgstr ""
+"Hier kannst du Domains eingeben, die beim automatischen Download nicht "
+"berücksichtigt werden: (Eine Domain pro Zeile)"
