@@ -45,7 +45,7 @@ class WP_Auto_Upload {
 			
 		global $wpdb;
 
-		$content = $wpdb->get_var( "SELECT post_content FROM $wpdb->posts WHERE ID='$post_id' LIMIT 1" );
+		$content = $wpdb->get_var("SELECT `post_content` FROM {$wpdb->posts} WHERE ID='$post_id'");
 
 		$image_urls = $this->get_image_urls($content);
 		
@@ -55,23 +55,14 @@ class WP_Auto_Upload {
 
 				if ($this->is_allowable_url($image_url)) {
 
-					if ($new_image_url = $this->save_image($image_url, $post_id))
-						$new_image_urls[] = $new_image_url;
-					else
-						$new_image_urls[] = $image_url;
-
-				} else {
-					$new_image_urls[] = $image_url;
+					if ($new_image_url = $this->save_image($image_url, $post_id)) { // save image and return new url
+						// find image url in content and replace new image url
+						$new_image_url = parse_url($new_image_url);
+						$base_url = $this->base_url == null ? null : "http://{$this->base_url}";
+						$new_image_url = $base_url . $new_image_url['path'];
+						$content = preg_replace('/'. preg_quote($image_url, '/') .'/', $new_image_url, $content);
+					}
 				}
-			}
-			
-			$total = count($new_image_urls);
-			
-			for ($i = 0; $i <= $total-1; $i++) {
-				$new_image_urls[$i] = parse_url($new_image_urls[$i]);
-				$base_url = $this->base_url == null ? null : "http://{$this->base_url}";
-				$new_image_url = $base_url . $new_image_urls[$i]['path'];
-				$content = preg_replace('/'. preg_quote($image_urls[$i], '/') .'/', $new_image_url, $content);
 			}
 			
 			$wpdb->update(
