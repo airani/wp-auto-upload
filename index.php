@@ -293,8 +293,6 @@ class WP_Auto_Upload {
 			$this->options['exclude_urls'] = $_POST['exclude_urls'];
 			update_option('aui-setting', $this->options);
 			$message = true;
-		} else {
-			return;
 		}
  		
 		//Start the output buffer
