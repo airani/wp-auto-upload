@@ -76,60 +76,64 @@ class WP_Auto_Upload {
 	}
 	/**
 	 * Save image on wp_upload_dir
-	 * Add image to Media Library and attach to post
+	 * Add image to the media library and attach in the post
 	 *
-	 * @param string $url
+	 * @param string $url image url
 	 * @param int $post_id
-	 * @return string $out address or false
+	 * @return string new image url
 	 */
-	public function save_image( $url, $post_id = 0 ) {
+	public function save_image($url, $post_id = 0) {
 
         if (!function_exists('curl_init')) {
             return;
         }
-
-		$image_name = $this->get_image_name(basename($url));
-		$upload_dir = wp_upload_dir(date('Y/m'));
-		$path = $upload_dir['path'] . '/' . $image_name;
-		$new_image_url = $upload_dir['url'] . '/' . rawurlencode($image_name);
-		$file_exists = true;
-		$i = 0;
 		
-		while ( $file_exists ) {
-			if ( file_exists($path) ) {
-				if ( $this->get_file_size($url) == filesize($path) ) {
-					return $new_image_url;
-				} else {
-					$i++;
-					$path = $upload_dir['path'] . '/' . $i . '_' . $image_name;	
-					$new_image_url = $upload_dir['url'] . '/' . $i . '_' . $image_name;
-				}
-			} else {
-				$file_exists = false;
-			}
-		}
-		
-		$ch = curl_init($url);
+        $ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);     
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);     
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); 
-		$data = curl_exec($ch);
+		$image_data = curl_exec($ch);
+
+        if ($image_data === false) {
+            return;
+        }
+
+        $image_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+        $image_size = curl_getinfo($ch, CURLINFO_SIZE_DOWNLOAD);
+        $image_file_name = basename($url);
+        $image_name = $this->get_image_custom_name($image_file_name);
+        $upload_dir = wp_upload_dir(date('Y/m'));
+        $image_path = $upload_dir['path'] . '/' . $image_name;
+        $image_url = $upload_dir['url'] . '/' . rawurlencode($image_name);
+
+        $i = 0;
+        
+        // check if file with same name exists in upload path, rename file
+        while (file_exists($image_path)) {
+            if ($image_size == filesize($image_path)) {
+                return $image_url;
+            } else {
+                $i++;
+                $image_path = $upload_dir['path'] . '/' . $i . '_' . $image_name; 
+                $image_url = $upload_dir['url'] . '/' . $i . '_' . $image_name;
+            }
+        }
+        
 		curl_close($ch);
-		file_put_contents($path, $data);
+		file_put_contents($image_path, $image_data);
 		
-		$wp_filetype = wp_check_filetype($new_image_url);
 		$attachment = array(
-			'guid' => $new_image_url, 
-			'post_mime_type' => $wp_filetype['type'],
-			'post_title' => preg_replace('/\.[^.]+$/', '', basename($new_image_url)),
+			'guid' => $image_url, 
+			'post_mime_type' => $image_type,
+			'post_title' => preg_replace('/\.[^.]+$/', '', $image_name),
 			'post_content' => '',
 			'post_status' => 'inherit'
 		);
-		$attach_id = wp_insert_attachment($attachment, $path, $post_id);
-		$attach_data = wp_generate_attachment_metadata($attach_id, $path);
+		$attach_id = wp_insert_attachment($attachment, $image_path, $post_id);
+		$attach_data = wp_generate_attachment_metadata($attach_id, $image_path);
 		wp_update_attachment_metadata($attach_id, $attach_data);
 
-		return $new_image_url;
+		return $image_url;
 	}
 
 	/**
@@ -160,7 +164,7 @@ class WP_Auto_Upload {
 	 * @param string $name orginal name
 	 * @return string new name of file
 	 */
-	public function get_image_name( $name ) {
+	public function get_image_custom_name( $name ) {
 		preg_match('/(.*)?(\.+[^.]*)$/', $name, $name_parts);
 
 		$name = $name_parts[1];
@@ -239,29 +243,6 @@ class WP_Auto_Upload {
 		$out = preg_split('/^(www(2|3)?\.)/i', $url, -1, PREG_SPLIT_NO_EMPTY); // Delete www from URL
 		
 		return $out[0];
-	}
-
-	/**
-	 * Return size of external file
-	 *
-	 * @param $file
-	 * @return $size
-	 */
-	public function get_file_size( $file ) {
-		$ch = curl_init($file);
-	    curl_setopt($ch, CURLOPT_NOBODY, true);
-	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	    curl_setopt($ch, CURLOPT_HEADER, true);
-	    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);     
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); 
-	    $data = curl_exec($ch);
-	    curl_close($ch);
-
-	    if (preg_match('/Content-Length: (\d+)/', $data, $matches))
-	        return $contentLength = (int)$matches[1];
-		else
-			return false;
 	}
 
 	/**
