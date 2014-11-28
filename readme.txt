@@ -13,6 +13,16 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 When you want to save a post, this plugin search for image urls which exists in post and automatically upload external images to Wordpress upload directory and replace external link with your link.
 Automatically add image to Media Library and attach to post.
 
+= Features =
+
+* Automatically find images in posts and save them to the your site
+* Save posts with new image urls
+* Add images saved from plugin to the Wordpress media library
+* Choose exclude domain to save images from this domain address
+* Choose custom your base url for images
+* Choose custom images file name with patterns
+
+
 = Translators =
 
 * English
