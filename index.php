@@ -162,13 +162,13 @@ class WP_Auto_Upload {
 	}
 
 	/**
-	 * Return custom image name
+	 * Return custom image name with user rules
 	 * 
-	 * @param string $name orginal name
-	 * @return string new name of file
+	 * @param  string  $filename 
+	 * @return string  custom file name
 	 */
-	public function get_image_custom_name( $name ) {
-		preg_match('/(.*)?(\.+[^.]*)$/', $name, $name_parts);
+	public function get_image_custom_name($filename) {
+		preg_match('/(.*)?(\.+[^.]*)$/', $filename, $name_parts);
 
 		$name = $name_parts[1];
 		$postfix = $name_parts[2];
@@ -176,29 +176,32 @@ class WP_Auto_Upload {
 		$user_rule = $this->options['image_name'];
 		preg_match_all('/%[^%]*%/', $user_rule, $rules);
 
-		foreach ($rules[0] as $rule) {
-			switch ($rule) {
-				case '%filename%':
-					$replacement = $name;
-					break;
+		if ($rules[0]) {
+            foreach ($rules[0] as $rule) {
+    			switch ($rule) {
+    				case '%filename%':
+    					$replacement = $name;
+    					break;
 
-				case '%date%':
-					$replacement = date('Y-m-j');
-					break;
+    				case '%date%':
+    					$replacement = date('Y-m-j');
+    					break;
 
-				case '%url%':
-					$replacement = $this->get_base_url(get_bloginfo('url'));
-					break;
+    				case '%url%':
+    					$replacement = $this->get_base_url(get_bloginfo('url'));
+    					break;
 
-				default:
-                    $replacement = '';
-					break;
-			}
+    				default:
+                        $replacement = '';
+    					break;
+    			}
 
-            $user_rule = preg_replace('/' . $rule . '/', $replacement, $user_rule);
-		}
+                $user_rule = preg_replace('/' . $rule . '/', $replacement, $user_rule);
+    		}
+    		return $user_rule . $postfix;
+        }
 
-		return $user_rule . $postfix;
+        return $filename;
 	}
 
 	/**
