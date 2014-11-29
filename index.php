@@ -137,25 +137,28 @@ class WP_Auto_Upload {
 	}
 
 	/**
-	 * Detect url of images which exists in content
+	 * find image urls in content and retrive urls by array
 	 *
 	 * @param $content
-	 * @return array of urls or false
+	 * @return array
 	 */
-	public function get_image_urls( $content ) {
-		preg_match_all('/<img[^>]*src=("|\')([^(\?|#|"|\')]*)(\?|#)?[^("|\')]*("|\')[^>]*\/?>/', $content, $urls, PREG_SET_ORDER);
+	public function get_image_urls($content) {
+        $pattern = '/<img[^>]*src=("|\')([^(\?|#|"|\')]*)(\?|#)?[^("|\')]*("|\')[^>]*\/?>/';
+		preg_match_all($pattern, $content, $urls, PREG_SET_ORDER);
 		
-		if(is_array($urls)) {
-			foreach ($urls as $url)
+		if ($urls) {
+			foreach ($urls as $url) {
 				$image_urls[] = $url[2];
-		}
+            }
 
-		if (is_array($image_urls)) {
-			$image_urls = array_unique($image_urls);
-			rsort($image_urls);
-		}
+            if ($image_urls) {
+                $image_urls = array_unique($image_urls);
+                rsort($image_urls);
+    			return $image_urls;
+            }
+        }
 
-		return isset($image_urls) ? $image_urls : false;
+        return false;
 	}
 
 	/**
