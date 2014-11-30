@@ -19,7 +19,7 @@ class WP_Auto_Upload {
         $defaults['base_url'] = get_bloginfo('url');
         $defaults['image_name'] = '%filename%';
         $this->options = get_option('aui-setting', $defaults);
-        $this->base_url = $this->get_base_url($this->options['base_url']);
+        $this->base_url = $this->get_host_url($this->options['base_url']);
 
         $this->options = wp_parse_args($this->options, $defaults);
 
@@ -53,7 +53,7 @@ class WP_Auto_Upload {
 
             foreach ($image_urls as $image_url) {
 
-                if ($this->is_allowable_url($image_url)) {
+                if ($this->is_allowed($image_url)) {
 
                     if ($new_image_url = $this->save_image($image_url, $post_id)) { // save image and return new url
                         // find image url in content and replace new image url
@@ -179,7 +179,7 @@ class WP_Auto_Upload {
         $patterns = array(
             '%filename%' => $name,
             '%date%' => date('Y-m-j'),
-            '%url%' => $this->get_base_url(get_bloginfo('url')),
+            '%url%' => $this->get_host_url(get_bloginfo('url')),
         );
 
         if ($rules[0]) {
@@ -193,50 +193,42 @@ class WP_Auto_Upload {
     }
 
     /**
-     * Check url is allowed to upload
+     * Check url is allowed to upload or not
      *
-     * @param string $url
-     * @param string $base_url base of site url
-     * @return bool
+     * @param string $url this url check is allowable or not
+     * @param string $site_url host of site url
+     * @return bool true | false
      */
-    public function is_allowable_url( $url ) {
-        $url = $this->get_base_url($url);
-        $base_url = ($url == null) ? $this->get_base_url(site_url('url')) : $this->base_url;
-        $exclude_urls = $this->options['exclude_urls'];
+    public function is_allowed($url) {
+        $url = $this->get_host_url($url);
+        $site_url = ($this->base_url == null) ? $this->get_host_url(site_url('url')) : $this->base_url;
 
-        // check exclude urls
-        if ($exclude_urls) {
-            preg_match_all('/.*\S/', $exclude_urls, $urls);
+        if ($url === $site_url || empty($url)) {
+            return false;
+        }
 
-            for ($i = 0; $i < count($urls[0]); $i++)
-                if ($url == $this->get_base_url($urls[0][$i]))
+        if ($this->options['exclude_urls']) {
+             $exclude_urls = explode("\n", $this->options['exclude_urls']);
+
+            foreach ($exclude_urls as $exclude_url) {
+                if ($url === $this->get_host_url(trim($exclude_url))) {
                     return false;
+                }
+            }
         }
 
-        // check base url
-        switch ($url) { 
-            case null:
-            case $base_url:
-                return false;
-                break;
-
-            default:
-                return true;
-                break;
-        }
+        return true;
     }
 
     /**
-     * Return base url without www
+     * Return host of $url without www
      *
      * @param string $url
-     * @return string $out base url
+     * @return string host url
      */
-    public function get_base_url( $url ) {
+    public function get_host_url($url) {
         $url = parse_url($url, PHP_URL_HOST); // Give base URL
-        $out = preg_split('/^(www(2|3)?\.)/i', $url, -1, PREG_SPLIT_NO_EMPTY); // Delete www from URL
-        
-        return $out[0];
+        return preg_split('/^(www(2|3)?\.)/i', $url, -1, PREG_SPLIT_NO_EMPTY)[0]; // Delete www from URL
     }
 
     /**
