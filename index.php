@@ -235,7 +235,13 @@ class WP_Auto_Upload {
      * Add settings page under options menu
      */
     public function admin_menu() {
-        add_options_page(__('Auto Upload Images Settings', 'auto-upload-images'),__('Auto Upload Images', 'auto-upload-images'),'manage_options','auto-upload', array($this, 'settings_page'));
+        add_options_page(
+            __('Auto Upload Images Settings', 'auto-upload-images'),
+            __('Auto Upload Images', 'auto-upload-images'),
+            'manage_options',
+            'auto-upload', 
+            array($this, 'settings_page')
+        );
     }
 
     /**
