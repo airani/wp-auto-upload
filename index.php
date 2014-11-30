@@ -173,32 +173,20 @@ class WP_Auto_Upload {
         $name = $name_parts[1];
         $postfix = $name_parts[2];
 
-        $user_rule = $this->options['image_name'];
-        preg_match_all('/%[^%]*%/', $user_rule, $rules);
+        $pattern_rule = $this->options['image_name'];
+        preg_match_all('/%[^%]*%/', $pattern_rule, $rules);
+
+        $patterns = array(
+            '%filename%' => $name,
+            '%date%' => date('Y-m-j'),
+            '%url%' => $this->get_base_url(get_bloginfo('url')),
+        );
 
         if ($rules[0]) {
             foreach ($rules[0] as $rule) {
-                switch ($rule) {
-                    case '%filename%':
-                        $replacement = $name;
-                        break;
-
-                    case '%date%':
-                        $replacement = date('Y-m-j');
-                        break;
-
-                    case '%url%':
-                        $replacement = $this->get_base_url(get_bloginfo('url'));
-                        break;
-
-                    default:
-                        $replacement = '';
-                        break;
-                }
-
-                $user_rule = preg_replace('/' . $rule . '/', $replacement, $user_rule);
+                $pattern_rule = preg_replace("/$rule/", $patterns[$rule] ? $patterns[$rule] : $rule, $pattern_rule);
             }
-            return $user_rule . $postfix;
+            return $pattern_rule . $postfix;
         }
 
         return $filename;
