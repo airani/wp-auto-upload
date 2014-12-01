@@ -88,6 +88,7 @@ class WP_Auto_Upload {
             return;
         }
         
+        setlocale(LC_ALL, "en_US.UTF8");
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);     
@@ -103,8 +104,8 @@ class WP_Auto_Upload {
         $image_file_name = basename($url);
         $image_name = $this->get_image_custom_name($image_file_name);
         $upload_dir = wp_upload_dir(date('Y/m'));
-        $image_path = $upload_dir['path'] . '/' . $image_name;
-        $image_url = $upload_dir['url'] . '/' . rawurlencode($image_name);
+        $image_path = urldecode($upload_dir['path'] . '/' . $image_name);
+        $image_url = urldecode($upload_dir['url'] . '/' . $image_name);
 
         $i = 0;
         
