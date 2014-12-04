@@ -12,17 +12,15 @@ License: GPLv2 or later
 
 class WP_Auto_Upload {
 
-    public $base_url;
+    public $site_url;
     public $options;
 
     public function __construct() {
         $defaults['base_url'] = get_bloginfo('url');
         $defaults['image_name'] = '%filename%';
         $this->options = get_option('aui-setting', $defaults);
-        $this->base_url = $this->get_host_url($this->options['base_url']);
-
         $this->options = wp_parse_args($this->options, $defaults);
-
+        $this->site_url = $this->get_host_url($this->options['base_url']);
         add_action('plugins_loaded', array($this, 'init'));
         add_action('save_post', array($this, 'auto_upload'));
         add_action('admin_menu', array($this, 'admin_menu'));
@@ -32,16 +30,19 @@ class WP_Auto_Upload {
      *
      * @param int $post_id
      */
-    public function auto_upload( $post_id ) {
+    public function auto_upload($post_id) {
 
-        if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) 
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return;
+        }
             
-        if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) 
+        if (defined('DOING_AJAX') && DOING_AJAX) {
             return;
+        }
         
-        if ( false !== wp_is_post_revision($post_id) )
+        if (false !== wp_is_post_revision($post_id)) {
             return;
+        }
             
         global $wpdb;
 
@@ -58,7 +59,7 @@ class WP_Auto_Upload {
                     if ($new_image_url = $this->save_image($image_url, $post_id)) { // save image and return new url
                         // find image url in content and replace new image url
                         $new_image_url = parse_url($new_image_url);
-                        $base_url = $this->base_url == null ? null : "http://{$this->base_url}";
+                        $base_url = $this->site_url == null ? null : "http://{$this->site_url}";
                         $new_image_url = $base_url . $new_image_url['path'];
                         $content = preg_replace('/'. preg_quote($image_url, '/') .'/', $new_image_url, $content);
                     }
@@ -67,8 +68,8 @@ class WP_Auto_Upload {
             
             $wpdb->update(
                 $wpdb->posts,
-                array( 'post_content' => $content ),
-                array( 'ID' => $post_id )
+                array('post_content' => $content),
+                array('ID' => $post_id)
             );
 
         }
@@ -106,17 +107,15 @@ class WP_Auto_Upload {
         $upload_dir = wp_upload_dir(date('Y/m'));
         $image_path = urldecode($upload_dir['path'] . '/' . $image_name);
         $image_url = urldecode($upload_dir['url'] . '/' . $image_name);
-
-        $i = 0;
         
         // check if file with same name exists in upload path, rename file
         while (file_exists($image_path)) {
             if ($image_size == filesize($image_path)) {
                 return $image_url;
             } else {
-                $i++;
-                $image_path = $upload_dir['path'] . '/' . $i . '_' . $image_name; 
-                $image_url = $upload_dir['url'] . '/' . $i . '_' . $image_name;
+                $num = rand(1, 99);
+                $image_path = $upload_dir['path'] . '/' . $num . '_' . $image_name; 
+                $image_url = $upload_dir['url'] . '/' . $num . '_' . $image_name;
             }
         }
         
@@ -202,7 +201,7 @@ class WP_Auto_Upload {
      */
     public function is_allowed($url) {
         $url = $this->get_host_url($url);
-        $site_url = ($this->base_url == null) ? $this->get_host_url(site_url('url')) : $this->base_url;
+        $site_url = ($this->site_url == null) ? $this->get_host_url(site_url('url')) : $this->site_url;
 
         if ($url === $site_url || empty($url)) {
             return false;
@@ -258,66 +257,9 @@ class WP_Auto_Upload {
             $message = true;
         }
         
-        //Start the output buffer
-        ob_start(); 
-        
-        ?>
-
-        <div class="wrap">
-            <?php screen_icon('options-general'); ?> <h2><?php _e('Auto Upload Images Settings', 'auto-upload-images'); ?></h2>
-            
-            <?php if ($message == true) : ?>
-            <div id="setting-error-settings_updated" class="updated settings-error">
-                <p><strong><?php _e('Settings Saved.', 'auto-upload-images'); ?></strong></p>
-            </div>
-            <?php endif; ?>
-
-            <form method="POST">
-                <table class="form-table">
-                    <tr valign="top">
-                        <th scope="row">
-                            <label for="base_url">
-                                <?php _e('Base URL:', 'auto-upload-images'); ?>
-                            </label> 
-                        </th>
-                        <td>
-                            <input type="text" name="base_url" value="<?php echo $this->options['base_url']; ?>" class="regular-text" dir="ltr" />
-                            <p class="description"><?php _e('If you need to choose a new base URL for the images that will be automatically uploaded. Ex:', 'auto-upload-images'); ?> <code>http://p30design.net</code>, <code>http://cdn.p30design.net</code>, <code>/</code></p>
-                        </td>
-                    </tr>
-                    <tr valign="top">
-                        <th scope="row">
-                            <label for="image_name">
-                                <?php _e('Image Name:', 'auto-upload-images'); ?>
-                            </label> 
-                        </th>
-                        <td>
-                            <input type="text" name="image_name" value="<?php echo $this->options['image_name']; ?>" class="regular-text" dir="ltr" />
-                            <p class="description"><?php _e('Choose a custom filename for the new images will be uploaded. You can also use these shortcodes <code dir="ltr">%filename%</code>, <code dir="ltr">%url%</code>, <code dir="ltr">%date%</code>.', 'auto-upload-images'); ?></p>
-                        </td>
-                    </tr>
-                    <tr valign="top">
-                        <th scope="row">
-                            <label for="exclude_urls">
-                                <?php _e('Exclude Domains:', 'auto-upload-images'); ?>
-                            </label>
-                        </th>
-                        <td>
-                            <p><?php _e('Enter the domains you wish to be excluded from uploading images: (One domain per line)', 'auto-upload-images'); ?></p>
-                            <p><textarea name="exclude_urls" rows="10" cols="50" id="exclude_urls" class="large-text code" placeholder="http://p30design.net"><?php echo $this->options['exclude_urls']; ?></textarea></p>
-                        </td>
-                    </tr>
-                </table>
-                <?php submit_button(); ?>
-            </form>
-        </div>
-        
-        <?php
-
-        //Get output buffer contents
-        ob_get_flush();
-
+        include_once('settings_page.php');
     }
+
     /**
      * Initial plugin textdomain for localization
      */
