@@ -51,18 +51,13 @@ class WP_Auto_Upload {
         $image_urls = $this->get_image_urls($content);
         
         if ($image_urls) {
-
             foreach ($image_urls as $image_url) {
-
-                if ($this->is_allowed($image_url)) {
-
-                    if ($new_image_url = $this->save_image($image_url, $post_id)) { // save image and return new url
-                        // find image url in content and replace new image url
-                        $new_image_url = parse_url($new_image_url);
-                        $base_url = $this->site_url == null ? null : "http://{$this->site_url}";
-                        $new_image_url = $base_url . $new_image_url['path'];
-                        $content = preg_replace('/'. preg_quote($image_url, '/') .'/', $new_image_url, $content);
-                    }
+                if ($this->is_allowed($image_url) && $new_image_url = $this->save_image($image_url, $post_id)) {
+                    // find image url in content and replace new image url
+                    $new_image_url = parse_url($new_image_url);
+                    $base_url = $this->site_url == null ? null : "http://{$this->site_url}";
+                    $new_image_url = $base_url . $new_image_url['path'];
+                    $content = preg_replace('/'. preg_quote($image_url, '/') .'/', $new_image_url, $content);
                 }
             }
             
@@ -71,9 +66,7 @@ class WP_Auto_Upload {
                 array('post_content' => $content),
                 array('ID' => $post_id)
             );
-
         }
-
     }
     /**
      * Save image on wp_upload_dir
@@ -222,7 +215,8 @@ class WP_Auto_Upload {
      */
     public function get_host_url($url) {
         $url = parse_url($url, PHP_URL_HOST); // Give base URL
-        return preg_split('/^(www(2|3)?\.)/i', $url, -1, PREG_SPLIT_NO_EMPTY)[0]; // Delete www from URL
+        $url = preg_split('/^(www(2|3)?\.)/i', $url, -1, PREG_SPLIT_NO_EMPTY); // Delete www from URL
+        return $url[0];
     }
 
     /**
