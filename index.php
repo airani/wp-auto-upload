@@ -143,21 +143,15 @@ class WP_Auto_Upload {
      * @return array
      */
     public function get_image_urls($content) {
-        $pattern = '/<img[^>]*src=("|\')([^(\?|#|"|\')]*)(\?|#)?[^("|\')]*("|\')[^>]*\/?>/';
+        $pattern = '/<img[^>]*src=["\']([^"\']*)[^"\']*["\'][^>]*>/i'; // find img tags and retrive src
         preg_match_all($pattern, $content, $urls, PREG_SET_ORDER);
-        
-        if ($urls) {
-            foreach ($urls as $url) {
-                $image_urls[] = $url[2];
-            }
 
-            if ($image_urls) {
-                $image_urls = array_unique($image_urls);
-                rsort($image_urls);
-                return $image_urls;
+        if (isset($urls)) {
+            foreach ($urls as &$url) {
+                $url = $url[1];
             }
+            return array_unique($urls);
         }
-
         return false;
     }
 
