@@ -107,16 +107,24 @@ class WP_Auto_Upload {
                 return $image_url;
             } else {
                 $num = rand(1, 99);
-                $image_path = $upload_dir['path'] . '/' . $num . '_' . $image_name; 
-                $image_url = $upload_dir['url'] . '/' . $num . '_' . $image_name;
+                $image_path = urldecode($upload_dir['path'] . '/' . $num . '_' . $image_name); 
+                $image_url = urldecode($upload_dir['url'] . '/' . $num . '_' . $image_name);
             }
         }
         
         curl_close($ch);
         file_put_contents($image_path, $image_data);
+
+        // if set max width and height resize image
+        if (isset($this->options['max_width']) || isset($this->options['max_height'])) {
+            $width = isset($this->options['max_width']) ? $this->options['max_width'] : null;
+            $height = isset($this->options['max_height']) ? $this->options['max_height'] : null;
+            $image_resized = image_make_intermediate_size($image_path, $width, $height);
+            $image_url = urldecode($upload_dir['url'] . '/' . $image_resized['file']);
+        }
         
         $attachment = array(
-            'guid' => $image_url, 
+            'guid' => $image_url,
             'post_mime_type' => $image_type,
             'post_title' => preg_replace('/\.[^.]+$/', '', $image_name),
             'post_content' => '',
@@ -241,6 +249,8 @@ class WP_Auto_Upload {
             $this->options['base_url'] = $_POST['base_url'];
             $this->options['image_name'] = $_POST['image_name'];
             $this->options['exclude_urls'] = $_POST['exclude_urls'];
+            $this->options['max_width'] = $_POST['max_width'];
+            $this->options['max_height'] = $_POST['max_height'];
             update_option('aui-setting', $this->options);
             $message = true;
         }

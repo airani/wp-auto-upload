@@ -31,6 +31,20 @@
                     <p class="description"><?php _e('Choose a custom filename for the new images will be uploaded. You can also use these shortcodes <code dir="ltr">%filename%</code>, <code dir="ltr">%url%</code>, <code dir="ltr">%date%</code>.', 'auto-upload-images'); ?></p>
                 </td>
             </tr>
+            <?php if (function_exists('image_make_intermediate_size')) : ?>
+            <tr valign="top">
+                <th scope="row">
+                    <label><?php _e('Image Size:', 'auto-upload-images'); ?></label>
+                </th>
+                <td>
+                    <label for="max_width"><?php _e('Max Width', 'auto-upload-images'); ?></label>
+                    <input name="max_width" type="number" step="5" min="0" id="max_width" placeholder="600" class="small-text" value="<?php echo $this->options['max_width']; ?>">
+                    <label for="max_height"><?php _e('Max Height', 'auto-upload-images'); ?></label>
+                    <input name="max_height" type="number" step="5" min="0" id="max_height" placeholder="400" class="small-text" value="<?php echo $this->options['max_height']; ?>">
+                    <p class="description"><?php _e('You can choose max width and height for images uploaded by this plugin on your site. If you leave empty each one of fields by default use the original size of the image.', 'auto-upload-images'); ?></p>
+                </td>
+            </tr>
+            <?php endif; ?>
             <tr valign="top">
                 <th scope="row">
                     <label for="exclude_urls">
