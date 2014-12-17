@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Auto Upload Images\n"
-"POT-Creation-Date: 2014-12-11 02:19+0330\n"
-"PO-Revision-Date: 2014-12-11 02:23+0330\n"
+"POT-Creation-Date: 2014-12-17 21:54+0330\n"
+"PO-Revision-Date: 2014-12-17 21:56+0330\n"
 "Last-Translator: Ali Irani <ali@irani.im>\n"
 "Language-Team: Ali Irani <ali@irani.im>\n"
 "Language: fa_IR\n"
@@ -13,12 +13,12 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: wp-content/plugins/auto-upload-images/index.php:235
+#: wp-content/plugins/auto-upload-images/index.php:238
 #: wp-content/plugins/auto-upload-images/settings_page.php:2
 msgid "Auto Upload Images Settings"
 msgstr "تنظیمات بارگذاری خودکار تصاویر"
 
-#: wp-content/plugins/auto-upload-images/index.php:236
+#: wp-content/plugins/auto-upload-images/index.php:239
 msgid "Auto Upload Images"
 msgstr "بارگذاری خودکار تصاویر"
 
@@ -46,11 +46,14 @@ msgstr "نام تصویر:"
 msgid ""
 "Choose a custom filename for the new images will be uploaded. You can also "
 "use these shortcodes <code dir=\"ltr\">%filename%</code>, <code dir=\"ltr\">"
-"%url%</code>, <code dir=\"ltr\">%date%</code>."
+"%url%</code>, <code dir=\"ltr\">%date%</code>, <code dir=\"ltr\">%year%</"
+"code>, <code dir=\"ltr\">%month%</code>, <code dir=\"ltr\">%day%</code>."
 msgstr ""
 "نام دلخواهی برای نام فایل تصاویر جدیدی که بارگذاری می‌شود انتخاب کنید. همچنین "
 "می‌توانید از کدهای کوتاه <code dir=\"ltr\">%filename%</code>, <code dir=\"ltr"
-"\">%url%</code>, <code dir=\"ltr\">%date%</code> در این نام استفاده کنید."
+"\">%url%</code>, <code dir=\"ltr\">%date%</code> , <code dir=\"ltr\">%year%</"
+"code>, <code dir=\"ltr\">%month%</code>, <code dir=\"ltr\">%day%</code> در "
+"این نام استفاده کنید."
 
 #: wp-content/plugins/auto-upload-images/settings_page.php:37
 msgid "Image Size:"

@@ -174,6 +174,9 @@ class WP_Auto_Upload {
         $patterns = array(
             '%filename%' => $name,
             '%date%' => date('Y-m-j'),
+            '%year%' => date('Y'),
+            '%month%' => date('m'),
+            '%day%' => date('j'),
             '%url%' => $this->get_host_url(get_bloginfo('url')),
         );
 
