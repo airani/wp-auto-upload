@@ -1,7 +1,13 @@
 <div class="wrap">
     <?php screen_icon('options-general'); ?> <h2><?php _e('Auto Upload Images Settings', 'auto-upload-images'); ?></h2>
     
-    <?php if ($message == true) : ?>
+    <?php if (isset($curl_error) && $curl_error == true) : ?>
+    <div id="setting-error-settings_updated" class="error settings-error">
+        <p><strong><?php _e('"PHP CURL" not enabled on your site! For working with "Auto Upload Images" plugin, you need to enable "PHP CURL", please contact with server admin and send request to enable "PHP CURL" on your site.', 'auto-upload-images'); ?></strong></p>
+    </div>
+    <?php endif; ?>
+
+    <?php if (isset($message) && $message == true) : ?>
     <div id="setting-error-settings_updated" class="updated settings-error">
         <p><strong><?php _e('Settings Saved.', 'auto-upload-images'); ?></strong></p>
     </div>

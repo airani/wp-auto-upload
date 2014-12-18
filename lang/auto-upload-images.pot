@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Auto Upload Images\n"
-"POT-Creation-Date: 2014-12-17 21:54+0330\n"
-"PO-Revision-Date: 2014-12-17 21:54+0330\n"
+"POT-Creation-Date: 2014-12-18 20:39+0330\n"
+"PO-Revision-Date: 2014-12-18 20:39+0330\n"
 "Last-Translator: Ali Irani <ali@irani.im>\n"
 "Language-Team: P30Design <info@p30design.net>\n"
 "Language: en\n"
@@ -14,34 +14,41 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 "X-Poedit-SearchPath-0: wp-content/plugins/auto-upload-images\n"
 
-#: wp-content/plugins/auto-upload-images/index.php:238
+#: wp-content/plugins/auto-upload-images/index.php:248
 #: wp-content/plugins/auto-upload-images/settings_page.php:2
 msgid "Auto Upload Images Settings"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/index.php:239
+#: wp-content/plugins/auto-upload-images/index.php:249
 msgid "Auto Upload Images"
 msgstr ""
 
 #: wp-content/plugins/auto-upload-images/settings_page.php:6
+msgid ""
+"\"PHP CURL\" not enabled on your site! For working with \"Auto Upload Images"
+"\" plugin, you need to enable \"PHP CURL\", please contact with server admin "
+"and send request to enable \"PHP CURL\" on your site."
+msgstr ""
+
+#: wp-content/plugins/auto-upload-images/settings_page.php:12
 msgid "Settings Saved."
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:15
+#: wp-content/plugins/auto-upload-images/settings_page.php:21
 msgid "Base URL:"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:20
+#: wp-content/plugins/auto-upload-images/settings_page.php:26
 msgid ""
 "If you need to choose a new base URL for the images that will be "
 "automatically uploaded. Ex:"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:26
+#: wp-content/plugins/auto-upload-images/settings_page.php:32
 msgid "Image Name:"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:31
+#: wp-content/plugins/auto-upload-images/settings_page.php:37
 msgid ""
 "Choose a custom filename for the new images will be uploaded. You can also "
 "use these shortcodes <code dir=\"ltr\">%filename%</code>, <code dir=\"ltr\">"
@@ -49,30 +56,30 @@ msgid ""
 "code>, <code dir=\"ltr\">%month%</code>, <code dir=\"ltr\">%day%</code>."
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:37
+#: wp-content/plugins/auto-upload-images/settings_page.php:43
 msgid "Image Size:"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:40
+#: wp-content/plugins/auto-upload-images/settings_page.php:46
 msgid "Max Width"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:42
+#: wp-content/plugins/auto-upload-images/settings_page.php:48
 msgid "Max Height"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:44
+#: wp-content/plugins/auto-upload-images/settings_page.php:50
 msgid ""
 "You can choose max width and height for images uploaded by this plugin on "
 "your site. If you leave empty each one of fields by default use the original "
 "size of the image."
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:51
+#: wp-content/plugins/auto-upload-images/settings_page.php:57
 msgid "Exclude Domains:"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:55
+#: wp-content/plugins/auto-upload-images/settings_page.php:61
 msgid ""
 "Enter the domains you wish to be excluded from uploading images: (One domain "
 "per line)"

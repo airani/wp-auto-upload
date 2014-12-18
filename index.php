@@ -267,6 +267,10 @@ class WP_Auto_Upload {
             update_option('aui-setting', $this->options);
             $message = true;
         }
+
+        if (!function_exists('curl_init')) {
+            $curl_error = true;
+        }
         
         include_once('settings_page.php');
     }
