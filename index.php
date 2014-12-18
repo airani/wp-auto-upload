@@ -12,7 +12,16 @@ License: GPLv2 or later
 
 class WP_Auto_Upload {
 
+    /**
+     * Base of siteurl
+     * @var string
+     */
     public $site_url;
+
+    /**
+     * All options in array
+     * @var array
+     */
     public $options;
 
     public function __construct() {
@@ -61,12 +70,13 @@ class WP_Auto_Upload {
                 }
             }
             
-            $wpdb->update(
+            return $wpdb->update(
                 $wpdb->posts,
                 array('post_content' => $content),
                 array('ID' => $post_id)
             );
         }
+        return false;
     }
     /**
      * Save image on wp_upload_dir
@@ -153,7 +163,7 @@ class WP_Auto_Upload {
             }
             return array_unique($urls);
         }
-        return false;
+        return;
     }
 
     /**
