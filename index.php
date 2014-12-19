@@ -126,7 +126,8 @@ class WP_Auto_Upload {
         file_put_contents($image_path, $image_data);
 
         // if set max width and height resize image
-        if (isset($this->options['max_width']) || isset($this->options['max_height'])) {
+        if ((isset($this->options['max_width']) && $this->options['max_width']) ||
+            (isset($this->options['max_height']) && $this->options['max_height'])) {
             $width = isset($this->options['max_width']) ? $this->options['max_width'] : null;
             $height = isset($this->options['max_height']) ? $this->options['max_height'] : null;
             $image_resized = image_make_intermediate_size($image_path, $width, $height);
