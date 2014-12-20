@@ -1,6 +1,6 @@
 === Auto Upload Images ===
 Contributors: airani
-Donate link: http://p30design.net/about/contact
+Donate link: http://p30design.net/
 Tags: upload, auto, automaticlly, image, images, admin, administrator, post, save, media, library
 Requires at least: 2.7
 Tested up to: 4.1.0
@@ -8,7 +8,7 @@ Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Automatically detect external images in the post content and uploading images to your site and adding to the media library and finally replace image urls with new urls.
+Automatically detect external images in the post content and uploading images to your site then adding to the media library and replace image urls.
 
 == Description ==
 
