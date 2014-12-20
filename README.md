@@ -1,26 +1,28 @@
 # Auto Upload Images #
-**Contributors:** airani  
+**Contributors:** [airani](https://profiles.wordpress.org/airani/)  
 **Donate link:** http://p30design.net/about/contact  
 **Tags:** upload, auto, automaticlly, image, images, admin, administrator, post, save, media, library  
 **Requires at least:** 2.7  
-**Tested up to:** 4.0.1  
+**Tested up to:** 4.1.0  
 **Stable tag:** trunk  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
+Automatically detect external images in the post content and uploading images to your site and adding to the media library and finally replace image urls with new urls.
+
 ## Description ##
 
-When you want to save a post, this plugin search for image urls which exists in post and automatically upload external images to Wordpress upload directory and replace external link with your link.
-Automatically add image to Media Library and attach to post.
+When you want to save a post, this plugin search for image urls which exists in post and automatically upload external images to the Wordpress upload directory and add images to the media library and then replace new image urls with old urls.
 
 ### Features ###
 
 * Automatically find images in posts and save them to the your site
 * Save posts with new image urls
-* Add images saved from plugin to the Wordpress media library
+* Add images saved by plugin to the Wordpress media library
 * Choose exclude domain to save images from this domain address
 * Choose custom your base url for images
 * Choose custom images file name with patterns
+* Choose max width and height for images uploaded
 
 
 ### Translators ###
@@ -35,7 +37,7 @@ Automatically add image to Media Library and attach to post.
 ### Links ###
 
 * [Official Plugin Page](http://p30design.net/1391/08/wp-auto-upload-images.html)
-* [Plugin on Github](https://github.com/airani/wp-auto-upload)
+* [Github Repository](https://github.com/airani/wp-auto-upload)
 
 ## Installation ##
 
@@ -44,25 +46,34 @@ To change settings go to "Settings > Auto Upload Images" and change it.
 
 ## Frequently Asked Questions ##
 
-### What is "Base URL" in settings page? ###
+#### What is "Base URL" in settings page? ####
 This URL is used as the new URL image.
 
-### What is "Image Name" in settings page? ###
+#### What is "Image Name" in settings page? ####
 You can change the final filename of the image uploaded.
 
-### What is "Exclude Domains" in settings page? ###
+#### What is "Exclude Domains" in settings page? ####
 You can exclude many domains from the upload.
 
 ## Screenshots ##
 
-### 1. Settings page in English language ###
-![1. Settings page in English language](http://ps.w.org/auto-upload-images/assets/screenshot-1.png)
+#### 1. Settings page in English language ####
+![1. Settings page in English language](https://s.w.org/plugins/auto-upload-images/screenshot-1.png)
 
-### 2. Settings page in Persian language ###
-![2. Settings page in Persian language](http://ps.w.org/auto-upload-images/assets/screenshot-2.png)
+#### 2. Settings page in Persian language ####
+![2. Settings page in Persian language](https://s.w.org/plugins/auto-upload-images/screenshot-2.png)
 
 
 ## Changelog ##
+
+### 2.0 ###
+* Added option for choosing max width and height of saved images
+* Added new shortcodes for custom filenames. `%year%`, `%month%` and `%day%`
+* Added error message for "PHP CURL" disabled sites
+* Fixed bug in saving Persian and Arabic filename
+* Fixed bug in saving image process
+* Fixed bug in getting images url
+* Many optimizations in code and enhancements performance
 
 ### 1.6 ###
 * [Fixed] Fixed a bug in replace exclude urls
