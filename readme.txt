@@ -62,6 +62,9 @@ You can exclude many domains from the upload.
 
 == Changelog ==
 
+= 2.1 =
+* Fixed bug in problem with some urls
+
 = 2.0 =
 * Added option for choosing max width and height of saved images
 * Added new shortcodes for custom filenames. `%year%`, `%month%` and `%day%`
