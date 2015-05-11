@@ -1,6 +1,6 @@
 <div class="wrap">
     <?php screen_icon('options-general'); ?> <h2><?php _e('Auto Upload Images Settings', 'auto-upload-images'); ?></h2>
-    
+
     <?php if (isset($curl_error) && $curl_error == true) : ?>
     <div id="setting-error-settings_updated" class="error settings-error">
         <p><strong><?php _e('"PHP CURL" not enabled on your site! For working with "Auto Upload Images" plugin, you need to enable "PHP CURL", please contact with server admin and send request to enable "PHP CURL" on your site.', 'auto-upload-images'); ?></strong></p>
@@ -19,7 +19,7 @@
                 <th scope="row">
                     <label for="base_url">
                         <?php _e('Base URL:', 'auto-upload-images'); ?>
-                    </label> 
+                    </label>
                 </th>
                 <td>
                     <input type="text" name="base_url" value="<?php echo $this->options['base_url']; ?>" class="regular-text" dir="ltr" />
@@ -30,11 +30,11 @@
                 <th scope="row">
                     <label for="image_name">
                         <?php _e('Image Name:', 'auto-upload-images'); ?>
-                    </label> 
+                    </label>
                 </th>
                 <td>
                     <input type="text" name="image_name" value="<?php echo $this->options['image_name']; ?>" class="regular-text" dir="ltr" />
-                    <p class="description"><?php _e('Choose a custom filename for the new images will be uploaded. You can also use these shortcodes <code dir="ltr">%filename%</code>, <code dir="ltr">%url%</code>, <code dir="ltr">%date%</code>, <code dir="ltr">%year%</code>, <code dir="ltr">%month%</code>, <code dir="ltr">%day%</code>.', 'auto-upload-images'); ?></p>
+                    <p class="description"><?php _e('Choose a custom filename for the new images will be uploaded. You can also use these shortcodes <code dir="ltr">%filename%</code>, <code dir="ltr">%url%</code>, <code dir="ltr">%date%</code>, <code dir="ltr">%year%</code>, <code dir="ltr">%month%</code>, <code dir="ltr">%day%</code>, <code dir="ltr">%random%</code>.', 'auto-upload-images'); ?></p>
                 </td>
             </tr>
             <?php if (function_exists('image_make_intermediate_size')) : ?>

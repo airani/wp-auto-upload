@@ -62,6 +62,9 @@ You can exclude many domains from the upload.
 
 == Changelog ==
 
+= 2.2 =
+* Added %random% pattern for file names
+
 = 2.1 =
 * Fixed bug in problem with some urls
 
