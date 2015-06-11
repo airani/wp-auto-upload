@@ -68,7 +68,7 @@ You can exclude many domains from the upload.
 ## Changelog ##
 
 ### 2.2 ###
-* Added %random% pattern for file names. Contributed by [Zdravko Danev](https://github.com/zdanev)
+* Added `%random%` pattern for file names. Contributed by [Zdravko Danev](https://github.com/zdanev)
 * Added Italian translation. Thanks to Patryk Chmura
 
 ### 2.1 ###
