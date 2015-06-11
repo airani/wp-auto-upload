@@ -3,7 +3,7 @@
 Plugin Name: Auto Upload Images
 Plugin URI: http://p30design.net/1391/08/wp-auto-upload-images.html
 Description: Automatically upload external images of a post to Wordpress upload directory
-Version: 2.1
+Version: 2.2
 Author: Ali Irani
 Author URI: http://p30design.net
 Text Domain: auto-upload-images
@@ -44,21 +44,21 @@ class WP_Auto_Upload {
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return;
         }
-            
+
         if (defined('DOING_AJAX') && DOING_AJAX) {
             return;
         }
-        
+
         if (false !== wp_is_post_revision($post_id)) {
             return;
         }
-            
+
         global $wpdb;
 
         $content = $wpdb->get_var("SELECT `post_content` FROM {$wpdb->posts} WHERE ID='$post_id'");
 
         $image_urls = $this->get_image_urls($content);
-        
+
         if ($image_urls) {
             foreach ($image_urls as $image_url) {
                 if ($this->is_allowed($image_url) && $new_image_url = $this->save_image($image_url, $post_id)) {
@@ -69,7 +69,7 @@ class WP_Auto_Upload {
                     $content = preg_replace('/'. preg_quote($image_url, '/') .'/', $new_image_url, $content);
                 }
             }
-            
+
             return $wpdb->update(
                 $wpdb->posts,
                 array('post_content' => $content),
@@ -91,12 +91,12 @@ class WP_Auto_Upload {
         if (!function_exists('curl_init')) {
             return;
         }
-        
+
         setlocale(LC_ALL, "en_US.UTF8");
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);     
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); 
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         $image_data = curl_exec($ch);
 
         if ($image_data === false) {
@@ -110,18 +110,18 @@ class WP_Auto_Upload {
         $upload_dir = wp_upload_dir(date('Y/m'));
         $image_path = urldecode($upload_dir['path'] . '/' . $image_name);
         $image_url = urldecode($upload_dir['url'] . '/' . $image_name);
-        
+
         // check if file with same name exists in upload path, rename file
         while (file_exists($image_path)) {
             if ($image_size == filesize($image_path)) {
                 return $image_url;
             } else {
                 $num = rand(1, 99);
-                $image_path = urldecode($upload_dir['path'] . '/' . $num . '_' . $image_name); 
+                $image_path = urldecode($upload_dir['path'] . '/' . $num . '_' . $image_name);
                 $image_url = urldecode($upload_dir['url'] . '/' . $num . '_' . $image_name);
             }
         }
-        
+
         curl_close($ch);
         file_put_contents($image_path, $image_data);
 
@@ -133,7 +133,7 @@ class WP_Auto_Upload {
             $image_resized = image_make_intermediate_size($image_path, $width, $height);
             $image_url = urldecode($upload_dir['url'] . '/' . $image_resized['file']);
         }
-        
+
         $attachment = array(
             'guid' => $image_url,
             'post_mime_type' => $image_type,
@@ -169,8 +169,8 @@ class WP_Auto_Upload {
 
     /**
      * Return custom image name with user rules
-     * 
-     * @param  string  $filename 
+     *
+     * @param  string  $filename
      * @return string  custom file name
      */
     public function get_image_custom_name($filename) {
@@ -193,6 +193,7 @@ class WP_Auto_Upload {
             '%month%' => date('m'),
             '%day%' => date('j'),
             '%url%' => $this->get_host_url(get_bloginfo('url')),
+            '%random%' => uniqid()
         );
 
         if ($rules[0]) {
@@ -253,14 +254,14 @@ class WP_Auto_Upload {
             __('Auto Upload Images Settings', 'auto-upload-images'),
             __('Auto Upload Images', 'auto-upload-images'),
             'manage_options',
-            'auto-upload', 
+            'auto-upload',
             array($this, 'settings_page')
         );
     }
 
     /**
      * Settings page contents
-     */ 
+     */
     public function settings_page() {
 
         if (isset($_POST['submit'])) {
@@ -276,7 +277,7 @@ class WP_Auto_Upload {
         if (!function_exists('curl_init')) {
             $curl_error = true;
         }
-        
+
         include_once('settings_page.php');
     }
 
