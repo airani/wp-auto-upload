@@ -3,7 +3,7 @@
 **Donate link:** http://p30design.net/about/contact  
 **Tags:** upload, auto, automaticlly, image, images, admin, administrator, post, save, media, library  
 **Requires at least:** 2.7  
-**Tested up to:** 4.1.0  
+**Tested up to:** 4.2.2  
 **Stable tag:** trunk  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -32,6 +32,7 @@ When you want to save a post, this plugin search for image urls which exists in 
 * Español (es) - [Diego Herrera](https://github.com/diegoh)
 * Russion (ru_RU) - [Артём Рябков](https://github.com/rad96)
 * German (de_DE) - [Till Zimmermann](https://github.com/tillz)
+* Italian (it_IT) - Patryk Chmura
 
 
 ### Links ###
@@ -67,7 +68,8 @@ You can exclude many domains from the upload.
 ## Changelog ##
 
 ### 2.2 ###
-* Added %random% pattern for file names
+* Added %random% pattern for file names. Contributed by [Zdravko Danev](https://github.com/zdanev)
+* Added Italian translation. Thanks to Patryk Chmura
 
 ### 2.1 ###
 * Fixed bug in problem with some urls
