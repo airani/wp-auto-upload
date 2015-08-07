@@ -241,7 +241,13 @@ class WP_Auto_Upload {
      * @return string host url
      */
     public function get_host_url($url) {
-        $url = parse_url($url, PHP_URL_HOST); // Give base URL
+        $url = parse_url($url); // Give base URL
+        
+        if (isset($url['port']))
+            $url = $url['host'] . ":" . $url['port'];
+        else
+            $url = $url['host'];
+        
         $url = preg_split('/^(www(2|3)?\.)/i', $url, -1, PREG_SPLIT_NO_EMPTY); // Delete www from URL
         return $url[0];
     }
