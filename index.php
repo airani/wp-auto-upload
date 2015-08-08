@@ -106,6 +106,10 @@ class WP_Auto_Upload {
         }
 
         $image_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+        if (strpos($image_type,'image') === false) {
+            return;
+        }
+        
         $image_size = curl_getinfo($ch, CURLINFO_SIZE_DOWNLOAD);
         $image_file_name = basename($url);
         $image_name = $this->get_image_custom_name($image_file_name);
