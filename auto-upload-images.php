@@ -10,6 +10,11 @@ class WP_Auto_Upload
     public $site_url;
     public $options;
 
+    /**
+     * WP_Auto_Upload constructor.
+     * Set default variables and options
+     * Add wordpress actions
+     */
     public function __construct()
     {
         $defaults['base_url'] = get_bloginfo('url');
@@ -31,53 +36,53 @@ class WP_Auto_Upload
     }
 
     /**
+     * Returns wordpress db handler
+     * @return wpdb
+     */
+    public function getDb()
+    {
+        global $wpdb;
+        return $wpdb;
+    }
+
+    /**
      * Automatically upload external images of a post to Wordpress upload directory
      * @param int $post_id
      */
-    public function auto_upload($post_id, $post, $update)
+    public function auto_upload($post_id)
     {
-        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        if (DOING_AUTOSAVE || wp_is_post_revision($post_id)) {
             return false;
         }
 
-        if (defined('DOING_AJAX') && DOING_AJAX) {
-            return false;
-        }
-
-        if (wp_is_post_revision($post_id)) {
-            return false;
-        }
-
-        global $wpdb;
-
+        $post = get_post($post_id);
         $content = $post->post_content;
-
         $image_urls = $this->get_image_urls($content);
 
-        if ($image_urls) {
-            foreach ($image_urls as $image_url) {
-                if ($this->is_allowed($image_url) && $new_image_url = $this->save_image($image_url, $post_id)) {
-                    // find image url in content and replace new image url
-                    $new_image_url = parse_url($new_image_url);
-                    $base_url = $this->site_url == null ? null : "http://{$this->site_url}";
-                    $new_image_url = $base_url . $new_image_url['path'];
-                    $content = preg_replace('/'. preg_quote($image_url, '/') .'/', $new_image_url, $content);
-                }
-            }
-
-            return $wpdb->update(
-                $wpdb->posts,
-                array('post_content' => $content),
-                array('ID' => $post_id)
-            );
+        if ($image_urls === null) {
+            return false;
         }
-        return false;
+
+        foreach ($image_urls as $image_url) {
+            if ($this->validate($image_url) && $new_image_url = $this->save_image($image_url, $post_id)) {
+                // find image url in content and replace new image url
+                $new_image_url = parse_url($new_image_url);
+                $base_url = $this->site_url == null ? null : "http://{$this->site_url}";
+                $new_image_url = $base_url . $new_image_url['path'];
+                $content = preg_replace('/'. preg_quote($image_url, '/') .'/', $new_image_url, $content);
+            }
+        }
+
+        return $this->getDb()->update(
+            $this->getDb()->posts,
+            array('post_content' => $content),
+            array('ID' => $post_id)
+        );
     }
 
     /**
      * Save image on wp_upload_dir
      * Add image to the media library and attach in the post
-     *
      * @param string $url image url
      * @param int $post_id
      * @return string new image url
@@ -98,12 +103,12 @@ class WP_Auto_Upload
         $image_data = curl_exec($ch);
 
         if ($image_data === false) {
-            return;
+            return null;
         }
 
         $image_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
         if (strpos($image_type,'image') === false) {
-            return;
+            return null;
         }
 
         $image_size = curl_getinfo($ch, CURLINFO_SIZE_DOWNLOAD);
@@ -151,10 +156,9 @@ class WP_Auto_Upload
     }
 
     /**
-     * find image urls in content and retrive urls by array
-     *
+     * Find image urls in content and retrieve urls by array
      * @param $content
-     * @return array
+     * @return array|null
      */
     public function get_image_urls($content)
     {
@@ -167,12 +171,11 @@ class WP_Auto_Upload
             }
             return array_unique($urls);
         }
-        return;
+        return null;
     }
 
     /**
      * Return custom image name with user rules
-     *
      * @param  string  $filename
      * @return string  custom file name
      */
@@ -212,12 +215,11 @@ class WP_Auto_Upload
 
     /**
      * Check url is allowed to upload or not
-     *
      * @param string $url this url check is allowable or not
      * @param string $site_url host of site url
      * @return bool true | false
      */
-    public function is_allowed($url)
+    public function validate($url)
     {
         $url = $this->get_host_url($url);
         $site_url = ($this->site_url == null) ? $this->get_host_url(site_url('url')) : $this->site_url;
@@ -241,19 +243,13 @@ class WP_Auto_Upload
 
     /**
      * Return host of $url without www
-     *
      * @param string $url
      * @return string host url
      */
     public function get_host_url($url)
     {
         $url = parse_url($url); // Give base URL
-
-        if (isset($url['port']))
-            $url = $url['host'] . ":" . $url['port'];
-        else
-            $url = $url['host'];
-
+        $url = isset($url['port']) ? $url['host'] . ":" . $url['port'] : $url['host'];
         $url = preg_split('/^(www(2|3)?\.)/i', $url, -1, PREG_SPLIT_NO_EMPTY); // Delete www from URL
         return $url[0];
     }
