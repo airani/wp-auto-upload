@@ -67,7 +67,7 @@ class WP_Auto_Upload
      */
     public function auto_upload($post_id)
     {
-        if (DOING_AUTOSAVE || wp_is_post_revision($post_id)) {
+        if (wp_is_post_revision($post_id)) {
             return false;
         }
 
