@@ -22,7 +22,7 @@
                     </label>
                 </th>
                 <td>
-                    <input type="text" name="base_url" value="<?php echo $this->options['base_url']; ?>" class="regular-text" dir="ltr" />
+                    <input type="text" name="base_url" value="<?php echo $this->getOption('base_url'); ?>" class="regular-text" dir="ltr" />
                     <p class="description"><?php _e('If you need to choose a new base URL for the images that will be automatically uploaded. Ex:', 'auto-upload-images'); ?> <code>http://p30design.net</code>, <code>http://cdn.p30design.net</code>, <code>/</code></p>
                 </td>
             </tr>
@@ -33,7 +33,7 @@
                     </label>
                 </th>
                 <td>
-                    <input type="text" name="image_name" value="<?php echo $this->options['image_name']; ?>" class="regular-text" dir="ltr" />
+                    <input type="text" name="image_name" value="<?php echo $this->getOption('image_name'); ?>" class="regular-text" dir="ltr" />
                     <p class="description"><?php _e('Choose a custom filename for the new images will be uploaded. You can also use these shortcodes <code dir="ltr">%filename%</code>, <code dir="ltr">%url%</code>, <code dir="ltr">%date%</code>, <code dir="ltr">%year%</code>, <code dir="ltr">%month%</code>, <code dir="ltr">%day%</code>, <code dir="ltr">%random%</code>.', 'auto-upload-images'); ?></p>
                 </td>
             </tr>
@@ -44,9 +44,9 @@
                 </th>
                 <td>
                     <label for="max_width"><?php _e('Max Width', 'auto-upload-images'); ?></label>
-                    <input name="max_width" type="number" step="5" min="0" id="max_width" placeholder="600" class="small-text" value="<?php echo $this->options['max_width']; ?>">
+                    <input name="max_width" type="number" step="5" min="0" id="max_width" placeholder="600" class="small-text" value="<?php echo $this->getOption('max_width'); ?>">
                     <label for="max_height"><?php _e('Max Height', 'auto-upload-images'); ?></label>
-                    <input name="max_height" type="number" step="5" min="0" id="max_height" placeholder="400" class="small-text" value="<?php echo $this->options['max_height']; ?>">
+                    <input name="max_height" type="number" step="5" min="0" id="max_height" placeholder="400" class="small-text" value="<?php echo $this->getOption('max_height'); ?>">
                     <p class="description"><?php _e('You can choose max width and height for images uploaded by this plugin on your site. If you leave empty each one of fields by default use the original size of the image.', 'auto-upload-images'); ?></p>
                 </td>
             </tr>
@@ -59,7 +59,7 @@
                 </th>
                 <td>
                     <p><?php _e('Enter the domains you wish to be excluded from uploading images: (One domain per line)', 'auto-upload-images'); ?></p>
-                    <p><textarea name="exclude_urls" rows="10" cols="50" id="exclude_urls" class="large-text code" placeholder="http://p30design.net"><?php echo $this->options['exclude_urls']; ?></textarea></p>
+                    <p><textarea name="exclude_urls" rows="10" cols="50" id="exclude_urls" class="large-text code" placeholder="http://p30design.net"><?php echo $this->getOption('exclude_urls'); ?></textarea></p>
                 </td>
             </tr>
         </table>

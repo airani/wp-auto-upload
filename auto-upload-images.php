@@ -1,14 +1,14 @@
 <?php
 /**
  * Class WP_Auto_Upload
- * @property string $site_url
- * @property array $options
+ * @property string $host_url
  * @author Ali Irani <ali@irani.im>
  */
 class WP_Auto_Upload
 {
-    public $site_url;
-    public $options;
+    public $host_url;
+
+    private $_options;
 
     /**
      * WP_Auto_Upload constructor.
@@ -17,11 +17,7 @@ class WP_Auto_Upload
      */
     public function __construct()
     {
-        $defaults['base_url'] = get_bloginfo('url');
-        $defaults['image_name'] = '%filename%';
-        $this->options = get_option('aui-setting', $defaults);
-        $this->options = wp_parse_args($this->options, $defaults);
-        $this->site_url = $this->get_host_url($this->options['base_url']);
+        $this->host_url = $this->get_host_url($this->getOption('base_url'));
         add_action('plugins_loaded', array($this, 'init_textdomain'));
         add_action('save_post', array($this, 'auto_upload'));
         add_action('admin_menu', array($this, 'admin_menu'));
@@ -43,6 +39,26 @@ class WP_Auto_Upload
     {
         global $wpdb;
         return $wpdb;
+    }
+
+    public function getOptions()
+    {
+        if ($this->_options) {
+            return $this->_options;
+        }
+        $defaults = array(
+            'base_url' => get_bloginfo('url'),
+            'image_name' => '%filename%',
+        );
+        return $this->_options = wp_parse_args(get_option('aui-setting'), $defaults);
+    }
+
+    public function getOption($key)
+    {
+        if (isset($this->getOptions()[$key]) === false) {
+            return null;
+        }
+        return $this->getOptions()[$key];
     }
 
     /**
@@ -67,7 +83,7 @@ class WP_Auto_Upload
             if ($this->validate($image_url) && $new_image_url = $this->save_image($image_url, $post_id)) {
                 // find image url in content and replace new image url
                 $new_image_url = parse_url($new_image_url);
-                $base_url = $this->site_url == null ? null : "http://{$this->site_url}";
+                $base_url = $this->host_url == null ? null : "http://{$this->host_url}";
                 $new_image_url = $base_url . $new_image_url['path'];
                 $content = preg_replace('/'. preg_quote($image_url, '/') .'/', $new_image_url, $content);
             }
@@ -133,10 +149,9 @@ class WP_Auto_Upload
         file_put_contents($image_path, $image_data);
 
         // if set max width and height resize image
-        if ((isset($this->options['max_width']) && $this->options['max_width']) ||
-            (isset($this->options['max_height']) && $this->options['max_height'])) {
-            $width = isset($this->options['max_width']) ? $this->options['max_width'] : null;
-            $height = isset($this->options['max_height']) ? $this->options['max_height'] : null;
+        if ($this->getOption('max_width') || $this->getOption('max_height')) {
+            $width = $this->getOption('max_width');
+            $height = $this->getOption('max_height');
             $image_resized = image_make_intermediate_size($image_path, $width, $height);
             $image_url = urldecode($upload_dir['url'] . '/' . $image_resized['file']);
         }
@@ -190,7 +205,7 @@ class WP_Auto_Upload
             $postfix = $postfix_extra[1];
         }
 
-        $pattern_rule = $this->options['image_name'];
+        $pattern_rule = $this->getOption('image_name');
         preg_match_all('/%[^%]*%/', $pattern_rule, $rules);
 
         $patterns = array(
@@ -222,14 +237,14 @@ class WP_Auto_Upload
     public function validate($url)
     {
         $url = $this->get_host_url($url);
-        $site_url = ($this->site_url == null) ? $this->get_host_url(site_url('url')) : $this->site_url;
+        $site_url = ($this->host_url == null) ? $this->get_host_url(site_url('url')) : $this->host_url;
 
         if ($url === $site_url || empty($url)) {
             return false;
         }
 
-        if ($this->options['exclude_urls']) {
-            $exclude_urls = explode("\n", $this->options['exclude_urls']);
+        if ($this->getOption('exclude_urls')) {
+            $exclude_urls = explode("\n", $this->getOption('exclude_urls'));
 
             foreach ($exclude_urls as $exclude_url) {
                 if ($url === $this->get_host_url(trim($exclude_url))) {
@@ -274,12 +289,13 @@ class WP_Auto_Upload
     public function settings_page()
     {
         if (isset($_POST['submit'])) {
-            $this->options['base_url'] = $_POST['base_url'];
-            $this->options['image_name'] = $_POST['image_name'];
-            $this->options['exclude_urls'] = $_POST['exclude_urls'];
-            $this->options['max_width'] = $_POST['max_width'];
-            $this->options['max_height'] = $_POST['max_height'];
-            update_option('aui-setting', $this->options);
+            $fields = array('base_url', 'image_name', 'exclude_urls', 'max_width', 'max_height');
+            foreach ($fields as $field) {
+                if ($_POST[$field]) {
+                    $this->_options[$field] = esc_sql($_POST[$field]);
+                }
+            }
+            update_option('aui-setting', $this->_options);
             $message = true;
         }
 
