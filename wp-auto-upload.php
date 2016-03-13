@@ -1,10 +1,10 @@
 <?php
 /**
- * Class WP_Auto_Upload
+ * Class WpAutoUpload
  * @property string $host_url
  * @author Ali Irani <ali@irani.im>
  */
-class WP_Auto_Upload
+class WpAutoUpload
 {
     public $host_url;
 

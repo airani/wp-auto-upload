@@ -9,6 +9,6 @@ Author URI: http://p30design.net
 Text Domain: auto-upload-images
 License: GPLv2 or later
 */
-require 'auto-upload-images.php';
+require 'wp-auto-upload.php';
 
-new WP_Auto_Upload();
+new WPAutoUpload();
