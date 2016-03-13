@@ -8,7 +8,7 @@ class WP_Auto_Upload
 {
     public $host_url;
 
-    private $_options;
+    private static $_options;
 
     /**
      * WP_Auto_Upload constructor.
@@ -17,10 +17,10 @@ class WP_Auto_Upload
      */
     public function __construct()
     {
-        $this->host_url = $this->get_host_url($this->getOption('base_url'));
+        $this->host_url = $this->get_host_url(self::getOption('base_url'));
         add_action('plugins_loaded', array($this, 'init_textdomain'));
         add_action('save_post', array($this, 'auto_upload'));
-        add_action('admin_menu', array($this, 'admin_menu'));
+        add_action('admin_menu', array($this, 'addAdminMenu'));
     }
 
     /**
@@ -41,24 +41,33 @@ class WP_Auto_Upload
         return $wpdb;
     }
 
-    public function getOptions()
+    /**
+     * Returns options in an array
+     * @return array
+     */
+    public static function getOptions()
     {
-        if ($this->_options) {
-            return $this->_options;
+        if (static::$_options) {
+            return static::$_options;
         }
         $defaults = array(
             'base_url' => get_bloginfo('url'),
             'image_name' => '%filename%',
         );
-        return $this->_options = wp_parse_args(get_option('aui-setting'), $defaults);
+        return static::$_options = wp_parse_args(get_option('aui-setting'), $defaults);
     }
 
-    public function getOption($key)
+    /**
+     * Return an option with specific key
+     * @param $key
+     * @return null
+     */
+    public static function getOption($key)
     {
-        if (isset($this->getOptions()[$key]) === false) {
+        if (isset(static::getOptions()[$key]) === false) {
             return null;
         }
-        return $this->getOptions()[$key];
+        return static::getOptions()[$key];
     }
 
     /**
@@ -73,7 +82,7 @@ class WP_Auto_Upload
 
         $post = get_post($post_id);
         $content = $post->post_content;
-        $image_urls = $this->get_image_urls($content);
+        $image_urls = $this->findImageUrls($content);
 
         if ($image_urls === null) {
             return false;
@@ -149,9 +158,9 @@ class WP_Auto_Upload
         file_put_contents($image_path, $image_data);
 
         // if set max width and height resize image
-        if ($this->getOption('max_width') || $this->getOption('max_height')) {
-            $width = $this->getOption('max_width');
-            $height = $this->getOption('max_height');
+        if (self::getOption('max_width') || self::getOption('max_height')) {
+            $width = self::getOption('max_width');
+            $height = self::getOption('max_height');
             $image_resized = image_make_intermediate_size($image_path, $width, $height);
             $image_url = urldecode($upload_dir['url'] . '/' . $image_resized['file']);
         }
@@ -175,7 +184,7 @@ class WP_Auto_Upload
      * @param $content
      * @return array|null
      */
-    public function get_image_urls($content)
+    public function findImageUrls($content)
     {
         $pattern = '/<img[^>]*src=["\']([^"\']*)[^"\']*["\'][^>]*>/i'; // find img tags and retrive src
         preg_match_all($pattern, $content, $urls, PREG_SET_ORDER);
@@ -205,7 +214,7 @@ class WP_Auto_Upload
             $postfix = $postfix_extra[1];
         }
 
-        $pattern_rule = $this->getOption('image_name');
+        $pattern_rule = self::getOption('image_name');
         preg_match_all('/%[^%]*%/', $pattern_rule, $rules);
 
         $patterns = array(
@@ -243,8 +252,8 @@ class WP_Auto_Upload
             return false;
         }
 
-        if ($this->getOption('exclude_urls')) {
-            $exclude_urls = explode("\n", $this->getOption('exclude_urls'));
+        if (self::getOption('exclude_urls')) {
+            $exclude_urls = explode("\n", self::getOption('exclude_urls'));
 
             foreach ($exclude_urls as $exclude_url) {
                 if ($url === $this->get_host_url(trim($exclude_url))) {
@@ -272,7 +281,7 @@ class WP_Auto_Upload
     /**
      * Add settings page under options menu
      */
-    public function admin_menu()
+    public function addAdminMenu()
     {
         add_options_page(
             __('Auto Upload Images Settings', 'auto-upload-images'),
