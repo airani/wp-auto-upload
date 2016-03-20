@@ -63,6 +63,10 @@ You can exclude many domains from the upload.
 
 == Changelog ==
 
+= 3.0 =
+* Change structure and optimizations
+* Added `%timestamp%`, `%post_id%`, `%postname%` patterns for custom file names.
+
 = 2.2 =
 * Added `%random%` pattern for file names. Contributed by [Zdravko Danev](https://github.com/zdanev)
 * Added Italian translation. Thanks to Patryk Chmura

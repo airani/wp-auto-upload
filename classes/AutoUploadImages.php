@@ -111,7 +111,10 @@ class AutoUploadImages
             '%month%' => date('m'),
             '%day%' => date('j'),
             '%url%' => self::getHostUrl(get_bloginfo('url')),
-            '%random%' => uniqid()
+            '%random%' => uniqid(),
+            '%timestamp%' => time(),
+            '%post_id%' => $this->post->ID,
+            '%postname%' => $this->post->post_name,
         );
 
         if ($rules[0]) {
