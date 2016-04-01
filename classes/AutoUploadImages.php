@@ -161,7 +161,7 @@ class AutoUploadImages
         $image_size = curl_getinfo($ch, CURLINFO_SIZE_DOWNLOAD);
         $image_file_name = basename($url);
         $image_name = $this->getImageName($image_file_name);
-        $upload_dir = wp_upload_dir(date('Y/m'));
+        $upload_dir = wp_upload_dir(date('Y/m', strtotime($this->post->post_date_gmt)));
         $image_path = urldecode($upload_dir['path'] . '/' . $image_name);
         $image_url = urldecode($upload_dir['url'] . '/' . $image_name);
 

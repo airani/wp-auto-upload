@@ -99,7 +99,7 @@ class WpAutoUpload
             $fields = array('base_url', 'image_name', 'exclude_urls', 'max_width', 'max_height');
             foreach ($fields as $field) {
                 if ($_POST[$field]) {
-                    static::$_options[$field] = esc_sql($_POST[$field]);
+                    static::$_options[$field] = $_POST[$field];
                 }
             }
             update_option(self::WP_OPTIONS_KEY, static::$_options);
