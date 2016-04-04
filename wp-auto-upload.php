@@ -96,7 +96,7 @@ class WpAutoUpload
     public function settingPage()
     {
         if (isset($_POST['submit'])) {
-            $fields = array('base_url', 'image_name', 'exclude_urls', 'max_width', 'max_height');
+            $fields = array('base_url', 'image_name', 'exclude_urls', 'max_width', 'max_height', 'exclude_post_types');
             foreach ($fields as $field) {
                 if ($_POST[$field]) {
                     static::$_options[$field] = $_POST[$field];

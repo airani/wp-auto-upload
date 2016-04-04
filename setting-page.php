@@ -34,7 +34,9 @@
                 </th>
                 <td>
                     <input type="text" name="image_name" value="<?php echo self::getOption('image_name'); ?>" class="regular-text" dir="ltr" />
-                    <p class="description"><?php _e('Choose a custom filename for the new images will be uploaded. You can also use these shortcodes <code dir="ltr">%filename%</code>, <code dir="ltr">%url%</code>, <code dir="ltr">%date%</code>, <code dir="ltr">%year%</code>, <code dir="ltr">%month%</code>, <code dir="ltr">%day%</code>, <code dir="ltr">%random%</code>, <code dir="ltr">%timestamp%</code>, <code dir="ltr">%postname%</code>, <code dir="ltr">%post_id%</code>.', 'auto-upload-images'); ?></p>
+                    <p class="description">
+                        <?php printf(__('Choose a custom filename for the new images will be uploaded. You can also use these shortcodes %s.', 'auto-upload-images'), '<code dir="ltr">%filename%</code>, <code dir="ltr">%url%</code>, <code dir="ltr">%date%</code>, <code dir="ltr">%year%</code>, <code dir="ltr">%month%</code>, <code dir="ltr">%day%</code>, <code dir="ltr">%random%</code>, <code dir="ltr">%timestamp%</code>, <code dir="ltr">%postname%</code>, <code dir="ltr">%post_id%</code>') ?>
+                    </p>
                 </td>
             </tr>
             <?php if (function_exists('image_make_intermediate_size')) : ?>
@@ -51,6 +53,25 @@
                 </td>
             </tr>
             <?php endif; ?>
+            <tr valign="top">
+                <th scope="row">
+                    <label for="exclude_post_types">
+                        <?php _e('Exclude Post Types:', 'auto-upload-images'); ?>
+                    </label>
+                </th>
+                <td>
+                    <p>
+                        <?php $checked = self::getOption('exclude_post_types'); ?>
+                        <?php foreach (get_post_types() as $post_type): ?>
+                            <label>
+                                <input type="checkbox" name="exclude_post_types[]" value="<?php echo $post_type ?>" <?php echo in_array($post_type, $checked) ? 'checked' : ''; ?>> <?php echo $post_type ?>
+                                <br>
+                            </label>
+                        <?php endforeach; ?>
+                    </p>
+                    <p class="description"><?php _e('Select the Post Types that you want exclude from automatic uploading', 'auto-upload-images'); ?></p>
+                </td>
+            </tr>
             <tr valign="top">
                 <th scope="row">
                     <label for="exclude_urls">

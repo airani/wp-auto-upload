@@ -207,6 +207,10 @@ class AutoUploadImages
      */
     public function save()
     {
+        if (in_array($this->post->post_type, WpAutoUpload::getOption('exclude_post_types'))) {
+            return false;
+        }
+
         $content = $this->post->post_content;
         $image_urls = $this->findAllImageUrls();
 

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Auto Upload Images\n"
-"POT-Creation-Date: 2014-12-18 20:39+0330\n"
-"PO-Revision-Date: 2014-12-18 20:43+0330\n"
+"POT-Creation-Date: 2016-04-05 02:33+0330\n"
+"PO-Revision-Date: 2016-04-05 02:34+0330\n"
 "Last-Translator: Ali Irani <ali@irani.im>\n"
 "Language-Team: Ali Irani <ali@irani.im>\n"
 "Language: fa_IR\n"
@@ -13,16 +13,12 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: wp-content/plugins/auto-upload-images/index.php:248
-#: wp-content/plugins/auto-upload-images/settings_page.php:2
+#: wp-content/plugins/auto-upload-images/setting-page.php:2
+#: wp-content/plugins/auto-upload-images/wp-auto-upload.php:85
 msgid "Auto Upload Images Settings"
 msgstr "تنظیمات بارگذاری خودکار تصاویر"
 
-#: wp-content/plugins/auto-upload-images/index.php:249
-msgid "Auto Upload Images"
-msgstr "بارگذاری خودکار تصاویر"
-
-#: wp-content/plugins/auto-upload-images/settings_page.php:6
+#: wp-content/plugins/auto-upload-images/setting-page.php:6
 msgid ""
 "\"PHP CURL\" not enabled on your site! For working with \"Auto Upload Images"
 "\" plugin, you need to enable \"PHP CURL\", please contact with server admin "
@@ -33,15 +29,15 @@ msgstr ""
 "منظور می‌توانید با مدیر سرور خود تماس گرفته و برای فعال شدن \"PHP CURL\" "
 "درخواستی ارسال بفرمائید."
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:12
+#: wp-content/plugins/auto-upload-images/setting-page.php:12
 msgid "Settings Saved."
 msgstr "تنظیمات ذخیره شد."
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:21
+#: wp-content/plugins/auto-upload-images/setting-page.php:21
 msgid "Base URL:"
 msgstr "آدرس اصلی:"
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:26
+#: wp-content/plugins/auto-upload-images/setting-page.php:26
 msgid ""
 "If you need to choose a new base URL for the images that will be "
 "automatically uploaded. Ex:"
@@ -49,36 +45,32 @@ msgstr ""
 "در صورت نیاز آدرس اصلی جدیدی برای تصاویری که به صورت خودکار بارگذاری می‌شوند "
 "انتخاب کنید. مثل:"
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:32
+#: wp-content/plugins/auto-upload-images/setting-page.php:32
 msgid "Image Name:"
 msgstr "نام تصویر:"
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:37
+#: wp-content/plugins/auto-upload-images/setting-page.php:38
+#, php-format
 msgid ""
 "Choose a custom filename for the new images will be uploaded. You can also "
-"use these shortcodes <code dir=\"ltr\">%filename%</code>, <code dir=\"ltr\">"
-"%url%</code>, <code dir=\"ltr\">%date%</code>, <code dir=\"ltr\">%year%</"
-"code>, <code dir=\"ltr\">%month%</code>, <code dir=\"ltr\">%day%</code>."
+"use these shortcodes %s."
 msgstr ""
 "نام دلخواهی برای نام فایل تصاویر جدیدی که بارگذاری می‌شود انتخاب کنید. همچنین "
-"می‌توانید از کدهای کوتاه <code dir=\"ltr\">%filename%</code>, <code dir=\"ltr"
-"\">%url%</code>, <code dir=\"ltr\">%date%</code> , <code dir=\"ltr\">%year%</"
-"code>, <code dir=\"ltr\">%month%</code>, <code dir=\"ltr\">%day%</code> در "
-"این نام استفاده کنید."
+"می‌توانید از کدهای کوتاه %s در این نام استفاده کنید."
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:43
+#: wp-content/plugins/auto-upload-images/setting-page.php:45
 msgid "Image Size:"
 msgstr "اندازه تصویر:"
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:46
+#: wp-content/plugins/auto-upload-images/setting-page.php:48
 msgid "Max Width"
 msgstr "بیشترین عرض"
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:48
+#: wp-content/plugins/auto-upload-images/setting-page.php:50
 msgid "Max Height"
 msgstr "بیشترین ارتفاع"
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:50
+#: wp-content/plugins/auto-upload-images/setting-page.php:52
 msgid ""
 "You can choose max width and height for images uploaded by this plugin on "
 "your site. If you leave empty each one of fields by default use the original "
@@ -89,14 +81,44 @@ msgstr ""
 "کردن هر یک از این گزینه‌ها به صورت پیش‌فرض از اندازه های اصلی تصویر استفاده "
 "می‌گردد."
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:57
+#: wp-content/plugins/auto-upload-images/setting-page.php:59
+msgid "Exclude Post Types:"
+msgstr "نوع مطلب های مثتثنی:"
+
+#: wp-content/plugins/auto-upload-images/setting-page.php:71
+msgid "Select the Post Types that you want exclude from automatic uploading"
+msgstr ""
+"نوع مطالبی که می‌خواهید بارگذاری خودکار تصاویر در آنها انجام نشود را انتخاب "
+"کنید."
+
+#: wp-content/plugins/auto-upload-images/setting-page.php:77
 msgid "Exclude Domains:"
 msgstr "دامنه‌های مثتثنی:"
 
-#: wp-content/plugins/auto-upload-images/settings_page.php:61
+#: wp-content/plugins/auto-upload-images/setting-page.php:81
 msgid ""
 "Enter the domains you wish to be excluded from uploading images: (One domain "
 "per line)"
 msgstr ""
 "دامنه‌هایی را که می‌خواهید از آنها آپلود تصاویر انجام نگردد وارد نمایید: (هر "
 "خط یک آدرس)"
+
+#: wp-content/plugins/auto-upload-images/wp-auto-upload.php:86
+msgid "Auto Upload Images"
+msgstr "بارگذاری خودکار تصاویر"
+
+#, fuzzy
+#~ msgid ""
+#~ "Choose a custom filename for the new images will be uploaded. You can "
+#~ "also use these shortcodes <code dir=\"ltr\">%filename%</code>, <code dir="
+#~ "\"ltr\">%url%</code>, <code dir=\"ltr\">%date%</code>, <code dir=\"ltr\">"
+#~ "%year%</code>, <code dir=\"ltr\">%month%</code>, <code dir=\"ltr\">%day%</"
+#~ "code>, <code dir=\"ltr\">%random%</code>, <code dir=\"ltr\">%timestamp%</"
+#~ "code>, <code dir=\"ltr\">%postname%</code>, <code dir=\"ltr\">%post_id%</"
+#~ "code>."
+#~ msgstr ""
+#~ "نام دلخواهی برای نام فایل تصاویر جدیدی که بارگذاری می‌شود انتخاب کنید. "
+#~ "همچنین می‌توانید از کدهای کوتاه <code dir=\"ltr\">%filename%</code>, <code "
+#~ "dir=\"ltr\">%url%</code>, <code dir=\"ltr\">%date%</code> , <code dir="
+#~ "\"ltr\">%year%</code>, <code dir=\"ltr\">%month%</code>, <code dir=\"ltr"
+#~ "\">%day%</code> در این نام استفاده کنید."
