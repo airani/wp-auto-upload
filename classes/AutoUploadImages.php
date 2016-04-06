@@ -35,10 +35,14 @@ class AutoUploadImages
             if (empty($urls)) {
                 return null;
             }
-            foreach ($urls as &$url) {
-                $url = $url[1];
+            foreach ($urls as $index => &$url) {
+                $images[$index]['alt'] = preg_match('/<img[^>]*alt=["\']([^"\']*)[^"\']*["\'][^>]*>/i', $url[0], $alt) ? $alt[1] : null;
+                $images[$index]['url'] = $url = $url[1];
             }
-            return array_unique($urls);
+            foreach (array_unique($urls) as $index => $url) {
+                $unique_array[] = $images[$index];
+            }
+            return $unique_array;
         }
         return null;
     }
@@ -212,19 +216,21 @@ class AutoUploadImages
         }
 
         $content = $this->post->post_content;
-        $image_urls = $this->findAllImageUrls();
+        $images = $this->findAllImageUrls();
 
-        if ($image_urls === null) {
+        if ($images === null) {
             return false;
         }
 
-        foreach ($image_urls as $image_url) {
-            if ($this->validateImageUrl($image_url) && $new_image_url = $this->saveImage($image_url, $this->post->ID)) {
+        foreach ($images as $image) {
+            if ($this->validateImageUrl($image['url']) && $new_image_url = $this->saveImage($image['url'], $this->post->ID)) {
                 // find image url in content and replace new image url
+                $image_alt = $image['alt']; //@todo return custom alt
                 $new_image_url = parse_url($new_image_url);
                 $base_url = $this->getHostUrl() == null ? null : "http://{$this->getHostUrl()}";
                 $new_image_url = $base_url . $new_image_url['path'];
-                $content = preg_replace('/'. preg_quote($image_url, '/') .'/', $new_image_url, $content);
+                $content = preg_replace('/'. preg_quote($image['url'], '/') .'/', $new_image_url, $content);
+                $content = preg_replace('/alt=["\']'. preg_quote($image['alt'], '/') .'["\']/', "alt='$image_alt'", $content);
             }
         }
 
