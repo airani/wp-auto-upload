@@ -1,12 +1,13 @@
 # Auto Upload Images #
-**Contributors:** [airani](https://profiles.wordpress.org/airani/)  
-**Donate link:** http://p30design.net/about/contact  
-**Tags:** upload, auto, automaticlly, image, images, admin, administrator, post, save, media, library  
-**Requires at least:** 2.7  
-**Tested up to:** 4.2.2  
-**Stable tag:** trunk  
-**License:** GPLv2 or later  
-**License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
+**Version:** 3.0
+**Contributors:** [airani](https://profiles.wordpress.org/airani/)
+**Donate link:** http://p30design.net/about/contact
+**Tags:** upload, auto, automaticlly, image, images, admin, administrator, post, save, media, library
+**Requires at least:** 2.7
+**Tested up to:** 4.2.2
+**Stable tag:** trunk
+**License:** GPLv2 or later
+**License URI:** http://www.gnu.org/licenses/gpl-2.0.html
 
 Automatically detect external images in the post content and uploading images to your site and adding to the media library and finally replace image urls with new urls.
 
@@ -16,12 +17,14 @@ When you want to save a post, this plugin search for image urls which exists in 
 
 ### Features ###
 
-* Automatically find images in posts and save them to the your site
-* Save posts with new image urls
+* Automatically find images in posts and save them to the your server and wp media library
+* Update posts with new image urls in your server
 * Add images saved by plugin to the Wordpress media library
+* Select custom post types for excluding auto upload images
 * Choose exclude domain to save images from this domain address
 * Choose custom your base url for images
 * Choose custom images file name with patterns
+* Choose custom image alt name with patterns
 * Choose max width and height for images uploaded
 
 
@@ -68,8 +71,14 @@ You can exclude many domains from the upload.
 ## Changelog ##
 
 ### 3.0 ###
-* Change structure and optimizations
-* Added `%timestamp%`, `%post_id%`, `%postname%` patterns for custom file names.
+* Add option for customize images alt attribute with defined patterns
+* Add option for exclude post types from auto images uploading
+* Add `%timestamp%`, `%post_id%`, `%postname%`, `%image_alt%` patterns for custom file names and image alt names.
+* Handling image alt attribute
+* Change code structures and many important optimizations
+* Saving images on upload directory with same post date
+* Fixed bugs with uploading images from create new posts by wp restful api
+* Fixed some bugs. Thanks to [Sergey Funn](https://github.com/racypepper)
 
 ### 2.2 ###
 * Added `%random%` pattern for file names. Contributed by [Zdravko Danev](https://github.com/zdanev)
@@ -104,22 +113,18 @@ You can exclude many domains from the upload.
 * [Fixed] Fixed for adding image correctly to the media library
 
 ### 1.4.1 ###
-
 * [Fixed] Fixed tiny bug ;) Thanks to Ali for reporting bug
 
 ### 1.4 ###
-
 * [New Feature] Work With Multi Address Sites
 * [Fixed] Work with Persian & Arabic URLs
 * [Fixed] Replace URL for images already been uploaded
 * Implementation with object-oriented
 
 ### 1.3 ###
-
 * Fixed some bugs
 
 ### 1.2 ###
-
 * Fixed Bug: Save one revision post
 * Fixed Bug: Fix pattern of urls
 * Fixed Bug: Save file with same name
@@ -127,10 +132,8 @@ You can exclude many domains from the upload.
 * Fixed Bug: Work with ssl urls
 
 ### 1.1 ###
-
 * Add image to Media Library and attach to post
 * Fix a bug
 
 ### 1.0 ###
-
 * It's first version.
