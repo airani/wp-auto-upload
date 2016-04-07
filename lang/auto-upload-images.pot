@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Auto Upload Images\n"
-"POT-Creation-Date: 2016-04-05 02:33+0330\n"
-"PO-Revision-Date: 2016-04-05 02:33+0330\n"
+"POT-Creation-Date: 2016-04-07 04:54+0330\n"
+"PO-Revision-Date: 2016-04-07 04:54+0330\n"
 "Last-Translator: Ali Irani <ali@irani.im>\n"
 "Language-Team: P30Design <info@p30design.net>\n"
 "Language: en\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: wp-content/plugins/auto-upload-images\n"
 
 #: wp-content/plugins/auto-upload-images/setting-page.php:2
-#: wp-content/plugins/auto-upload-images/wp-auto-upload.php:85
+#: wp-content/plugins/auto-upload-images/wp-auto-upload.php:142
 msgid "Auto Upload Images Settings"
 msgstr ""
 
@@ -52,42 +52,53 @@ msgid ""
 msgstr ""
 
 #: wp-content/plugins/auto-upload-images/setting-page.php:45
+msgid "Alt Name:"
+msgstr ""
+
+#: wp-content/plugins/auto-upload-images/setting-page.php:51
+#, php-format
+msgid ""
+"Choose a custom alt name for the new images will be uploaded. You can also "
+"use these shortcodes %s."
+msgstr ""
+
+#: wp-content/plugins/auto-upload-images/setting-page.php:58
 msgid "Image Size:"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/setting-page.php:48
+#: wp-content/plugins/auto-upload-images/setting-page.php:61
 msgid "Max Width"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/setting-page.php:50
+#: wp-content/plugins/auto-upload-images/setting-page.php:63
 msgid "Max Height"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/setting-page.php:52
+#: wp-content/plugins/auto-upload-images/setting-page.php:65
 msgid ""
 "You can choose max width and height for images uploaded by this plugin on "
 "your site. If you leave empty each one of fields by default use the original "
 "size of the image."
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/setting-page.php:59
+#: wp-content/plugins/auto-upload-images/setting-page.php:72
 msgid "Exclude Post Types:"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/setting-page.php:71
+#: wp-content/plugins/auto-upload-images/setting-page.php:85
 msgid "Select the Post Types that you want exclude from automatic uploading"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/setting-page.php:77
+#: wp-content/plugins/auto-upload-images/setting-page.php:91
 msgid "Exclude Domains:"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/setting-page.php:81
+#: wp-content/plugins/auto-upload-images/setting-page.php:95
 msgid ""
 "Enter the domains you wish to be excluded from uploading images: (One domain "
 "per line)"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/wp-auto-upload.php:86
+#: wp-content/plugins/auto-upload-images/wp-auto-upload.php:143
 msgid "Auto Upload Images"
 msgstr ""

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Auto Upload Images\n"
-"POT-Creation-Date: 2016-04-05 02:33+0330\n"
-"PO-Revision-Date: 2016-04-05 02:34+0330\n"
+"POT-Creation-Date: 2016-04-07 04:54+0330\n"
+"PO-Revision-Date: 2016-04-07 04:55+0330\n"
 "Last-Translator: Ali Irani <ali@irani.im>\n"
 "Language-Team: Ali Irani <ali@irani.im>\n"
 "Language: fa_IR\n"
@@ -14,7 +14,7 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 #: wp-content/plugins/auto-upload-images/setting-page.php:2
-#: wp-content/plugins/auto-upload-images/wp-auto-upload.php:85
+#: wp-content/plugins/auto-upload-images/wp-auto-upload.php:142
 msgid "Auto Upload Images Settings"
 msgstr "تنظیمات بارگذاری خودکار تصاویر"
 
@@ -59,18 +59,31 @@ msgstr ""
 "می‌توانید از کدهای کوتاه %s در این نام استفاده کنید."
 
 #: wp-content/plugins/auto-upload-images/setting-page.php:45
+msgid "Alt Name:"
+msgstr "نام alt تصویر:"
+
+#: wp-content/plugins/auto-upload-images/setting-page.php:51
+#, php-format
+msgid ""
+"Choose a custom alt name for the new images will be uploaded. You can also "
+"use these shortcodes %s."
+msgstr ""
+"نام دلخواهی برای نام alt تصاویر جدیدی که بارگذاری می‌شود انتخاب کنید. همچنین "
+"می‌توانید از کدهای کوتاه %s در این نام استفاده کنید."
+
+#: wp-content/plugins/auto-upload-images/setting-page.php:58
 msgid "Image Size:"
 msgstr "اندازه تصویر:"
 
-#: wp-content/plugins/auto-upload-images/setting-page.php:48
+#: wp-content/plugins/auto-upload-images/setting-page.php:61
 msgid "Max Width"
 msgstr "بیشترین عرض"
 
-#: wp-content/plugins/auto-upload-images/setting-page.php:50
+#: wp-content/plugins/auto-upload-images/setting-page.php:63
 msgid "Max Height"
 msgstr "بیشترین ارتفاع"
 
-#: wp-content/plugins/auto-upload-images/setting-page.php:52
+#: wp-content/plugins/auto-upload-images/setting-page.php:65
 msgid ""
 "You can choose max width and height for images uploaded by this plugin on "
 "your site. If you leave empty each one of fields by default use the original "
@@ -81,21 +94,21 @@ msgstr ""
 "کردن هر یک از این گزینه‌ها به صورت پیش‌فرض از اندازه های اصلی تصویر استفاده "
 "می‌گردد."
 
-#: wp-content/plugins/auto-upload-images/setting-page.php:59
+#: wp-content/plugins/auto-upload-images/setting-page.php:72
 msgid "Exclude Post Types:"
 msgstr "نوع مطلب های مثتثنی:"
 
-#: wp-content/plugins/auto-upload-images/setting-page.php:71
+#: wp-content/plugins/auto-upload-images/setting-page.php:85
 msgid "Select the Post Types that you want exclude from automatic uploading"
 msgstr ""
 "نوع مطالبی که می‌خواهید بارگذاری خودکار تصاویر در آنها انجام نشود را انتخاب "
 "کنید."
 
-#: wp-content/plugins/auto-upload-images/setting-page.php:77
+#: wp-content/plugins/auto-upload-images/setting-page.php:91
 msgid "Exclude Domains:"
 msgstr "دامنه‌های مثتثنی:"
 
-#: wp-content/plugins/auto-upload-images/setting-page.php:81
+#: wp-content/plugins/auto-upload-images/setting-page.php:95
 msgid ""
 "Enter the domains you wish to be excluded from uploading images: (One domain "
 "per line)"
@@ -103,7 +116,7 @@ msgstr ""
 "دامنه‌هایی را که می‌خواهید از آنها آپلود تصاویر انجام نگردد وارد نمایید: (هر "
 "خط یک آدرس)"
 
-#: wp-content/plugins/auto-upload-images/wp-auto-upload.php:86
+#: wp-content/plugins/auto-upload-images/wp-auto-upload.php:143
 msgid "Auto Upload Images"
 msgstr "بارگذاری خودکار تصاویر"
 

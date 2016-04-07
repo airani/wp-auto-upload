@@ -1,5 +1,5 @@
 <?php
-require 'classes/AutoUploadImages.php';
+require 'classes/ImageUploader.php';
 
 /**
  * Wordpress Auto Upload Images
@@ -45,6 +45,7 @@ class WpAutoUpload
         $defaults = array(
             'base_url' => get_bloginfo('url'),
             'image_name' => '%filename%',
+            'alt_name' => '%image_alt%',
         );
         return static::$_options = wp_parse_args(get_option(self::WP_OPTIONS_KEY), $defaults);
     }
@@ -71,9 +72,65 @@ class WpAutoUpload
         if (wp_is_post_revision($post_id)) {
             return false;
         }
+        return $this->save(get_post($post_id));
+    }
 
-        $autoUploadImages = new AutoUploadImages($post_id);
-        return $autoUploadImages->save();
+    /**
+     * Upload images and save new urls
+     * @return bool
+     */
+    public function save($post)
+    {
+        if (in_array($post->post_type, self::getOption('exclude_post_types'))) {
+            return false;
+        }
+
+        global $wpdb;
+        $content = $post->post_content;
+        $images = $this->findAllImageUrls($content);
+
+        if ($images === null) {
+            return false;
+        }
+
+        foreach ($images as $image) {
+            $uploader = new ImageUploader($image['url'], $image['alt'], $post);
+            if ($uploader->validate() && $uploader->save()) {
+                $url = parse_url($uploader->url);
+                $base_url = $uploader->getHostUrl() == null ? null : "http://{$uploader->getHostUrl()}";
+                $image_url = $base_url . $url['path'];
+                $content = preg_replace('/'. preg_quote($image['url'], '/') .'/', $image_url, $content);
+                $content = preg_replace('/alt=["\']'. preg_quote($image['alt'], '/') .'["\']/', "alt='{$uploader->getAlt()}'", $content);
+            }
+        }
+
+        return $wpdb->update(
+            $wpdb->posts,
+            array('post_content' => $content),
+            array('ID' => $post->ID)
+        ) ? true : false;
+    }
+
+    /**
+     * Find image urls in content and retrieve urls by array
+     * @param $content
+     * @return array|null
+     */
+    public function findAllImageUrls($content)
+    {
+        $pattern = '/<img[^>]*src=["\']([^"\']*)[^"\']*["\'][^>]*>/i'; // find img tags and retrive src
+        preg_match_all($pattern, $content, $urls, PREG_SET_ORDER);
+        if (empty($urls)) {
+            return null;
+        }
+        foreach ($urls as $index => &$url) {
+            $images[$index]['alt'] = preg_match('/<img[^>]*alt=["\']([^"\']*)[^"\']*["\'][^>]*>/i', $url[0], $alt) ? $alt[1] : null;
+            $images[$index]['url'] = $url = $url[1];
+        }
+        foreach (array_unique($urls) as $index => $url) {
+            $unique_array[] = $images[$index];
+        }
+        return $unique_array;
     }
 
     /**
@@ -96,7 +153,7 @@ class WpAutoUpload
     public function settingPage()
     {
         if (isset($_POST['submit'])) {
-            $fields = array('base_url', 'image_name', 'exclude_urls', 'max_width', 'max_height', 'exclude_post_types');
+            $fields = array('base_url', 'image_name', 'alt_name', 'exclude_urls', 'max_width', 'max_height', 'exclude_post_types');
             foreach ($fields as $field) {
                 if ($_POST[$field]) {
                     static::$_options[$field] = $_POST[$field];

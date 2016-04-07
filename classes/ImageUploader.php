@@ -3,48 +3,18 @@
 /**
  * @author Ali Irani <ali@irani.im>
  */
-class AutoUploadImages
+class ImageUploader
 {
     public $post;
+    public $url;
+    public $alt;
+    public $filename;
 
-    public function __construct($post_id)
+    public function __construct($url, $alt, $post)
     {
-        $this->post = get_post($post_id);
-    }
-
-    /**
-     * Returns wordpress db handler
-     * @return wpdb
-     */
-    public function getDb()
-    {
-        global $wpdb;
-        return $wpdb;
-    }
-
-    /**
-     * Find image urls in content and retrieve urls by array
-     * @param $content
-     * @return array|null
-     */
-    public function findAllImageUrls()
-    {
-        if ($content = $this->post->post_content) {
-            $pattern = '/<img[^>]*src=["\']([^"\']*)[^"\']*["\'][^>]*>/i'; // find img tags and retrive src
-            preg_match_all($pattern, $content, $urls, PREG_SET_ORDER);
-            if (empty($urls)) {
-                return null;
-            }
-            foreach ($urls as $index => &$url) {
-                $images[$index]['alt'] = preg_match('/<img[^>]*alt=["\']([^"\']*)[^"\']*["\'][^>]*>/i', $url[0], $alt) ? $alt[1] : null;
-                $images[$index]['url'] = $url = $url[1];
-            }
-            foreach (array_unique($urls) as $index => $url) {
-                $unique_array[] = $images[$index];
-            }
-            return $unique_array;
-        }
-        return null;
+        $this->post = $post;
+        $this->url = $url;
+        $this->alt = $alt;
     }
 
     /**
@@ -65,11 +35,11 @@ class AutoUploadImages
      * Check url is allowed to upload or not
      * @param string $url this url check is allowable or not
      * @param string $site_url host of site url
-     * @return bool true | false
+     * @return bool
      */
-    public function validateImageUrl($url)
+    public function validate()
     {
-        $url = self::getHostUrl($url);
+        $url = self::getHostUrl($this->url);
         $site_url = (self::getHostUrl() == null) ? self::getHostUrl(site_url('url')) : self::getHostUrl();
 
         if ($url === $site_url || empty($url)) {
@@ -91,25 +61,45 @@ class AutoUploadImages
 
     /**
      * Return custom image name with user rules
-     * @param  string  $filename
-     * @return string  custom file name
+     * @return string Custom file name
      */
-    public function getImageName($filename)
+    public function getFilename()
     {
+        $filename = basename($this->url);
         preg_match('/(.*)?(\.+[^.]*)$/', $filename, $name_parts);
 
-        $name = $name_parts[1];
+        $this->filename = $name_parts[1];
         $postfix = $name_parts[2];
 
         if (preg_match('/^(\.[^?]*)\?.*/i', $postfix, $postfix_extra)) {
             $postfix = $postfix_extra[1];
         }
 
-        $pattern_rule = WpAutoUpload::getOption('image_name');
-        preg_match_all('/%[^%]*%/', $pattern_rule, $rules);
+        $filename = $this->patterned(WpAutoUpload::getOption('image_name'));
+        return $filename . $postfix;
+    }
+
+    /**
+     * Return custom alt name with user rules
+     * @return string Custom alt name
+     */
+    public function getAlt()
+    {
+        return $this->patterned(WpAutoUpload::getOption('alt_name'));
+    }
+
+    /**
+     * Returns string patterned
+     * @param $pattern
+     * @return string
+     */
+    public function patterned($pattern)
+    {
+        preg_match_all('/%[^%]*%/', $pattern, $rules);
 
         $patterns = array(
-            '%filename%' => $name,
+            '%filename%' => $this->filename,
+            '%image_alt%' => $this->alt,
             '%date%' => date('Y-m-j'),
             '%year%' => date('Y'),
             '%month%' => date('m'),
@@ -123,22 +113,18 @@ class AutoUploadImages
 
         if ($rules[0]) {
             foreach ($rules[0] as $rule) {
-                $pattern_rule = preg_replace("/$rule/", $patterns[$rule] ? $patterns[$rule] : $rule, $pattern_rule);
+                $pattern = preg_replace("/$rule/", $patterns[$rule] ? $patterns[$rule] : $rule, $pattern);
             }
-            return $pattern_rule . $postfix;
         }
-
-        return $filename;
+        return $pattern;
     }
 
     /**
      * Save image on wp_upload_dir
      * Add image to the media library and attach in the post
-     * @param string $url image url
-     * @param int $post_id
-     * @return string new image url
+     * @return bool
      */
-    public function saveImage($url, $post_id = 0)
+    public function save()
     {
         if (function_exists('curl_init') === false) {
             return false;
@@ -146,7 +132,7 @@ class AutoUploadImages
 
         setlocale(LC_ALL, "en_US.UTF8");
         $agent= 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.0.3705; .NET CLR 1.1.4322)';
-        $ch = curl_init($url);
+        $ch = curl_init($this->url);
         curl_setopt($ch, CURLOPT_USERAGENT, $agent);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -154,17 +140,16 @@ class AutoUploadImages
         $image_data = curl_exec($ch);
 
         if ($image_data === false) {
-            return null;
+            return false;
         }
 
         $image_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
         if (strpos($image_type,'image') === false) {
-            return null;
+            return false;
         }
 
         $image_size = curl_getinfo($ch, CURLINFO_SIZE_DOWNLOAD);
-        $image_file_name = basename($url);
-        $image_name = $this->getImageName($image_file_name);
+        $image_name = $this->getFilename();
         $upload_dir = wp_upload_dir(date('Y/m', strtotime($this->post->post_date_gmt)));
         $image_path = urldecode($upload_dir['path'] . '/' . $image_name);
         $image_url = urldecode($upload_dir['url'] . '/' . $image_name);
@@ -172,7 +157,8 @@ class AutoUploadImages
         // check if file with same name exists in upload path, rename file
         while (file_exists($image_path)) {
             if ($image_size == filesize($image_path)) {
-                return $image_url;
+                $this->url = $image_url;
+                return true;
             } else {
                 $num = rand(1, 99);
                 $image_path = urldecode($upload_dir['path'] . '/' . $num . '_' . $image_name);
@@ -194,50 +180,14 @@ class AutoUploadImages
         $attachment = array(
             'guid' => $image_url,
             'post_mime_type' => $image_type,
-            'post_title' => preg_replace('/\.[^.]+$/', '', $image_name),
+            'post_title' => $this->alt ?: preg_replace('/\.[^.]+$/', '', $image_name),
             'post_content' => '',
             'post_status' => 'inherit'
         );
-        $attach_id = wp_insert_attachment($attachment, $image_path, $post_id);
+        $attach_id = wp_insert_attachment($attachment, $image_path, $this->post->ID);
         $attach_data = wp_generate_attachment_metadata($attach_id, $image_path);
         wp_update_attachment_metadata($attach_id, $attach_data);
-
-        return $image_url;
-    }
-
-    /**
-     * Upload images and save new urls
-     * @return bool
-     */
-    public function save()
-    {
-        if (in_array($this->post->post_type, WpAutoUpload::getOption('exclude_post_types'))) {
-            return false;
-        }
-
-        $content = $this->post->post_content;
-        $images = $this->findAllImageUrls();
-
-        if ($images === null) {
-            return false;
-        }
-
-        foreach ($images as $image) {
-            if ($this->validateImageUrl($image['url']) && $new_image_url = $this->saveImage($image['url'], $this->post->ID)) {
-                // find image url in content and replace new image url
-                $image_alt = $image['alt']; //@todo return custom alt
-                $new_image_url = parse_url($new_image_url);
-                $base_url = $this->getHostUrl() == null ? null : "http://{$this->getHostUrl()}";
-                $new_image_url = $base_url . $new_image_url['path'];
-                $content = preg_replace('/'. preg_quote($image['url'], '/') .'/', $new_image_url, $content);
-                $content = preg_replace('/alt=["\']'. preg_quote($image['alt'], '/') .'["\']/', "alt='$image_alt'", $content);
-            }
-        }
-
-        return $this->getDb()->update(
-            $this->getDb()->posts,
-            array('post_content' => $content),
-            array('ID' => $this->post->ID)
-        ) ? true : false;
+        $this->url = $image_url;
+        return true;
     }
 }
