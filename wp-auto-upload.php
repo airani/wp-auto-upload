@@ -57,10 +57,11 @@ class WpAutoUpload
      */
     public static function getOption($key)
     {
-        if (isset(static::getOptions()[$key]) === false) {
+        $options = static::getOptions();
+        if (isset($options[$key]) === false) {
             return null;
         }
-        return static::getOptions()[$key];
+        return $options[$key];
     }
 
     /**
@@ -81,7 +82,8 @@ class WpAutoUpload
      */
     public function save($post)
     {
-        if (in_array($post->post_type, self::getOption('exclude_post_types'))) {
+        $excludePostTypes = self::getOption('exclude_post_types');
+        if (is_array($excludePostTypes) && in_array($post->post_type, $excludePostTypes)) {
             return false;
         }
 
