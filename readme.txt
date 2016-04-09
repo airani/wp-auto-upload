@@ -65,6 +65,9 @@ You can exclude many domains from the upload.
 
 == Changelog ==
 
+= 3.0.1 =
+* Fixed some bugs
+
 = 3.0 =
 * Add option for customize images alt attribute with defined patterns
 * Add option for exclude post types from auto images uploading
