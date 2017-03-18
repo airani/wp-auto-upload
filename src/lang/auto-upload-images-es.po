@@ -1,0 +1,52 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Auto Upload Images v1.5\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2013-12-05 00:15+0330\n"
+"Last-Translator: Diego Herrera <diegorherrera@gmail.com>\n"
+"Language-Team: ECM <office@pecm.im>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Spanish\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: D:\\wamp\\www\\wp3\\\n"
+"X-Poedit-SearchPath-0: wp-content\\plugins\\auto-upload-images\n"
+
+#: wp-content\plugins\auto-upload-images/index.php:272
+#: wp-content\plugins\auto-upload-images/index.php:290
+msgid "Auto Upload Images Settings"
+msgstr "Opciones de Subida de Imágenes Automática"
+
+#: wp-content\plugins\auto-upload-images/index.php:272
+msgid "Auto Upload Images"
+msgstr "Subir imágenes Automaticamente"
+
+#: wp-content\plugins\auto-upload-images/index.php:294
+msgid "Settings Saved."
+msgstr "Opciones guardadas."
+
+#: wp-content\plugins\auto-upload-images/index.php:303
+msgid "Base URL:"
+msgstr "URL Base:"
+
+#: wp-content\plugins\auto-upload-images/index.php:308
+msgid "If you need to choose a new base URL for the images that will be automatically uploaded. Ex:"
+msgstr "Si necesitas escoger una nueva URL base para las imágenes que van a ser subidas automaticamente. Por ej."
+
+#: wp-content\plugins\auto-upload-images/index.php:314
+msgid "Image Name:"
+msgstr "Nombre de la Imágen"
+
+#: wp-content\plugins\auto-upload-images/index.php:319
+msgid "Choose a custom filename for the new images will be uploaded. You can also use these shortcodes <code dir=\"ltr\">%filename%</code>, <code dir=\"ltr\">%url%</code>, <code dir=\"ltr\">%date%</code>."
+msgstr "Elige un nombre de archivo para las imágenes que serán subidas. También puedes utilizar estos códigos <code dir=\"ltr\">%filename%</code>, <code dir=\"ltr\">%url%</code>, <code dir=\"ltr\">%date%</code>."
+
+#: wp-content\plugins\auto-upload-images/index.php:325
+msgid "Exclude Domains:"
+msgstr "Exclusion de nombre de dominio"
+
+#: wp-content\plugins\auto-upload-images/index.php:329
+msgid "Enter the domains you wish to be excluded from uploading images: (One domain per line)"
+msgstr "Introduce los nombres de dominio que deseas excluir al subir imágenes: (Un nombre de dominio por línea)"
+

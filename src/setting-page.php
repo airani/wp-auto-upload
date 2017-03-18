@@ -1,3 +1,5 @@
+<?php if (!defined('ABSPATH')) exit(); ?>
+
 <div class="wrap">
     <?php screen_icon('options-general'); ?> <h2><?php _e('Auto Upload Images Settings', 'auto-upload-images'); ?></h2>
 

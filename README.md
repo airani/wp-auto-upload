@@ -9,11 +9,11 @@
 **License:** GPLv2 or later
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html
 
-Automatically detect external images in the post content and uploading images to your site and adding to the media library and finally replace image urls with new urls.
+Automatically detect external images in the post content and import images to your site and adding to the media library and finally replace image urls with new urls.
 
 ## Description ##
 
-When you want to save a post, this plugin search for image urls which exists in post and automatically upload external images to the Wordpress upload directory and add images to the media library and then replace new image urls with old urls.
+When you want to save a post, this plugin search for image urls which exists in post and automatically upload and import external images to the Wordpress upload directory and add images to the media library and then replace new image urls with old urls.
 
 ### Features ###
 
