@@ -18,17 +18,26 @@ class ImageUploader
     }
 
     /**
-     * Return host of $url without www
-     * @param string $url
-     * @return string host url
+     * Return host of url simplified without www
+     * @param null|string $url
+     * @param bool $scheme
+     * @return null|string
      */
-    public static function getHostUrl($url = null)
+    public static function getHostUrl($url = null, $scheme = false)
     {
-        $url = $url === null ? WpAutoUpload::getOption('base_url') : $url;
-        $parsedUrl = parse_url($url); // Give base URL
-        $url = isset($parsedUrl['port']) ? $parsedUrl['host'] . ":" . $parsedUrl['port'] : $parsedUrl['host'];
-        $url = preg_split('/^(www(2|3)?\.)/i', $url, -1, PREG_SPLIT_NO_EMPTY); // Delete www from URL
-        return $url[0];
+        $url = $url ?: WpAutoUpload::getOption('base_url');
+
+        $urlParts = parse_url($url);
+
+        if (array_key_exists('host', $urlParts) === false) {
+            return null;
+        }
+
+        $url = array_key_exists('port', $urlParts) ? $urlParts['host'] . ":" . $urlParts['port'] : $urlParts['host'];
+        $urlSimplified = preg_split('/^(www(2|3)?\.)/i', $url, -1, PREG_SPLIT_NO_EMPTY)[0]; // Delete www from URL
+        $url = $scheme && array_key_exists('scheme', $urlParts) ? $urlParts['scheme'] . '://' . $urlSimplified : $urlSimplified;
+
+        return $url;
     }
 
     /**
@@ -40,9 +49,9 @@ class ImageUploader
     public function validate()
     {
         $url = self::getHostUrl($this->url);
-        $site_url = (self::getHostUrl() == null) ? self::getHostUrl(site_url('url')) : self::getHostUrl();
+        $site_url = self::getHostUrl() === null ? self::getHostUrl(site_url('url')) : self::getHostUrl();
 
-        if ($url === $site_url || empty($url)) {
+        if ($url === $site_url || !$url) {
             return false;
         }
 

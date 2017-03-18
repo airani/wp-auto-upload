@@ -87,7 +87,7 @@ class WpAutoUpload
     public function save($post)
     {
         $excludePostTypes = self::getOption('exclude_post_types');
-        if (is_array($excludePostTypes) && in_array($post->post_type, $excludePostTypes)) {
+        if (is_array($excludePostTypes) && in_array($post->post_type, $excludePostTypes, true)) {
             return false;
         }
 
@@ -103,7 +103,7 @@ class WpAutoUpload
             $uploader = new ImageUploader($image['url'], $image['alt'], $post);
             if ($uploader->validate() && $uploader->save()) {
                 $url = parse_url($uploader->url);
-                $base_url = $uploader->getHostUrl() == null ? null : "http://{$uploader->getHostUrl()}";
+                $base_url = $uploader::getHostUrl(null, true);
                 $image_url = $base_url . $url['path'];
                 $content = preg_replace('/'. preg_quote($image['url'], '/') .'/', $image_url, $content);
                 $content = preg_replace('/alt=["\']'. preg_quote($image['alt'], '/') .'["\']/', "alt='{$uploader->getAlt()}'", $content);
@@ -124,7 +124,7 @@ class WpAutoUpload
      */
     public function findAllImageUrls($content)
     {
-        $pattern = '/<img[^>]*src=["\']([^"\']*)[^"\']*["\'][^>]*>/i'; // find img tags and retrive src
+        $pattern = '/<img[^>]*src=["\']([^"\']*)[^"\']*["\'][^>]*>/i'; // find img tags and retrieve src
         preg_match_all($pattern, $content, $urls, PREG_SET_ORDER);
         if (empty($urls)) {
             return null;
@@ -161,7 +161,7 @@ class WpAutoUpload
         if (isset($_POST['submit'])) {
             $fields = array('base_url', 'image_name', 'alt_name', 'exclude_urls', 'max_width', 'max_height', 'exclude_post_types');
             foreach ($fields as $field) {
-                if ($_POST[$field]) {
+                if (array_key_exists($field, $_POST) && $_POST[$field]) {
                     static::$_options[$field] = $_POST[$field];
                 }
             }
