@@ -4,7 +4,7 @@ Donate link: http://p30design.net/
 Tags: upload, auto, automaticlly, image, images, admin, administrator, post, save, media, library
 Requires at least: 2.7
 Tested up to: 4.7.3
-Stable tag: trunk
+Stable tag: 3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -41,6 +41,7 @@ When you want to save a post, this plugin search for image urls which exists in 
 
 * [Official Plugin Page](http://p30design.net/1391/08/wp-auto-upload-images.html)
 * [Github Repository](https://github.com/airani/wp-auto-upload)
+* [Report Issues](https://github.com/airani/wp-auto-upload/issues/new)
 
 == Installation ==
 
@@ -64,6 +65,16 @@ You can exclude many domains from the upload.
 2. Settings page in Persian language
 
 == Changelog ==
+
+= 3.1 =
+* Fixed bug and add support for base url with HTTPS
+* Fixed bug in image alt attribute replacement
+* Some optimizations and improvements code
+* Enhancement in files security access
+* Update files structures
+* Update setting page styles
+* Update screenshot pictures
+* Add Information box to setting page
 
 = 3.0.1 =
 * Fixed some bugs
@@ -111,22 +122,18 @@ You can exclude many domains from the upload.
 * [Fixed] Fixed for adding image correctly to the media library
 
 = 1.4.1 =
-
 * [Fixed] Fixed tiny bug ;) Thanks to Ali for reporting bug
 
 = 1.4 =
-
 * [New Feature] Work With Multi Address Sites
 * [Fixed] Work with Persian & Arabic URLs
 * [Fixed] Replace URL for images already been uploaded
 * Implementation with object-oriented
 
 = 1.3 =
-
 * Fixed some bugs
 
 = 1.2 =
-
 * Fixed Bug: Save one revision post
 * Fixed Bug: Fix pattern of urls
 * Fixed Bug: Save file with same name
@@ -134,10 +141,8 @@ You can exclude many domains from the upload.
 * Fixed Bug: Work with ssl urls
 
 = 1.1 =
-
 * Add image to Media Library and attach to post
 * Fix a bug
 
 = 1.0 =
-
 * It's first version.
