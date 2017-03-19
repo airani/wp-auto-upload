@@ -42,8 +42,6 @@ class ImageUploader
 
     /**
      * Check url is allowed to upload or not
-     * @param string $url this url check is allowable or not
-     * @param string $site_url host of site url
      * @return bool
      */
     public function validate()
@@ -84,7 +82,7 @@ class ImageUploader
             $postfix = $postfix_extra[1];
         }
 
-        $filename = $this->patterned(WpAutoUpload::getOption('image_name'));
+        $filename = $this->resolvePattern(WpAutoUpload::getOption('image_name'));
         return $filename . $postfix;
     }
 
@@ -94,7 +92,7 @@ class ImageUploader
      */
     public function getAlt()
     {
-        return $this->patterned(WpAutoUpload::getOption('alt_name'));
+        return $this->resolvePattern(WpAutoUpload::getOption('alt_name'));
     }
 
     /**
@@ -102,7 +100,7 @@ class ImageUploader
      * @param $pattern
      * @return string
      */
-    public function patterned($pattern)
+    public function resolvePattern($pattern)
     {
         preg_match_all('/%[^%]*%/', $pattern, $rules);
 
@@ -177,6 +175,10 @@ class ImageUploader
 
         curl_close($ch);
         file_put_contents($image_path, $image_data);
+
+        if (is_file($image_path) === false) {
+            return false;
+        }
 
         // if set max width and height resize image
         if (WpAutoUpload::getOption('max_width') || WpAutoUpload::getOption('max_height')) {

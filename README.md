@@ -4,7 +4,7 @@
 **Donate link:** http://p30design.net/about/contact
 **Tags:** upload, auto, automaticlly, image, images, admin, administrator, post, save, media, library
 **Requires at least:** 2.7
-**Tested up to:** 4.2.2
+**Tested up to:** 4.7.3
 **Stable tag:** trunk
 **License:** GPLv2 or later
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html

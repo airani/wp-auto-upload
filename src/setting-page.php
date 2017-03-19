@@ -76,10 +76,10 @@
                 </th>
                 <td>
                     <p>
-                        <?php $checked = self::getOption('exclude_post_types'); ?>
+                        <?php $excludePostTypes = self::getOption('exclude_post_types'); ?>
                         <?php foreach (get_post_types() as $post_type): ?>
                             <label>
-                                <input type="checkbox" name="exclude_post_types[]" value="<?php echo $post_type ?>" <?php echo in_array($post_type, $checked) ? 'checked' : ''; ?>> <?php echo $post_type ?>
+                                <input type="checkbox" name="exclude_post_types[]" value="<?php echo $post_type ?>" <?php echo is_array($excludePostTypes) && in_array($post_type, $excludePostTypes, true) ? 'checked' : ''; ?>> <?php echo $post_type ?>
                                 <br>
                             </label>
                         <?php endforeach; ?>

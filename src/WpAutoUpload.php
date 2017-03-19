@@ -95,26 +95,22 @@ class WpAutoUpload
         $content = $post->post_content;
         $images = $this->findAllImageUrls($content);
 
-        if ($images === null) {
+        if ($images === null || empty($images)) {
             return false;
         }
 
         foreach ($images as $image) {
             $uploader = new ImageUploader($image['url'], $image['alt'], $post);
             if ($uploader->validate() && $uploader->save()) {
-                $url = parse_url($uploader->url);
+                $urlParts = parse_url($uploader->url);
                 $base_url = $uploader::getHostUrl(null, true);
-                $image_url = $base_url . $url['path'];
+                $image_url = $base_url . $urlParts['path'];
                 $content = preg_replace('/'. preg_quote($image['url'], '/') .'/', $image_url, $content);
                 $content = preg_replace('/alt=["\']'. preg_quote($image['alt'], '/') .'["\']/', "alt='{$uploader->getAlt()}'", $content);
             }
         }
 
-        return $wpdb->update(
-            $wpdb->posts,
-            array('post_content' => $content),
-            array('ID' => $post->ID)
-        ) ? true : false;
+        return (bool) $wpdb->update($wpdb->posts, array('post_content' => $content), array('ID' => $post->ID));
     }
 
     /**
