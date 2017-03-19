@@ -1,11 +1,7 @@
 # Auto Upload Images #
-**Version:** 3.0
-**Contributors:** [airani](https://profiles.wordpress.org/airani/)
-**Donate link:** http://p30design.net/about/contact
-**Tags:** upload, auto, automaticlly, image, images, admin, administrator, post, save, media, library
+**Version:** 3.1
 **Requires at least:** 2.7
 **Tested up to:** 4.7.3
-**Stable tag:** trunk
 **License:** GPLv2 or later
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +38,7 @@ When you want to save a post, this plugin search for image urls which exists in 
 
 * [Official Plugin Page](http://p30design.net/1391/08/wp-auto-upload-images.html)
 * [Github Repository](https://github.com/airani/wp-auto-upload)
+* [Report Issues](https://github.com/airani/wp-auto-upload/issues/new)
 
 ## Installation ##
 
@@ -69,6 +66,16 @@ You can exclude many domains from the upload.
 
 
 ## Changelog ##
+
+= 3.1 =
+* Fixed bug and add support for base url with HTTPS
+* Fixed bug in image alt attribute replacement
+* Some optimizations and improvements code
+* Enhancement in files security access
+* Update files structures
+* Update setting page styles
+* Update screenshot pictures
+* Add Information box to setting page
 
 ### 3.0.1 ###
 * Fixed some bugs
