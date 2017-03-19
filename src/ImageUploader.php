@@ -151,23 +151,23 @@ class ImageUploader
         }
 
         $image_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-        if (strpos($image_type,'image') === false) {
+        if (strpos($image_type, 'image') === false) {
             return false;
         }
 
-        $image_size = curl_getinfo($ch, CURLINFO_SIZE_DOWNLOAD);
         $image_name = $this->getFilename();
-        $upload_dir = wp_upload_dir(date('Y/m', strtotime($this->post->post_date_gmt)));
+        $upload_dir = wp_upload_dir(date('Y/m', $this->post->post_date_gmt ? strtotime($this->post->post_date_gmt) : time()));
         $image_path = urldecode($upload_dir['path'] . '/' . $image_name);
         $image_url = urldecode($upload_dir['url'] . '/' . $image_name);
 
         // check if file with same name exists in upload path, rename file
-        while (file_exists($image_path)) {
-            if ($image_size == filesize($image_path)) {
+        while (is_file($image_path)) {
+            if (base64_encode($image_data) === base64_encode(file_get_contents($image_path))) { // Check for duplicate file
                 $this->url = $image_url;
+                curl_close($ch);
                 return true;
             } else {
-                $num = rand(1, 99);
+                $num = uniqid();
                 $image_path = urldecode($upload_dir['path'] . '/' . $num . '_' . $image_name);
                 $image_url = urldecode($upload_dir['url'] . '/' . $num . '_' . $image_name);
             }
@@ -188,17 +188,31 @@ class ImageUploader
             $image_url = urldecode($upload_dir['url'] . '/' . $image_resized['file']);
         }
 
+        $this->attachImage($image_path, $image_url, $image_name);
+
+        $this->url = $image_url;
+        return true;
+    }
+
+    /**
+     * Attach image to post and media management
+     * @param string $path Image path
+     * @param string $url Image url
+     * @param string $name Image name
+     * @return bool|int
+     */
+    public function attachImage($path, $url, $name)
+    {
         $attachment = array(
-            'guid' => $image_url,
-            'post_mime_type' => $image_type,
-            'post_title' => $this->alt ?: preg_replace('/\.[^.]+$/', '', $image_name),
+            'guid' => $url,
+            'post_mime_type' => mime_content_type($path),
+            'post_title' => $this->alt ?: preg_replace('/\.[^.]+$/', '', $name),
             'post_content' => '',
             'post_status' => 'inherit'
         );
-        $attach_id = wp_insert_attachment($attachment, $image_path, $this->post->ID);
-        $attach_data = wp_generate_attachment_metadata($attach_id, $image_path);
-        wp_update_attachment_metadata($attach_id, $attach_data);
-        $this->url = $image_url;
-        return true;
+        $attach_id = wp_insert_attachment($attachment, $path, $this->post->ID);
+        $attach_data = wp_generate_attachment_metadata($attach_id, $path);
+
+        return wp_update_attachment_metadata($attach_id, $attach_data);
     }
 }
