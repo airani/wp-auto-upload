@@ -120,9 +120,10 @@ class ImageUploader
 
         if ($rules[0]) {
             foreach ($rules[0] as $rule) {
-                $pattern = preg_replace("/$rule/", $patterns[$rule] ? $patterns[$rule] : $rule, $pattern);
+                $pattern = preg_replace("/$rule/", array_key_exists($rule, $patterns) ? $patterns[$rule] : $rule, $pattern);
             }
         }
+
         return $pattern;
     }
 
