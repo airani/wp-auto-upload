@@ -4,7 +4,7 @@ Donate link: http://p30design.net/
 Tags: upload, auto, automaticlly, image, images, admin, administrator, post, save, media, library
 Requires at least: 2.7
 Tested up to: 4.7.3
-Stable tag: 3.1
+Stable tag: 3.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,9 @@ You can exclude many domains from the upload.
 2. Settings page in Persian language
 
 == Changelog ==
+
+= 3.1.1 =
+* Fixed critical bug with update to new file structure
 
 = 3.1 =
 * Fixed bug and add support for base url with HTTPS
