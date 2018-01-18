@@ -77,7 +77,10 @@ class WpAutoUpload
             (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)) {
             return false;
         }
-        return $this->save(get_post($post_id));
+
+        $post = get_post($post_id);
+
+        return $this->save($post) || $this->savePostOptions($post);
     }
 
     /**
@@ -111,6 +114,64 @@ class WpAutoUpload
         }
 
         return (bool) $wpdb->update($wpdb->posts, array('post_content' => $content), array('ID' => $post->ID));
+    }
+    /**
+     * Upload images and save new urls
+     * @return bool
+     */
+    public function savePostOptions($post)
+    {
+        $excludePostTypes = self::getOption('exclude_post_types');
+        if (is_array($excludePostTypes) && in_array($post->post_type, $excludePostTypes, true)) {
+            return false;
+        }
+
+        global $wpdb;
+
+        $sql_select_post_options = "SELECT * FROM {$wpdb->postmeta} WHERE post_id = {$post->ID}";
+        $results = $wpdb->get_results( $sql_select_post_options );
+
+        $is_done_something = false;
+
+        foreach($results as $key => $result)
+        {
+            $content = $result->meta_value;
+            $images = $this->findAllImageUrls($content);
+
+            if ($images === null || empty($images)) 
+            {
+                
+            }else
+            {
+                foreach ($images as $image) {
+                    $uploader = new ImageUploader($image['url'], $image['alt'], $post);
+                    if ($uploader->validate() && $uploader->save()) {
+                        $urlParts = parse_url($uploader->url);
+                        $base_url = $uploader::getHostUrl(null, true);
+                        $image_url = $base_url . $urlParts['path'];
+                        $image_oldUrl = $image['url'];
+
+                        $prepare_sql = $wpdb->prepare(
+                            "
+                            UPDATE {$wpdb->postmeta} 
+                            SET meta_value = replace(meta_value, %s, %s)
+                            WHERE meta_key = %s AND post_id = %d
+                            ", 
+                            $image_oldUrl, $image_url, $result->meta_key, $post->ID
+                        );
+
+                        echo "<br/>SQL: {$prepare_sql}";
+
+                        if($wpdb->query($prepare_sql)) 
+                        {
+                            $is_done_something = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $is_done_something;
     }
 
     /**
