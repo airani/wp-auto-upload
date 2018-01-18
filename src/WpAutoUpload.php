@@ -160,8 +160,6 @@ class WpAutoUpload
                             $image_oldUrl, $image_url, $result->meta_key, $post->ID
                         );
 
-                        echo "<br/>SQL: {$prepare_sql}";
-
                         if($wpdb->query($prepare_sql)) 
                         {
                             $is_done_something = true;
