@@ -119,19 +119,36 @@ class WpAutoUpload
      * @return array|null
      */
     public function findAllImageUrls($content)
-    {
+    {   
+        $unique_array = [];
+        $images = [];
+
+        //Scan image
+        
         $pattern = '/<img[^>]*src=["\']([^"\']*)[^"\']*["\'][^>]*>/i'; // find img tags and retrieve src
         preg_match_all($pattern, $content, $urls, PREG_SET_ORDER);
-        if (empty($urls)) {
-            return null;
+
+        if (!empty($urls)) {
+            foreach ($urls as $index => &$url) {
+                $images[$index]['alt'] = preg_match('/<img[^>]*alt=["\']([^"\']*)[^"\']*["\'][^>]*>/i', $url[0], $alt) ? $alt[1] : null;
+                $images[$index]['url'] = $url = $url[1];
+            }
+            foreach (array_unique($urls) as $index => $url) {
+                $unique_array[] = $images[$index];
+            }
         }
-        foreach ($urls as $index => &$url) {
-            $images[$index]['alt'] = preg_match('/<img[^>]*alt=["\']([^"\']*)[^"\']*["\'][^>]*>/i', $url[0], $alt) ? $alt[1] : null;
-            $images[$index]['url'] = $url = $url[1];
+
+        //Grab Background
+        preg_match_all('/\\bbackground-image?\\s*:(.*?)\\(\\s*(\\\'|")?(?<image>.*?)\\3?\\s*\\)/uism', $content, $urls, PREG_SET_ORDER);
+
+        if(isset($urls[0]))
+        {
+            $unique_array[] = [
+                'alt' => '',
+                'url' => $urls[0]['image']
+            ];
         }
-        foreach (array_unique($urls) as $index => $url) {
-            $unique_array[] = $images[$index];
-        }
+
         return $unique_array;
     }
 
