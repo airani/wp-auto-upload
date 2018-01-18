@@ -200,12 +200,15 @@ class WpAutoUpload
         //Grab Background
         preg_match_all('/\\bbackground-image?\\s*:(.*?)\\(\\s*(\\\'|")?(?<image>.*?)\\3?\\s*\\)/uism', $content, $urls, PREG_SET_ORDER);
 
-        if(isset($urls[0]))
+        foreach($urls as $url) 
         {
-            $unique_array[] = [
-                'alt' => '',
-                'url' => $urls[0]['image']
-            ];
+            if(isset($url['image']))
+            {
+                $unique_array[] = [
+                    'alt' => '',
+                    'url' => $url['image']
+                ];
+            }
         }
 
         return $unique_array;
