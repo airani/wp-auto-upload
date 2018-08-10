@@ -74,6 +74,7 @@ class ImageUploader
     public function getFilename()
     {
         $filename = basename($this->url);
+        $filename = preg_replace("#\?(.*?)$#si", "", $filename);   // remove URL params from filename
         preg_match('/(.*)?(\.+[^.]*)$/', $filename, $name_parts);
 
         $this->filename = $name_parts[1];
