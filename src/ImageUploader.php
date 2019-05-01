@@ -226,7 +226,7 @@ class ImageUploader
             $image['url'] = $resized;
         }
 
-        $this->attachImage($image['path'], $image['url'], $image['filename']);
+        $this->attachImage($image);
 
         return $image;
     }
@@ -238,17 +238,17 @@ class ImageUploader
      * @param string $name Image name
      * @return bool|int
      */
-    public function attachImage($path, $url, $name)
+    public function attachImage($image)
     {
         $attachment = array(
-            'guid' => $url,
-            'post_mime_type' => mime_content_type($path),
-            'post_title' => $this->alt ?: preg_replace('/\.[^.]+$/', '', $name),
+            'guid' => $image['url'],
+            'post_mime_type' => $image['mime_type'],
+            'post_title' => $this->alt ?: preg_replace('/\.[^.]+$/', '', $image['filename']),
             'post_content' => '',
             'post_status' => 'inherit'
         );
-        $attach_id = wp_insert_attachment($attachment, $path, $this->post->ID);
-        $attach_data = wp_generate_attachment_metadata($attach_id, $path);
+        $attach_id = wp_insert_attachment($attachment, $image['path'], $this->post->ID);
+        $attach_data = wp_generate_attachment_metadata($attach_id, $image['path']);
 
         return wp_update_attachment_metadata($attach_id, $attach_data);
     }
