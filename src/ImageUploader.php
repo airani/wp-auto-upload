@@ -8,7 +8,6 @@ class ImageUploader
     public $post;
     public $url;
     public $alt;
-    public $filename;
 
     public function __construct($url, $alt, $post)
     {
@@ -68,23 +67,46 @@ class ImageUploader
     }
 
     /**
-     * Return custom image name with user rules
-     * @return string Custom file name
+     * Return custom image filename with user rules
+     * @return string
      */
-    public function getFilename()
+    protected function getFilename()
     {
-        $filename = basename($this->url);
-        preg_match('/(.*)?(\.+[^.]*)$/', $filename, $name_parts);
+        $filename = trim($this->resolvePattern(WpAutoUpload::getOption('image_name', '%filename%')));
+        return sanitize_file_name($filename ?: uniqid('img_'));
+    }
 
-        $this->filename = $name_parts[1];
-        $postfix = $name_parts[2];
+    /**
+     * Returns original image filename if valid
+     * @return string|null
+     */
+    protected function getOriginalFilename()
+    {
+        $urlPath = parse_url($this->url, PHP_URL_PATH);
+        $baseName = sanitize_file_name(wp_basename($urlPath));
 
-        if (preg_match('/^(\.[^?]*)\?.*/i', $postfix, $postfix_extra)) {
-            $postfix = $postfix_extra[1];
+        // Validate an absolute file name with true image extension
+        if (!preg_match('/(.*)\.(jpg|jpeg|jpe|png|gif|bmp|tiff|tif)$/i', $baseName, $nameParts)) {
+            return null;
         }
 
-        $filename = $this->resolvePattern(WpAutoUpload::getOption('image_name'));
-        return $filename . $postfix;
+        return $nameParts[1];
+    }
+
+    private $_uploadDir;
+
+    /**
+     * Return information of upload directory
+     * fields: path, url, subdir, basedir, baseurl
+     * @param $field
+     * @return string|null
+     */
+    protected function getUploadDir($field)
+    {
+        if ($this->_uploadDir === null) {
+            $this->_uploadDir = wp_upload_dir(date('Y/m', time()));
+        }
+        return is_array($this->_uploadDir) && array_key_exists($field, $this->_uploadDir) ? $this->_uploadDir[$field] : null;
     }
 
     /**
@@ -106,7 +128,7 @@ class ImageUploader
         preg_match_all('/%[^%]*%/', $pattern, $rules);
 
         $patterns = array(
-            '%filename%' => $this->filename,
+            '%filename%' => $this->getOriginalFilename(),
             '%image_alt%' => $this->alt,
             '%date%' => date('Y-m-j'),
             '%year%' => date('Y'),
@@ -129,71 +151,84 @@ class ImageUploader
     }
 
     /**
-     * Save image on wp_upload_dir
-     * Add image to the media library and attach in the post
-     * @return bool
+     * Save image and validate
+     * @return null|array image data
      */
     public function save()
     {
-        if (function_exists('curl_init') === false) {
-            return false;
+        if (!$this->validate()) {
+            return null;
         }
 
+        $image = $this->downloadImage($this->url);
+
+        if (is_wp_error($image)) {
+            return null;
+        }
+
+        return $image;
+    }
+
+    /**
+     * Download image
+     * @param $url
+     * @return array|WP_Error
+     */
+    public function downloadImage($url)
+    {
         setlocale(LC_ALL, "en_US.UTF8");
-        $agent= 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.0.3705; .NET CLR 1.1.4322)';
-        $ch = curl_init($this->url);
-        curl_setopt($ch, CURLOPT_USERAGENT, $agent);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-        $image_data = curl_exec($ch);
+        $response = wp_remote_get($url);
 
-        if ($image_data === false) {
-            return false;
+        if ($response instanceof WP_Error) {
+            return $response;
         }
 
-        $image_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-        if (strpos($image_type, 'image') === false) {
-            return false;
+        if (isset($response['response']['code'], $response['body']) && $response['response']['code'] !== 200) {
+            return new WP_Error('aui_download_failed', 'AUI: Image file bad response.');
         }
 
-        $image_name = $this->getFilename();
-        $upload_dir = wp_upload_dir(date('Y/m', $this->post->post_date_gmt ? strtotime($this->post->post_date_gmt) : time()));
-        $image_path = urldecode($upload_dir['path'] . '/' . $image_name);
-        $image_url = urldecode($upload_dir['url'] . '/' . $image_name);
+        $tempFile = tempnam(sys_get_temp_dir(), 'WP_AUI');
+        file_put_contents($tempFile, $response['body']);
+        $mime = wp_get_image_mime($tempFile);
+        unlink($tempFile);
 
-        // check if file with same name exists in upload path, rename file
-        while (is_file($image_path)) {
-            if (base64_encode($image_data) === base64_encode(file_get_contents($image_path))) { // Check for duplicate file
-                $this->url = $image_url;
-                curl_close($ch);
-                return true;
+        if ($mime === false || strpos($mime, 'image/') !== 0) {
+            return new WP_Error('aui_invalid_file', 'AUI: File type is not image.');
+        }
+
+        $image = [];
+        $image['mime_type'] = $mime;
+        $image['ext'] = $this->getExtension($mime);
+        $image['filename'] = $this->getFilename() . '.' . $image['ext'];
+        $image['base_path'] = rtrim($this->getUploadDir('path'), DIRECTORY_SEPARATOR);
+        $image['base_url'] = rtrim($this->getUploadDir('url'), DIRECTORY_SEPARATOR);
+        $image['path'] = $image['base_path'] . DIRECTORY_SEPARATOR . $image['filename'];
+        $image['url'] = $image['base_url'] . DIRECTORY_SEPARATOR . $image['filename'];
+        $c = 1;
+
+        while (is_file($image['path'])) {
+            if (sha1($response['body']) === sha1_file($image['path'])) {
+                return $image;
             } else {
-                $num = uniqid();
-                $image_path = urldecode($upload_dir['path'] . '/' . $num . '_' . $image_name);
-                $image_url = urldecode($upload_dir['url'] . '/' . $num . '_' . $image_name);
+                $image['path'] = $image['base_path'] . DIRECTORY_SEPARATOR . $c . '_' . $image['filename'];
+                $image['url'] = $image['base_url'] . DIRECTORY_SEPARATOR . $c . '_' . $image['filename'];
+                $c++;
             }
         }
 
-        curl_close($ch);
-        file_put_contents($image_path, $image_data);
+        file_put_contents($image['path'], $response['body']);
 
-        if (is_file($image_path) === false) {
-            return false;
+        if (!is_file($image['path'])) {
+            return new WP_Error('aui_image_save_failed', 'AUI: Image save to upload dir failed.');
         }
 
-        // if set max width and height resize image
-        if (WpAutoUpload::getOption('max_width') || WpAutoUpload::getOption('max_height')) {
-            $width = WpAutoUpload::getOption('max_width');
-            $height = WpAutoUpload::getOption('max_height');
-            $image_resized = image_make_intermediate_size($image_path, $width, $height);
-            $image_url = urldecode($upload_dir['url'] . '/' . $image_resized['file']);
+        if ($this->isNeedToResize() && ($resized = $this->resizeImage($image))) {
+            $image['url'] = $resized;
         }
 
-        $this->attachImage($image_path, $image_url, $image_name);
+        $this->attachImage($image['path'], $image['url'], $image['filename']);
 
-        $this->url = $image_url;
-        return true;
+        return $image;
     }
 
     /**
@@ -216,5 +251,50 @@ class ImageUploader
         $attach_data = wp_generate_attachment_metadata($attach_id, $path);
 
         return wp_update_attachment_metadata($attach_id, $attach_data);
+    }
+
+    /**
+     * Resize image and returns resized url
+     * @param $image
+     * @return false|string
+     */
+    public function resizeImage($image)
+    {
+        $width = WpAutoUpload::getOption('max_width');
+        $height = WpAutoUpload::getOption('max_height');
+        $image_resized = image_make_intermediate_size($image['path'], $width, $height);
+
+        if (!$image_resized) {
+            return false;
+        }
+
+        return $image['base_url'] . DIRECTORY_SEPARATOR . urldecode($image_resized['file']);
+    }
+
+    /**
+     * Check image need to resize or not
+     * @return bool
+     */
+    public function isNeedToResize()
+    {
+        return WpAutoUpload::getOption('max_width') || WpAutoUpload::getOption('max_height');
+    }
+
+    /**
+     * Returns Image file extension by mime type
+     * @param $mime
+     * @return string|null
+     */
+    public function getExtension($mime)
+    {
+        $mimes = array(
+            'image/jpeg' => 'jpg',
+            'image/png'  => 'png',
+            'image/gif'  => 'gif',
+            'image/bmp'  => 'bmp',
+            'image/tiff' => 'tif',
+        );
+
+        return array_key_exists($mime, $mimes) ? $mimes[$mime] : null;
     }
 }

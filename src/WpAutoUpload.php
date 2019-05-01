@@ -15,11 +15,11 @@ class WpAutoUpload
     private static $_options;
 
     /**
-     * WP_Auto_Upload constructor.
+     * WP_Auto_Upload Run.
      * Set default variables and options
      * Add wordpress actions
      */
-    public function __construct()
+    public function run()
     {
         add_action('plugins_loaded', array($this, 'initTextdomain'));
         add_action('save_post', array($this, 'afterSavePost'));
@@ -54,13 +54,13 @@ class WpAutoUpload
     /**
      * Return an option with specific key
      * @param $key
-     * @return null
+     * @return mixed
      */
-    public static function getOption($key)
+    public static function getOption($key, $default = null)
     {
         $options = static::getOptions();
         if (isset($options[$key]) === false) {
-            return null;
+            return $default;
         }
         return $options[$key];
     }
@@ -95,14 +95,14 @@ class WpAutoUpload
         $content = $post->post_content;
         $images = $this->findAllImageUrls($content);
 
-        if ($images === null || empty($images)) {
+        if (count($images) == 0) {
             return false;
         }
 
         foreach ($images as $image) {
             $uploader = new ImageUploader($image['url'], $image['alt'], $post);
-            if ($uploader->validate() && $uploader->save()) {
-                $urlParts = parse_url($uploader->url);
+            if ($uploadedImage = $uploader->save()) {
+                $urlParts = parse_url($uploadedImage['url']);
                 $base_url = $uploader::getHostUrl(null, true);
                 $image_url = $base_url . $urlParts['path'];
                 $content = preg_replace('/'. preg_quote($image['url'], '/') .'/', $image_url, $content);
@@ -122,8 +122,8 @@ class WpAutoUpload
     {
         $pattern = '/<img[^>]*src=["\']([^"\']*)[^"\']*["\'][^>]*>/i'; // find img tags and retrieve src
         preg_match_all($pattern, $content, $urls, PREG_SET_ORDER);
-        if (empty($urls)) {
-            return null;
+        if (count($urls) == 0) {
+            return array();
         }
         foreach ($urls as $index => &$url) {
             $images[$index]['alt'] = preg_match('/<img[^>]*alt=["\']([^"\']*)[^"\']*["\'][^>]*>/i', $url[0], $alt) ? $alt[1] : null;

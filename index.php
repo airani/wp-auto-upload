@@ -15,6 +15,9 @@ if (!defined('ABSPATH')) exit();
 
 define('WPAUI_DIR', dirname(__FILE__));
 
+require 'src/functions.php';
 require 'src/WpAutoUpload.php';
 
-new WPAutoUpload();
+$wp_aui = new WPAutoUpload();
+
+$wp_aui->run();
