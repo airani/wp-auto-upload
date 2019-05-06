@@ -29,7 +29,7 @@
                                 </th>
                                 <td>
                                     <input type="text" name="base_url" value="<?php echo self::getOption('base_url'); ?>" class="regular-text" dir="ltr" />
-                                    <p class="description"><?php _e('If you need to choose a new base URL for the images that will be automatically uploaded. Ex:', 'auto-upload-images'); ?> <code>http://p30design.net</code>, <code>http://cdn.p30design.net</code>, <code>/</code></p>
+                                    <p class="description"><?php _e('If you need to choose a new base URL for the images that will be automatically uploaded. Ex:', 'auto-upload-images'); ?> <code>https://irani.im</code>, <code>https://cdn.irani.im</code>, <code>/</code></p>
                                 </td>
                             </tr>
                             <tr valign="top">
@@ -99,7 +99,7 @@
                                 </th>
                                 <td>
                                     <p><?php _e('Enter the domains you wish to be excluded from uploading images: (One domain per line)', 'auto-upload-images'); ?></p>
-                                    <p><textarea name="exclude_urls" rows="10" cols="50" id="exclude_urls" class="large-text code" placeholder="http://p30design.net"><?php echo self::getOption('exclude_urls'); ?></textarea></p>
+                                    <p><textarea name="exclude_urls" rows="10" cols="50" id="exclude_urls" class="large-text code" placeholder="https://irani.im"><?php echo self::getOption('exclude_urls'); ?></textarea></p>
                                 </td>
                             </tr>
                         </table>
@@ -131,7 +131,7 @@
                                     <a href="https://twitter.com/xerror" title="Ali Irani" style="text-decoration: none" target="_blank"><?php _e('Twitter of Plugin Developer', 'auto-upload-images'); ?></a>
                                 </li>
                                 <li class="dashicons-before dashicons-admin-links" style="color: #82878c">
-                                    <a href="http://p30design.net/1391/08/wp-auto-upload-images.html" style="text-decoration: none" target="_blank"><?php _e('Official Page', 'auto-upload-images'); ?></a>
+                                    <a href="https://p30design.irani.im/1391/08/wp-auto-upload-images.html" style="text-decoration: none" target="_blank"><?php _e('Official Page', 'auto-upload-images'); ?></a>
                                 </li>
                             </ul>
                             <hr>
