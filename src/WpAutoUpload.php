@@ -22,8 +22,9 @@ class WpAutoUpload
     public function run()
     {
         add_action('plugins_loaded', array($this, 'initTextdomain'));
-        add_action('save_post', array($this, 'afterSavePost'));
         add_action('admin_menu', array($this, 'addAdminMenu'));
+
+        add_filter('wp_insert_post_data', array($this, 'savePost'), 10, 2);
     }
 
     /**
@@ -67,40 +68,46 @@ class WpAutoUpload
 
     /**
      * Automatically upload external images of a post to Wordpress upload directory
-     * @param int $post_id
-     * @return bool
+     * call by wp_insert_post_data filter
+     * @param array data An array of slashed post data
+     * @param array $postarr An array of sanitized, but otherwise unmodified post data
+     * @return array $data
      */
-    public function afterSavePost($post_id)
+    public function savePost($data, $postarr)
     {
-        if (wp_is_post_revision($post_id) ||
+        if (wp_is_post_revision($postarr['ID']) ||
+            wp_is_post_autosave($postarr['ID']) ||
             (defined('DOING_AJAX') && DOING_AJAX) ||
             (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)) {
             return false;
         }
-        return $this->save(get_post($post_id));
+
+        if ($content = $this->save($postarr)) {
+            $data['post_content'] = $content;
+        }
+        return $data;
     }
 
     /**
      * Upload images and save new urls
-     * @return bool
+     * @return string filtered content
      */
-    public function save($post)
+    public function save($postarr)
     {
         $excludePostTypes = self::getOption('exclude_post_types');
-        if (is_array($excludePostTypes) && in_array($post->post_type, $excludePostTypes, true)) {
+        if (is_array($excludePostTypes) && in_array($postarr['post_type'], $excludePostTypes, true)) {
             return false;
         }
 
-        global $wpdb;
-        $content = $post->post_content;
-        $images = $this->findAllImageUrls($content);
+        $content = $postarr['post_content'];
+        $images = $this->findAllImageUrls(stripslashes($content));
 
         if (count($images) == 0) {
             return false;
         }
 
         foreach ($images as $image) {
-            $uploader = new ImageUploader($image['url'], $image['alt'], $post);
+            $uploader = new ImageUploader($image['url'], $image['alt'], $postarr);
             if ($uploadedImage = $uploader->save()) {
                 $urlParts = parse_url($uploadedImage['url']);
                 $base_url = $uploader::getHostUrl(null, true);
@@ -109,8 +116,7 @@ class WpAutoUpload
                 $content = preg_replace('/alt=["\']'. preg_quote($image['alt'], '/') .'["\']/', "alt='{$uploader->getAlt()}'", $content);
             }
         }
-
-        return (bool) $wpdb->update($wpdb->posts, array('post_content' => $content), array('ID' => $post->ID));
+        return $content;
     }
 
     /**

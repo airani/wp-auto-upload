@@ -137,8 +137,8 @@ class ImageUploader
             '%url%' => self::getHostUrl(get_bloginfo('url')),
             '%random%' => uniqid(),
             '%timestamp%' => time(),
-            '%post_id%' => $this->post->ID,
-            '%postname%' => $this->post->post_name,
+            '%post_id%' => $this->post['ID'],
+            '%postname%' => $this->post['post_name'],
         );
 
         if ($rules[0]) {
@@ -247,7 +247,10 @@ class ImageUploader
             'post_content' => '',
             'post_status' => 'inherit'
         );
-        $attach_id = wp_insert_attachment($attachment, $image['path'], $this->post->ID);
+        $attach_id = wp_insert_attachment($attachment, $image['path'], $this->post['ID']);
+        if (!function_exists('wp_generate_attachment_metadata')) {
+            include_once( ABSPATH . 'wp-admin/includes/image.php' );
+        }
         $attach_data = wp_generate_attachment_metadata($attach_id, $image['path']);
 
         return wp_update_attachment_metadata($attach_id, $attach_data);
