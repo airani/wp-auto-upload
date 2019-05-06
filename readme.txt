@@ -1,10 +1,10 @@
 === Auto Upload Images ===
 Contributors: airani
-Donate link: http://p30design.net/
+Donate link: https://irani.im/
 Tags: upload, auto, automaticlly, image, images, admin, administrator, post, save, media, library
 Requires at least: 2.7
-Tested up to: 4.7.3
-Stable tag: 3.1.1
+Tested up to: 5.1.1
+Stable tag: 3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,16 +30,18 @@ When you want to save a post, this plugin search for image urls which exists in 
 = Translators =
 
 * English
-* Persian (fa_IR) - [Ali Irani](http://p30design.net)
+* Persian (fa_IR) - [Ali Irani](https://irani.im)
 * Español (es) - [Diego Herrera](https://github.com/diegoh)
 * Russion (ru_RU) - [Артём Рябков](https://github.com/rad96)
 * German (de_DE) - [Till Zimmermann](https://github.com/tillz)
+* French (fr_FR) - [Malaiac](https://github.com/Malaiac)
+* Korean (ko_KR) - [Shodan](https://github.com/luvrei)
 * Italian (it_IT) - Patryk Chmura
 
 
 = Links =
 
-* [Official Plugin Page](http://p30design.net/1391/08/wp-auto-upload-images.html)
+* [Official Plugin Page](https://p30design.irani.im/1391/08/wp-auto-upload-images.html)
 * [Github Repository](https://github.com/airani/wp-auto-upload)
 * [Report Issues](https://github.com/airani/wp-auto-upload/issues/new)
 
@@ -49,6 +51,10 @@ Upload the "Auto Upload Images" to plugin directory and Activate it.
 To change settings go to "Settings > Auto Upload Images" and change it.
 
 == Frequently Asked Questions ==
+
+= Working with Gutenburg editor in wp 3.1 and later? =
+Yes, but after save with ajax not show urls immediately in editor.
+
 
 = What is "Base URL" in settings page? =
 This URL is used as the new URL image.
@@ -65,6 +71,16 @@ You can exclude many domains from the upload.
 2. Settings page in Persian language
 
 == Changelog ==
+
+= 3.2 =
+* Update with change image downloader
+* Update with save post enhancements
+* Update integrate with Gutenburg editor
+* Fixed mime_content_type error in some cases
+* Fixed some minor bugs
+* Delete deprecated wp functions
+* Add Korean translation
+* Add French translation
 
 = 3.1.1 =
 * Fixed critical bug with update to new file structure
