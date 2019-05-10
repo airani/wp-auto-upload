@@ -122,7 +122,7 @@ class WpAutoUpload
     /**
      * Find image urls in content and retrieve urls by array
      * @param $content
-     * @return array|null
+     * @return array
      */
     public function findAllImageUrls($content)
     {

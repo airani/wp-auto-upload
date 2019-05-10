@@ -73,7 +73,7 @@ class ImageUploader
     protected function getFilename()
     {
         $filename = trim($this->resolvePattern(WpAutoUpload::getOption('image_name', '%filename%')));
-        return sanitize_file_name($filename ?: uniqid('img_'));
+        return sanitize_file_name($filename ?: uniqid('img_', false));
     }
 
     /**
@@ -198,7 +198,7 @@ class ImageUploader
 
         $image = [];
         $image['mime_type'] = $mime;
-        $image['ext'] = $this->getExtension($mime);
+        $image['ext'] = self::getExtension($mime);
         $image['filename'] = $this->getFilename() . '.' . $image['ext'];
         $image['base_path'] = rtrim($this->getUploadDir('path'), DIRECTORY_SEPARATOR);
         $image['base_url'] = rtrim($this->getUploadDir('url'), DIRECTORY_SEPARATOR);
@@ -233,9 +233,7 @@ class ImageUploader
 
     /**
      * Attach image to post and media management
-     * @param string $path Image path
-     * @param string $url Image url
-     * @param string $name Image name
+     * @param array $image
      * @return bool|int
      */
     public function attachImage($image)
@@ -288,7 +286,7 @@ class ImageUploader
      * @param $mime
      * @return string|null
      */
-    public function getExtension($mime)
+    public static function getExtension($mime)
     {
         $mimes = array(
             'image/jpeg' => 'jpg',
