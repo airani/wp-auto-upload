@@ -1,5 +1,7 @@
 # Auto Upload Images
 
+[![Build Status](https://travis-ci.com/airani/wp-auto-upload.svg?branch=master)](https://travis-ci.com/airani/wp-auto-upload)
+
 **Version:** 3.2
 
 **Requires at least:** 2.7
@@ -7,8 +9,6 @@
 **Tested up to:** 5.1.1
 
 **License:** GPLv2 or later
-
-[![Build Status](https://travis-ci.com/airani/wp-auto-upload.svg?branch=master)](https://travis-ci.com/airani/wp-auto-upload)
 
 Automatically detect external images in the post content and import images to your site and adding to the media library and finally replace image urls with new urls.
 
