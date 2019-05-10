@@ -3,7 +3,7 @@ Contributors: airani
 Donate link: https://irani.im/
 Tags: upload, auto, automaticlly, image, images, admin, administrator, post, save, media, library
 Requires at least: 2.7
-Tested up to: 5.1.1
+Tested up to: 5.2
 Stable tag: 3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html

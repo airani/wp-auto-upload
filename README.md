@@ -6,7 +6,7 @@
 
 **Requires at least:** 2.7
 
-**Tested up to:** 5.1.1
+**Tested up to:** 5.2
 
 **License:** GPLv2 or later
 
