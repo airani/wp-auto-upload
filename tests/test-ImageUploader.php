@@ -91,7 +91,7 @@ class ImageUploaderTest extends WP_UnitTestCase
     {
         $this->imageUploader->url = $url;
         $result = $this->imageUploader->downloadImage($url);
-        $this->assertIsArray($result);
+        $this->assertTrue(is_array($result));
         $this->assertArrayHasKey('url', $result);
         $this->assertStringMatchesFormat('http://example.org/wp-content/uploads/%d/%d/%s.%s', $result['url']);
         $this->assertStringMatchesFormat($filenamePattern, $result['filename']);
