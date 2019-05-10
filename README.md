@@ -8,6 +8,8 @@
 
 **License:** GPLv2 or later
 
+[![Build Status](https://travis-ci.com/airani/wp-auto-upload.svg?branch=master)](https://travis-ci.com/airani/wp-auto-upload)
+
 Automatically detect external images in the post content and import images to your site and adding to the media library and finally replace image urls with new urls.
 
 ## Description
