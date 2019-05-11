@@ -115,7 +115,30 @@ class ImageUploaderTest extends WP_UnitTestCase
         $this->assertWPError($result);
     }
 
-    // TODO Fix resize image and write tests
+    public function testResizeImage()
+    {
+        if (!wp_image_editor_supports()) {
+            $this->assertTrue(true);
+            return;
+        }
+
+        $wpAutoUpload = new WpAutoUpload();
+        $_POST['submit'] = true;
+        $_POST['max_width'] = 50;
+        $_POST['max_height'] = 50;
+        ob_start();
+        $wpAutoUpload->settingPage();
+        ob_end_clean();
+        $this->imageUploader->url = 'https://irani.im/images/ali-irani.jpg';
+        $result = $this->imageUploader->downloadImage('https://irani.im/images/ali-irani.jpg');
+        $this->assertTrue(is_array($result));
+        $this->assertStringMatchesFormat('%s-50x50.jpg', $result['path']);
+        $this->assertStringMatchesFormat('%s-50x50.jpg', $result['url']);
+        $this->assertFileExists($result['path']);
+
+        $this->assertTrue(WpAutoUpload::resetOptionsToDefaults());
+        $this->assertNull(WpAutoUpload::getOption('max_width'));
+    }
 
     /**
      * Call protected/private method of a class.

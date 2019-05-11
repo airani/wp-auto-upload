@@ -49,3 +49,9 @@ if (! function_exists('wp_get_image_mime')) {
         return $mime;
     }
 }
+
+if (! function_exists('wp_image_editor_supports')) {
+    function wp_image_editor_supports($args = array()) {
+        return true;
+    }
+}

@@ -23,9 +23,6 @@ class PluginWorkTest extends WP_UnitTestCase
      */
     public function testPluginWorks(WP_Post $post)
     {
-        $pattern = '/<img src=("|\')http:\/\/example\.org\/wp-content\/uploads\/\d+\/\d+\/ali-irani\.jpg("|\') \/>/i';
-        $matched = preg_match($pattern, $post->post_content);
-
-        $this->assertTrue($matched && $matched > 0);
+        $this->assertStringMatchesFormat('%shttp://example.org/wp-content/uploads/%d/%d/%s.jpg%s', $post->post_content);
     }
 }
