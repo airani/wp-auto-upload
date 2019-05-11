@@ -36,37 +36,6 @@ class WpAutoUpload
     }
 
     /**
-     * Returns options in an array
-     * @return array
-     */
-    public static function getOptions()
-    {
-        if (static::$_options) {
-            return static::$_options;
-        }
-        $defaults = array(
-            'base_url' => get_bloginfo('url'),
-            'image_name' => '%filename%',
-            'alt_name' => '%image_alt%',
-        );
-        return static::$_options = wp_parse_args(get_option(self::WP_OPTIONS_KEY), $defaults);
-    }
-
-    /**
-     * Return an option with specific key
-     * @param $key
-     * @return mixed
-     */
-    public static function getOption($key, $default = null)
-    {
-        $options = static::getOptions();
-        if (isset($options[$key]) === false) {
-            return $default;
-        }
-        return $options[$key];
-    }
-
-    /**
      * Automatically upload external images of a post to Wordpress upload directory
      * call by wp_insert_post_data filter
      * @param array data An array of slashed post data
@@ -156,6 +125,52 @@ class WpAutoUpload
     }
 
     /**
+     * Returns options in an array
+     * @return array
+     */
+    public static function getOptions()
+    {
+        if (static::$_options) {
+            return static::$_options;
+        }
+        $defaults = array(
+            'base_url' => get_bloginfo('url'),
+            'image_name' => '%filename%',
+            'alt_name' => '%image_alt%',
+        );
+        return static::$_options = wp_parse_args(get_option(self::WP_OPTIONS_KEY), $defaults);
+    }
+
+    /**
+     * Reset options to default options
+     * @return bool
+     */
+    public static function resetOptionsToDefaults()
+    {
+        $defaults = array(
+            'base_url' => get_bloginfo('url'),
+            'image_name' => '%filename%',
+            'alt_name' => '%image_alt%',
+        );
+        static::$_options = $defaults;
+        return update_option(self::WP_OPTIONS_KEY, $defaults);
+    }
+
+    /**
+     * Return an option with specific key
+     * @param $key
+     * @return mixed
+     */
+    public static function getOption($key, $default = null)
+    {
+        $options = static::getOptions();
+        if (isset($options[$key]) === false) {
+            return $default;
+        }
+        return $options[$key];
+    }
+
+    /**
      * Settings page contents
      */
     public function settingPage()
@@ -169,10 +184,6 @@ class WpAutoUpload
             }
             update_option(self::WP_OPTIONS_KEY, static::$_options);
             $message = true;
-        }
-
-        if (function_exists('curl_init') === false) {
-            $curl_error = true;
         }
 
         include_once('setting-page.php');
