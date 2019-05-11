@@ -1,8 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Auto Upload Images\n"
-"POT-Creation-Date: 2017-03-19 20:10+0330\n"
-"PO-Revision-Date: 2019-05-06 23:39+0430\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-05-11 23:57+0430\n"
+"PO-Revision-Date: 2019-05-11 23:59+0430\n"
 "Last-Translator: admin <malaiac+wpdev@gmail.com>\n"
 "Language-Team: Français\n"
 "Language: fr_FR\n"
@@ -12,15 +13,18 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-Basepath: /home/ali/www/wp\n"
 "X-Generator: Poedit 2.0.6\n"
-"Report-Msgid-Bugs-To: \n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Loco-Version: 2.2.0; wp-5.0.3\n"
 "X-Poedit-SearchPath-0: wp-content/plugins/auto-upload-images\n"
 
+#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:150
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:4
-#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:144
 msgid "Auto Upload Images Settings"
 msgstr "Réglages du rapatriement des images"
+
+#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:151
+msgid "Auto Upload Images"
+msgstr "Rapatrier les images"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:8
 msgid ""
@@ -74,19 +78,23 @@ msgstr ""
 "Personnalisez la balise alt des images rapatriées. Vous pouvez utiliser les "
 "shortcodes %s."
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:64
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:65
 msgid "Image Size:"
 msgstr "Taille de l'image :"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:67
+msgid "(Inactive)"
+msgstr ""
+
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:71
 msgid "Max Width"
 msgstr "Largeur maximale"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:69
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:73
 msgid "Max Height"
 msgstr "Hauteur maximale"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:71
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:75
 msgid ""
 "You can choose max width and height for images uploaded by this plugin on "
 "your site. If you leave empty each one of fields by default use the original "
@@ -96,20 +104,24 @@ msgstr ""
 "rapatriées. Si vous laissez ces champs vides, le plugin utilisera la taille "
 "originelle de l'image."
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:78
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:77
+msgid "To activate this feature please enable Gd or Imagick extensions of PHP."
+msgstr ""
+
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:85
 msgid "Exclude Post Types:"
 msgstr "Exclure ces types de Posts:"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:91
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:98
 msgid "Select the Post Types that you want exclude from automatic uploading"
 msgstr ""
 "Sélectionnez les types de Posts que vous voulez exclure du rapatriement"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:97
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:104
 msgid "Exclude Domains:"
 msgstr "Exclure les domaines :"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:101
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:108
 msgid ""
 "Enter the domains you wish to be excluded from uploading images: (One domain "
 "per line)"
@@ -117,35 +129,35 @@ msgstr ""
 "Vous pouvez interdire le rapatriement des images de ces domaines : (un "
 "domaine par ligne)"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:112
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:119
 msgid "Information"
 msgstr "Information"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:117
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:124
 msgid "Report Bug and Issues"
 msgstr "Signaler un problème"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:120
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:127
 msgid "Github Repository"
 msgstr "Dépôt Github"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:123
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:130
 msgid "Plugin Page in WP"
 msgstr "Page du plugin sur WordPress"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:127
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:134
 msgid "Rate to this plugin"
 msgstr "Noter ce plugin"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:131
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:138
 msgid "Twitter of Plugin Developer"
 msgstr "Twitter du développeur de ce plugin"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:134
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:141
 msgid "Official Page"
 msgstr "Page officielle"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:138
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:145
 msgid ""
 "If you are a wp developer and like to contribute to this plugin development "
 "or you are a translator and want to have this plugin in your language you "
@@ -156,7 +168,3 @@ msgstr ""
 "du plugin, ou que vous voulez traduire ce plugin dans votre langue, vous "
 "pouvez démarrer sur <a href=\"https://github.com/airani/wp-auto-upload\" "
 "target=\"_blank\">le dépot de ce plugin sur Github</a>."
-
-#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:145
-msgid "Auto Upload Images"
-msgstr "Rapatrier les images"

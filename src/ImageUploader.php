@@ -135,7 +135,7 @@ class ImageUploader
             '%month%' => date('m'),
             '%day%' => date('j'),
             '%url%' => self::getHostUrl(get_bloginfo('url')),
-            '%random%' => uniqid(),
+            '%random%' => uniqid('img_', false),
             '%timestamp%' => time(),
             '%post_id%' => $this->post['ID'],
             '%postname%' => $this->post['post_name'],
@@ -209,11 +209,11 @@ class ImageUploader
         while (is_file($image['path'])) {
             if (sha1($response['body']) === sha1_file($image['path'])) {
                 return $image;
-            } else {
-                $image['path'] = $image['base_path'] . DIRECTORY_SEPARATOR . $c . '_' . $image['filename'];
-                $image['url'] = $image['base_url'] . DIRECTORY_SEPARATOR . $c . '_' . $image['filename'];
-                $c++;
             }
+
+            $image['path'] = $image['base_path'] . DIRECTORY_SEPARATOR . $c . '_' . $image['filename'];
+            $image['url'] = $image['base_url'] . DIRECTORY_SEPARATOR . $c . '_' . $image['filename'];
+            $c++;
         }
 
         file_put_contents($image['path'], $response['body']);
@@ -223,6 +223,7 @@ class ImageUploader
         }
 
         if ($this->isNeedToResize() && ($resized = $this->resizeImage($image))) {
+            unlink($image['path']);
             $image['url'] = $resized;
         }
 

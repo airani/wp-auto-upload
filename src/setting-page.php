@@ -59,16 +59,23 @@
                                 </td>
                             </tr>
                             <?php if (function_exists('image_make_intermediate_size')) : ?>
-                                <tr valign="top">
+                                <?php $editor_supports = wp_image_editor_supports(); ?>
+                                <tr valign="top" <?= !$editor_supports ? 'style="background-color:#dedede;color:#6d6d6d;opacity:.8;"' : '' ?>>
                                     <th scope="row">
-                                        <label><?php _e('Image Size:', 'auto-upload-images'); ?></label>
+                                        <label <?= !$editor_supports ? 'style="color:#6d6d6d;"' : '' ?>><?php _e('Image Size:', 'auto-upload-images'); ?></label>
+                                        <?php if (!$editor_supports) : ?>
+                                        <small style="color:#6d6d6d;"><?php _e('(Inactive)', 'auto-upload-images') ?></small>
+                                        <?php endif; ?>
                                     </th>
                                     <td>
                                         <label for="max_width"><?php _e('Max Width', 'auto-upload-images'); ?></label>
-                                        <input name="max_width" type="number" step="5" min="0" id="max_width" placeholder="600" class="small-text" value="<?php echo self::getOption('max_width'); ?>">
+                                        <input name="max_width" type="number" step="5" min="0" id="max_width" placeholder="600" class="small-text" value="<?php echo self::getOption('max_width'); ?>" <?php echo !$editor_supports ? 'disabled' : '' ?>>
                                         <label for="max_height"><?php _e('Max Height', 'auto-upload-images'); ?></label>
-                                        <input name="max_height" type="number" step="5" min="0" id="max_height" placeholder="400" class="small-text" value="<?php echo self::getOption('max_height'); ?>">
+                                        <input name="max_height" type="number" step="5" min="0" id="max_height" placeholder="400" class="small-text" value="<?php echo self::getOption('max_height'); ?>" <?php echo !$editor_supports ? 'disabled' : '' ?>>
                                         <p class="description"><?php _e('You can choose max width and height for images uploaded by this plugin on your site. If you leave empty each one of fields by default use the original size of the image.', 'auto-upload-images'); ?></p>
+                                        <?php if (!$editor_supports) : ?>
+                                        <p style="color:#535353;font-weight: bold;"><?php _e('To activate this feature please enable Gd or Imagick extensions of PHP.', 'auto-upload-images') ?></p>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endif; ?>
