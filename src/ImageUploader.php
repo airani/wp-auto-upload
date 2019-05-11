@@ -206,9 +206,11 @@ class ImageUploader
         $image['url'] = $image['base_url'] . DIRECTORY_SEPARATOR . $image['filename'];
         $c = 1;
 
+        $sameFileExists = false;
         while (is_file($image['path'])) {
             if (sha1($response['body']) === sha1_file($image['path'])) {
-                return $image;
+                $sameFileExists = true;
+                break;
             }
 
             $image['path'] = $image['base_path'] . DIRECTORY_SEPARATOR . $c . '_' . $image['filename'];
@@ -216,15 +218,20 @@ class ImageUploader
             $c++;
         }
 
-        file_put_contents($image['path'], $response['body']);
+        if (!$sameFileExists) {
+            file_put_contents($image['path'], $response['body']);
+        }
 
         if (!is_file($image['path'])) {
             return new WP_Error('aui_image_save_failed', 'AUI: Image save to upload dir failed.');
         }
 
         if ($this->isNeedToResize() && ($resized = $this->resizeImage($image))) {
-            unlink($image['path']);
-            $image['url'] = $resized;
+            if (!$sameFileExists) {
+                unlink($image['path']);
+            }
+            $image['url'] = $resized['url'];
+            $image['path'] = $resized['path'];
         }
 
         $this->attachImage($image);
@@ -258,7 +265,7 @@ class ImageUploader
     /**
      * Resize image and returns resized url
      * @param $image
-     * @return false|string
+     * @return false|array
      */
     public function resizeImage($image)
     {
@@ -270,7 +277,10 @@ class ImageUploader
             return false;
         }
 
-        return $image['base_url'] . DIRECTORY_SEPARATOR . urldecode($image_resized['file']);
+        return array(
+            'url' => $image['base_url'] . '/' . urldecode($image_resized['file']),
+            'path' => $image['base_path'] . DIRECTORY_SEPARATOR . urldecode($image_resized['file']),
+        );
     }
 
     /**
