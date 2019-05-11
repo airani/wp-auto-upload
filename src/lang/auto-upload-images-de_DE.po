@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Auto Upload Images v1.5\n"
-"POT-Creation-Date: 2019-05-11 23:57+0430\n"
-"PO-Revision-Date: 2019-05-11 23:58+0430\n"
+"POT-Creation-Date: 2019-05-12 02:02+0430\n"
+"PO-Revision-Date: 2019-05-12 02:05+0430\n"
 "Last-Translator: \n"
 "Language-Team: P30Design <info@p30design.net>\n"
 "Language: de\n"
@@ -15,31 +15,28 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: wp-content/plugins/auto-upload-images\n"
 
-#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:150
+#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:119
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:4
 msgid "Auto Upload Images Settings"
 msgstr "Einstellungen Automatischer Bilderupload"
 
-#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:151
+#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:120
 msgid "Auto Upload Images"
 msgstr "Automatischer Bilderupload"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:8
-msgid ""
-"\"PHP CURL\" not enabled on your site! For working with \"Auto Upload Images"
-"\" plugin, you need to enable \"PHP CURL\", please contact with server admin "
-"and send request to enable \"PHP CURL\" on your site."
-msgstr ""
-
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:14
+#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:186
 msgid "Settings Saved."
 msgstr "Einstellungen gespeichert."
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:27
+#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:190
+msgid "Successfully settings reset to defaults."
+msgstr ""
+
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:21
 msgid "Base URL:"
 msgstr "Basis URL:"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:32
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:26
 msgid ""
 "If you need to choose a new base URL for the images that will be "
 "automatically uploaded. Ex:"
@@ -47,78 +44,68 @@ msgstr ""
 "Wenn du eine eigene Basis-URL für automatisch hochgeladene Bilder benutzen "
 "möchtest, gebe diese hier ein. Zum Beispiel:"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:38
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:32
 msgid "Image Name:"
 msgstr "Bennenung:"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:44
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:38
 #, php-format
-#| msgid ""
-#| "Choose a custom filename for the new images will be uploaded. You can "
-#| "also use these shortcodes <code dir=\"ltr\">%filename%</code>, <code dir="
-#| "\"ltr\">%url%</code>, <code dir=\"ltr\">%date%</code>."
 msgid ""
 "Choose a custom filename for the new images will be uploaded. You can also "
 "use these shortcodes %s."
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:51
-#| msgid "Image Name:"
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:45
 msgid "Alt Name:"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:57
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:51
 #, php-format
-#| msgid ""
-#| "Choose a custom filename for the new images will be uploaded. You can "
-#| "also use these shortcodes <code dir=\"ltr\">%filename%</code>, <code dir="
-#| "\"ltr\">%url%</code>, <code dir=\"ltr\">%date%</code>."
 msgid ""
 "Choose a custom alt name for the new images will be uploaded. You can also "
 "use these shortcodes %s."
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:65
-#| msgid "Image Name:"
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:59
 msgid "Image Size:"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:67
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:61
 msgid "(Inactive)"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:71
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:65
 msgid "Max Width"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:73
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:67
 msgid "Max Height"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:75
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:69
 msgid ""
 "You can choose max width and height for images uploaded by this plugin on "
 "your site. If you leave empty each one of fields by default use the original "
 "size of the image."
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:77
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:71
 msgid "To activate this feature please enable Gd or Imagick extensions of PHP."
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:85
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:79
 msgid "Exclude Post Types:"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:98
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:92
 msgid "Select the Post Types that you want exclude from automatic uploading"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:104
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:98
 msgid "Exclude Domains:"
 msgstr "Ausgeschlossene Domains:"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:108
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:102
 msgid ""
 "Enter the domains you wish to be excluded from uploading images: (One domain "
 "per line)"
@@ -126,35 +113,43 @@ msgstr ""
 "Hier kannst du Domains eingeben, die beim automatischen Download nicht "
 "berücksichtigt werden: (Eine Domain pro Zeile)"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:119
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:109
+msgid "Reset Options"
+msgstr ""
+
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:110
+msgid "Are you sure to reset all options to defaults?"
+msgstr ""
+
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:118
 msgid "Information"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:124
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:123
 msgid "Report Bug and Issues"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:127
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:126
 msgid "Github Repository"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:130
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:129
 msgid "Plugin Page in WP"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:134
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:133
 msgid "Rate to this plugin"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:138
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:137
 msgid "Twitter of Plugin Developer"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:141
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:140
 msgid "Official Page"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:145
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:144
 msgid ""
 "If you are a wp developer and like to contribute to this plugin development "
 "or you are a translator and want to have this plugin in your language you "

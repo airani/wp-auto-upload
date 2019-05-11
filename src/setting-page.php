@@ -3,9 +3,9 @@
 <div class="wrap">
     <h2><?php _e('Auto Upload Images Settings', 'auto-upload-images'); ?></h2>
 
-    <?php if (isset($message) && $message == true) : ?>
+    <?php if (isset($message)) : ?>
     <div id="setting-error-settings_updated" class="updated settings-error">
-        <p><strong><?php _e('Settings Saved.', 'auto-upload-images'); ?></strong></p>
+        <p><strong><?php echo $message; ?></strong></p>
     </div>
     <?php endif; ?>
 
@@ -104,7 +104,12 @@
                                 </td>
                             </tr>
                         </table>
-                        <?php submit_button(); ?>
+                        <p class="submit">
+                            <?php submit_button(null, 'primary', 'submit', false); ?>
+                            <?php submit_button(__('Reset Options', 'auto-upload-images'), 'small', 'reset', false, array(
+                                'onclick' => 'return confirm("'. __('Are you sure to reset all options to defaults?', 'auto-upload-images') .'");'
+                            )) ?>
+                        </p>
                     </form>
                 </div>
             </div>

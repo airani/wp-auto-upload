@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Auto Upload Images\n"
-"POT-Creation-Date: 2019-05-11 23:57+0430\n"
-"PO-Revision-Date: 2019-05-11 23:59+0430\n"
+"POT-Creation-Date: 2019-05-12 02:02+0430\n"
+"PO-Revision-Date: 2019-05-12 02:05+0430\n"
 "Last-Translator: \n"
 "Language-Team: P30Design <info@p30design.net>\n"
 "Language: ko_KR\n"
@@ -15,44 +15,38 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SearchPath-0: wp-content/plugins/auto-upload-images\n"
 
-#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:150
+#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:119
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:4
 msgid "Auto Upload Images Settings"
 msgstr "자동  업로드 이미지 설정"
 
-#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:151
+#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:120
 msgid "Auto Upload Images"
 msgstr "자동 업로드 이미지"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:8
-msgid ""
-"\"PHP CURL\" not enabled on your site! For working with \"Auto Upload Images"
-"\" plugin, you need to enable \"PHP CURL\", please contact with server admin "
-"and send request to enable \"PHP CURL\" on your site."
-msgstr ""
-"사용자의 사이트에서 \"PHPCURL\"이 활성화되지 않았습니다. \"AutoUploadImage"
-"\"플러그 인을 사용하려면 \"PHPCURL\"을 사용하도록 설정해야 하며, 서버 관리자"
-"에게 문의하여 사용자 사이트에서 \"PHPCURL\"을 사용하도록 설정하십시오."
-
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:14
+#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:186
 msgid "Settings Saved."
 msgstr "설정 저장됨."
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:27
+#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:190
+msgid "Successfully settings reset to defaults."
+msgstr ""
+
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:21
 msgid "Base URL:"
 msgstr "기본 URL:"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:32
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:26
 msgid ""
 "If you need to choose a new base URL for the images that will be "
 "automatically uploaded. Ex:"
 msgstr "자동으로 업로드할 영상에 대해 새 기본 URL을 선택해야 하는 경우. Ex:"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:38
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:32
 msgid "Image Name:"
 msgstr "이미지 명:"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:44
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:38
 #, php-format
 msgid ""
 "Choose a custom filename for the new images will be uploaded. You can also "
@@ -61,11 +55,11 @@ msgstr ""
 "새 이미지를 업로드할 사용자 지정 파일 이름을 선택합니다. 이러한 단축 코드(%s)"
 "도 사용할 수 있습니다."
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:51
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:45
 msgid "Alt Name:"
 msgstr "대체명:"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:57
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:51
 #, php-format
 msgid ""
 "Choose a custom alt name for the new images will be uploaded. You can also "
@@ -74,23 +68,23 @@ msgstr ""
 "새 영상이 업로드될 사용자 지정 대체명을 선택합니다. 이러한 단축 코드(%s)도 사"
 "용할 수 있습니다."
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:65
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:59
 msgid "Image Size:"
 msgstr "이미지 크기:"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:67
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:61
 msgid "(Inactive)"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:71
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:65
 msgid "Max Width"
 msgstr "최고 넓이"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:73
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:67
 msgid "Max Height"
 msgstr "최고 높이"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:75
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:69
 msgid ""
 "You can choose max width and height for images uploaded by this plugin on "
 "your site. If you leave empty each one of fields by default use the original "
@@ -99,57 +93,65 @@ msgstr ""
 "사이트에서 이 플러그 인으로 업로드한 이미지의 최대 너비와 높이를 선택할 수 있"
 "습니다. 기본적으로 각 필드를 비워 두는 경우 영상의 원래 크기를 사용하십시오."
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:77
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:71
 msgid "To activate this feature please enable Gd or Imagick extensions of PHP."
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:85
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:79
 msgid "Exclude Post Types:"
 msgstr "게시 유형 제외:"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:98
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:92
 msgid "Select the Post Types that you want exclude from automatic uploading"
 msgstr "자동 업로드에서 제외할 게시 유형 선택"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:104
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:98
 msgid "Exclude Domains:"
 msgstr "도메인 제외:"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:108
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:102
 msgid ""
 "Enter the domains you wish to be excluded from uploading images: (One domain "
 "per line)"
 msgstr "업로드에서 제외할 도메인 입력:(한줄에 하나의 도메인)"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:119
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:109
+msgid "Reset Options"
+msgstr ""
+
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:110
+msgid "Are you sure to reset all options to defaults?"
+msgstr ""
+
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:118
 msgid "Information"
 msgstr "정보"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:124
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:123
 msgid "Report Bug and Issues"
 msgstr "버그 보고와 이슈"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:127
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:126
 msgid "Github Repository"
 msgstr "Github 저장소"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:130
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:129
 msgid "Plugin Page in WP"
 msgstr "WP의 플러그 인 페이지"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:134
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:133
 msgid "Rate to this plugin"
 msgstr "이 플러그인 평가"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:138
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:137
 msgid "Twitter of Plugin Developer"
 msgstr "플러그인 개발자 트윗"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:141
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:140
 msgid "Official Page"
 msgstr "공식 페이지"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:145
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:144
 msgid ""
 "If you are a wp developer and like to contribute to this plugin development "
 "or you are a translator and want to have this plugin in your language you "
@@ -159,3 +161,12 @@ msgstr ""
 "당신이 WP 개발자이고 이 플러그인 개발에 기여하고 싶거나 이 플러그 인을 변환기"
 "로 사용하고 싶은 경우 <a href=\"https://github.com/airani/wp-auto-upload\" "
 "target=\"_blank\">플러그인 Github 저장소</a> 에서 시작 할 수 있습니다."
+
+#~ msgid ""
+#~ "\"PHP CURL\" not enabled on your site! For working with \"Auto Upload "
+#~ "Images\" plugin, you need to enable \"PHP CURL\", please contact with "
+#~ "server admin and send request to enable \"PHP CURL\" on your site."
+#~ msgstr ""
+#~ "사용자의 사이트에서 \"PHPCURL\"이 활성화되지 않았습니다. \"AutoUploadImage"
+#~ "\"플러그 인을 사용하려면 \"PHPCURL\"을 사용하도록 설정해야 하며, 서버 관리"
+#~ "자에게 문의하여 사용자 사이트에서 \"PHPCURL\"을 사용하도록 설정하십시오."

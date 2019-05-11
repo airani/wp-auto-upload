@@ -183,7 +183,11 @@ class WpAutoUpload
                 }
             }
             update_option(self::WP_OPTIONS_KEY, static::$_options);
-            $message = true;
+            $message = __('Settings Saved.', 'auto-upload-images');
+        }
+
+        if (isset($_POST['reset']) && self::resetOptionsToDefaults()) {
+            $message = __('Successfully settings reset to defaults.', 'auto-upload-images');
         }
 
         include_once('setting-page.php');
