@@ -201,9 +201,9 @@ class ImageUploader
         $image['ext'] = self::getExtension($mime);
         $image['filename'] = $this->getFilename() . '.' . $image['ext'];
         $image['base_path'] = rtrim($this->getUploadDir('path'), DIRECTORY_SEPARATOR);
-        $image['base_url'] = rtrim($this->getUploadDir('url'), DIRECTORY_SEPARATOR);
+        $image['base_url'] = rtrim($this->getUploadDir('url'), '/');
         $image['path'] = $image['base_path'] . DIRECTORY_SEPARATOR . $image['filename'];
-        $image['url'] = $image['base_url'] . DIRECTORY_SEPARATOR . $image['filename'];
+        $image['url'] = $image['base_url'] . '/' . $image['filename'];
         $c = 1;
 
         $sameFileExists = false;
@@ -214,7 +214,7 @@ class ImageUploader
             }
 
             $image['path'] = $image['base_path'] . DIRECTORY_SEPARATOR . $c . '_' . $image['filename'];
-            $image['url'] = $image['base_url'] . DIRECTORY_SEPARATOR . $c . '_' . $image['filename'];
+            $image['url'] = $image['base_url'] . '/' . $c . '_' . $image['filename'];
             $c++;
         }
 
