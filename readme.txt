@@ -1,10 +1,10 @@
 === Auto Upload Images ===
 Contributors: airani
 Donate link: https://irani.im/
-Tags: upload, auto, automaticlly, image, images, admin, administrator, post, save, media, library
+Tags: upload, auto, automatically, image, images, admin, administrator, post, save, media, automation, editor, filter
 Requires at least: 2.7
 Tested up to: 5.2
-Stable tag: 3.2
+Stable tag: 3.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,11 @@ You can exclude many domains from the upload.
 2. Settings page in Persian language
 
 == Changelog ==
+
+= 3.2.1 =
+* Fixed some important bugs
+* Add new feature to reset all options of plugin to defaults settings
+* Update with some enhancements in image resizing
 
 = 3.2 =
 * Update with change image downloader
