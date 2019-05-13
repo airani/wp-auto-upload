@@ -48,7 +48,7 @@ class WpAutoUpload
             wp_is_post_autosave($postarr['ID']) ||
             (defined('DOING_AJAX') && DOING_AJAX) ||
             (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)) {
-            return false;
+            return $data;
         }
 
         if ($content = $this->save($postarr)) {
