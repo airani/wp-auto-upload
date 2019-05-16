@@ -4,7 +4,7 @@ Donate link: https://irani.im/
 Tags: upload, auto, automatically, image, images, admin, administrator, post, save, media, automation, editor, filter
 Requires at least: 2.7
 Tested up to: 5.2
-Stable tag: 3.2.1
+Stable tag: 3.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,9 @@ You can exclude many domains from the upload.
 2. Settings page in Persian language
 
 == Changelog ==
+
+= 3.2.2 =
+* Add support for detecting images from "srcset" attribute in img tag
 
 = 3.2.1 =
 * Fixed some important bugs

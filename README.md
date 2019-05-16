@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/airani/wp-auto-upload.svg?branch=master)](https://travis-ci.com/airani/wp-auto-upload)
 
-**Version:** 3.2.1
+**Version:** 3.2.2
 
 **Requires at least:** 2.7
 
@@ -79,6 +79,10 @@ You can exclude many domains from the upload.
 ![2. Settings page in Persian language](https://ps.w.org/auto-upload-images/assets/screenshot-2.png)
 
 ## Changelog
+
+### 3.2.2
+
+* Add support for detecting images from "srcset" attribute in img tag
 
 ### 3.2.1
 
