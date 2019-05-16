@@ -3,11 +3,11 @@
 
 class PluginWorkTest extends WP_UnitTestCase
 {
-    const CONTENT = '<img src="https://irani.im/images/ali-irani.jpg" />';
-
     public function testCreatePost()
     {
-        $postID = $this->factory->post->create(array('post_content' => self::CONTENT, 'post_name' => 'test'));
+        $content = '<img src="https://irani.im/images/ali-irani.jpg" />';
+
+        $postID = $this->factory->post->create(array('post_content' => $content, 'post_name' => 'test'));
 
         $this->assertGreaterThan(0, $postID, 'Post creation failed.');
 

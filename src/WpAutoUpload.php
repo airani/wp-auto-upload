@@ -95,8 +95,26 @@ class WpAutoUpload
      */
     public function findAllImageUrls($content)
     {
-        $pattern = '/<img[^>]*src=["\']([^"\']*)[^"\']*["\'][^>]*>/i'; // find img tags and retrieve src
-        preg_match_all($pattern, $content, $urls, PREG_SET_ORDER);
+        $urls1 = array();
+        preg_match_all('/<img[^>]*srcset=["\']([^"\']*)[^"\']*["\'][^>]*>/i', $content, $srcsets, PREG_SET_ORDER);
+        if (count($srcsets) > 0) {
+            $count = 0;
+            foreach ($srcsets as $key => $srcset) {
+                preg_match_all('/https?:\/\/[^\s,]+/i', $srcset[1], $srcsetUrls, PREG_SET_ORDER);
+                if (count($srcsetUrls) == 0) {
+                    continue;
+                }
+                foreach ($srcsetUrls as $srcsetUrl) {
+                    $urls1[$count][] = $srcset[0];
+                    $urls1[$count][] = $srcsetUrl[0];
+                    $count++;
+                }
+            }
+        }
+
+        preg_match_all('/<img[^>]*src=["\']([^"\']*)[^"\']*["\'][^>]*>/i', $content, $urls, PREG_SET_ORDER);
+        $urls = array_merge($urls, $urls1);
+
         if (count($urls) == 0) {
             return array();
         }
