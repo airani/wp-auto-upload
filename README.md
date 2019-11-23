@@ -33,7 +33,7 @@ When you want to save a post, this plugin search for image urls which exists in 
 * English
 * Persian (fa_IR) - [Ali Irani](https://irani.im)
 * Español (es) - [Diego Herrera](https://github.com/diegoh)
-* Russion (ru_RU) - [Артём Рябков](https://github.com/rad96)
+* Russian (ru_RU) - [Артём Рябков](https://github.com/rad96) / [Artur Verenych](https://github.com/a-custom)
 * German (de_DE) - [Till Zimmermann](https://github.com/tillz)
 * French (fr_FR) - [Malaiac](https://github.com/Malaiac)
 * Korean (ko_KR) - [Shodan](https://github.com/luvrei)
