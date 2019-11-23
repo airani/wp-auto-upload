@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Auto Upload Images v1.5\n"
 "POT-Creation-Date: 2019-05-12 02:02+0430\n"
 "PO-Revision-Date: 2019-05-12 02:05+0430\n"
-"Last-Translator: Артём Рябков <rad964@ya.ru>\n"
+"Last-Translator: Артём Рябков <rad964@ya.ru> / Artur Vereych <artur.verios@gmail.com>\n"
 "Language-Team: P30Design <info@p30design.net>\n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
@@ -31,7 +31,7 @@ msgstr "Настройки Сохранены."
 
 #: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:190
 msgid "Successfully settings reset to defaults."
-msgstr ""
+msgstr "Настройки по умолчанию успешно восстановлены."
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:21
 msgid "Base URL:"
@@ -53,10 +53,12 @@ msgid ""
 "Choose a custom filename for the new images will be uploaded. You can also "
 "use these shortcodes %s."
 msgstr ""
+"Выберите пользовательское название для новых изображений, которые будут загружены."
+"Вы также можете использовать эти шорткоды %s."
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:45
 msgid "Alt Name:"
-msgstr ""
+msgstr "Альтернативное название"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:51
 #, php-format
@@ -64,22 +66,24 @@ msgid ""
 "Choose a custom alt name for the new images will be uploaded. You can also "
 "use these shortcodes %s."
 msgstr ""
+"Выберите пользовательское альтернативное название для новых изображений, которые будут загружены."
+"Вы также можете использовать эти шорткоды %s."
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:59
 msgid "Image Size:"
-msgstr ""
+msgstr "Размер изображений"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:61
 msgid "(Inactive)"
-msgstr ""
+msgstr "(Неактивный)"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:65
 msgid "Max Width"
-msgstr ""
+msgstr "Максимальная ширина"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:67
 msgid "Max Height"
-msgstr ""
+msgstr "Максимальная высота"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:69
 msgid ""
@@ -87,18 +91,21 @@ msgid ""
 "your site. If you leave empty each one of fields by default use the original "
 "size of the image."
 msgstr ""
+"Вы можете выбрать максимальную ширину и высоту для изображений, загружаемых этим плагином на "
+"ваш сайт. Если вы оставите пустым каждое из полей по умолчанию, загрузится оригинальный "
+"размер изображения."
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:71
 msgid "To activate this feature please enable Gd or Imagick extensions of PHP."
-msgstr ""
+msgstr "Чтобы активировать эту функцию, пожалуйста, включите Gd или Imagick расширения PHP."
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:79
 msgid "Exclude Post Types:"
-msgstr ""
+msgstr "Исключить типы сообщений:"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:92
 msgid "Select the Post Types that you want exclude from automatic uploading"
-msgstr ""
+msgstr "Выберите типы сообщений, которые вы хотите исключить из автоматической загрузки"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:98
 msgid "Exclude Domains:"
@@ -114,39 +121,39 @@ msgstr ""
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:109
 msgid "Reset Options"
-msgstr ""
+msgstr "Сбросить параметры"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:110
 msgid "Are you sure to reset all options to defaults?"
-msgstr ""
+msgstr "Вы уверены, что хотите сбросить все параметры?"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:118
 msgid "Information"
-msgstr ""
+msgstr "Информация"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:123
 msgid "Report Bug and Issues"
-msgstr ""
+msgstr "Сообщить об ошибке"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:126
 msgid "Github Repository"
-msgstr ""
+msgstr "Github репозиторий"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:129
 msgid "Plugin Page in WP"
-msgstr ""
+msgstr "Страница плагина в WP"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:133
 msgid "Rate to this plugin"
-msgstr ""
+msgstr "Оцените этот плагин"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:137
 msgid "Twitter of Plugin Developer"
-msgstr ""
+msgstr "Твиттер разработчика"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:140
 msgid "Official Page"
-msgstr ""
+msgstr "Официальная страница"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:144
 msgid ""
@@ -155,3 +162,7 @@ msgid ""
 "can start from <a href=\"https://github.com/airani/wp-auto-upload\" target="
 "\"_blank\">plugin Github repository</a>."
 msgstr ""
+"Если вы разработчик wp и хотели бы внести свой вклад в разработку этого плагина"
+"или вы переводчик и хотите, чтобы этот плагин на вашем языке вы"
+"можно начать с <a href=\"https://github.com/airani/wp-auto-upload\" target="
+"\"_blank\">Github репозитория плагина</a>."
