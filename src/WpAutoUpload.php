@@ -79,7 +79,7 @@ class WpAutoUpload
             $uploader = new ImageUploader($image['url'], $image['alt'], $postarr);
             if ($uploadedImage = $uploader->save()) {
                 $urlParts = parse_url($uploadedImage['url']);
-                $base_url = $uploader::getHostUrl(null, true);
+                $base_url = $uploader::getHostUrl(null, true, true);
                 $image_url = $base_url . $urlParts['path'];
                 $content = preg_replace('/'. preg_quote($image['url'], '/') .'/', $image_url, $content);
                 $content = preg_replace('/alt=["\']'. preg_quote($image['alt'], '/') .'["\']/', "alt='{$uploader->getAlt()}'", $content);

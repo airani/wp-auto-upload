@@ -17,12 +17,13 @@ class ImageUploader
     }
 
     /**
-     * Return host of url simplified without www
+     * Return host of url
      * @param null|string $url
      * @param bool $scheme
+     * @param bool $www
      * @return null|string
      */
-    public static function getHostUrl($url = null, $scheme = false)
+    public static function getHostUrl($url = null, $scheme = false, $www = false)
     {
         $url = $url ?: WpAutoUpload::getOption('base_url');
 
@@ -32,12 +33,12 @@ class ImageUploader
             return null;
         }
 
-        $url = array_key_exists('port', $urlParts) ? $urlParts['host'] . ":" . $urlParts['port'] : $urlParts['host'];
-        $urlSimplified = preg_split('/^(www(2|3)?\.)/i', $url, -1, PREG_SPLIT_NO_EMPTY); // Delete www from URL
-        $urlSimplified = is_array($urlSimplified) && array_key_exists(0, $urlSimplified) ? $urlSimplified[0] : $url;
-        $url = $scheme && array_key_exists('scheme', $urlParts) ? $urlParts['scheme'] . '://' . $urlSimplified : $urlSimplified;
-
-        return $url;
+        $host = array_key_exists('port', $urlParts) ? $urlParts['host'] . ":" . $urlParts['port'] : $urlParts['host'];
+        if (!$www) {
+            $withoutWww = preg_split('/^(www(2|3)?\.)/i', $host, -1, PREG_SPLIT_NO_EMPTY); // Delete www from host
+            $host = is_array($withoutWww) && array_key_exists(0, $withoutWww) ? $withoutWww[0] : $host;
+        }
+        return $scheme && array_key_exists('scheme', $urlParts) ? $urlParts['scheme'] . '://' . $host : $host;
     }
 
     /**
