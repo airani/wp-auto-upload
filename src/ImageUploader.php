@@ -177,7 +177,14 @@ class ImageUploader
     public function downloadImage($url)
     {
         setlocale(LC_ALL, "en_US.UTF8");
-        $response = wp_remote_get($url);
+        $args = [
+            'user-agent' => ''
+        ];
+        $parsedUrl = parse_url($url);
+        if (isset($parsedUrl['host'])){
+            $args['headers']['host'] = $parsedUrl['host'];
+        }
+        $response = wp_remote_get($url, $args);
 
         if ($response instanceof WP_Error) {
             return $response;
