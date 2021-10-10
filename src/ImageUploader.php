@@ -226,23 +226,23 @@ class ImageUploader
             $c++;
         }
 
-        if (!$sameFileExists) {
-            file_put_contents($image['path'], $response['body']);
+        if ($sameFileExists) {
+            return $image;
         }
+
+        file_put_contents($image['path'], $response['body']);
 
         if (!is_file($image['path'])) {
             return new WP_Error('aui_image_save_failed', 'AUI: Image save to upload dir failed.');
         }
 
+        $this->attachImage($image);
+
         if ($this->isNeedToResize() && ($resized = $this->resizeImage($image))) {
-            if (!$sameFileExists) {
-                unlink($image['path']);
-            }
             $image['url'] = $resized['url'];
             $image['path'] = $resized['path'];
+            $this->attachImage($image);
         }
-
-        $this->attachImage($image);
 
         return $image;
     }
