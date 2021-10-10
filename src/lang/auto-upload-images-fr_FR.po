@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Auto Upload Images\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-12 02:02+0430\n"
-"PO-Revision-Date: 2019-05-12 02:05+0430\n"
+"POT-Creation-Date: 2021-10-10 21:37+0330\n"
+"PO-Revision-Date: 2021-10-10 21:40+0330\n"
 "Last-Translator: admin <malaiac+wpdev@gmail.com>\n"
 "Language-Team: Français\n"
 "Language: fr_FR\n"
@@ -12,25 +12,25 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-Basepath: /home/ali/www/wp\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Loco-Version: 2.2.0; wp-5.0.3\n"
 "X-Poedit-SearchPath-0: wp-content/plugins/auto-upload-images\n"
 
-#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:119
+#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:137
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:4
 msgid "Auto Upload Images Settings"
 msgstr "Réglages du rapatriement des images"
 
-#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:120
+#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:138
 msgid "Auto Upload Images"
 msgstr "Rapatrier les images"
 
-#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:186
+#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:204
 msgid "Settings Saved."
 msgstr "Réglages sauvegardés."
 
-#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:190
+#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:208
 msgid "Successfully settings reset to defaults."
 msgstr ""
 
@@ -136,30 +136,41 @@ msgid "Information"
 msgstr "Information"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:123
+msgid "Support and Donate to the Plugin"
+msgstr ""
+
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:126
 msgid "Report Bug and Issues"
 msgstr "Signaler un problème"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:126
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:129
 msgid "Github Repository"
 msgstr "Dépôt Github"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:129
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:132
 msgid "Plugin Page in WP"
 msgstr "Page du plugin sur WordPress"
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:133
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:136
 msgid "Rate to this plugin"
 msgstr "Noter ce plugin"
-
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:137
-msgid "Twitter of Plugin Developer"
-msgstr "Twitter du développeur de ce plugin"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:140
 msgid "Official Page"
 msgstr "Page officielle"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:144
+msgid ""
+"If you want to help to plugin development and if you can do so please make a "
+"donation to the project and encourage others to do so, for more updates and "
+"more features."
+msgstr ""
+
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:144
+msgid "Make a Donation"
+msgstr ""
+
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:146
 msgid ""
 "If you are a wp developer and like to contribute to this plugin development "
 "or you are a translator and want to have this plugin in your language you "
@@ -170,6 +181,9 @@ msgstr ""
 "du plugin, ou que vous voulez traduire ce plugin dans votre langue, vous "
 "pouvez démarrer sur <a href=\"https://github.com/airani/wp-auto-upload\" "
 "target=\"_blank\">le dépot de ce plugin sur Github</a>."
+
+#~ msgid "Twitter of Plugin Developer"
+#~ msgstr "Twitter du développeur de ce plugin"
 
 #~ msgid ""
 #~ "\"PHP CURL\" not enabled on your site! For working with \"Auto Upload "

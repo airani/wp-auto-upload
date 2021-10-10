@@ -119,6 +119,9 @@
                     <div class="inside">
                         <div class="main">
                             <ul>
+                                <li class="dashicons-before dashicons-heart" style="color: #82878c">
+                                    <a href="https://irani.im/wp-auto-upload-images.html#donate" title="Support & Donate" style="text-decoration: none" target="_blank"><?php _e('Support and Donate to the Plugin', 'auto-upload-images'); ?></a>
+                                </li>
                                 <li class="dashicons-before dashicons-flag" style="color: #82878c">
                                     <a href="https://github.com/airani/wp-auto-upload/issues/new" style="text-decoration: none" target="_blank"><?php _e('Report Bug and Issues', 'auto-upload-images'); ?></a>
                                 </li>
@@ -133,13 +136,12 @@
                                         <?php _e('Rate to this plugin', 'auto-upload-images'); ?>
                                     </a>
                                 </li>
-                                <li class="dashicons-before dashicons-twitter" style="color: #82878c">
-                                    <a href="https://twitter.com/xerror" title="Ali Irani" style="text-decoration: none" target="_blank"><?php _e('Twitter of Plugin Developer', 'auto-upload-images'); ?></a>
-                                </li>
                                 <li class="dashicons-before dashicons-admin-links" style="color: #82878c">
-                                    <a href="https://p30design.irani.im/1391/08/wp-auto-upload-images.html" style="text-decoration: none" target="_blank"><?php _e('Official Page', 'auto-upload-images'); ?></a>
+                                    <a href="https://irani.im/wp-auto-upload-images.html" style="text-decoration: none" target="_blank"><?php _e('Official Page', 'auto-upload-images'); ?></a>
                                 </li>
                             </ul>
+                            <hr>
+                            <p><i class="dashicons-before dashicons-heart" style="color: #de0000"></i> <?php _e('If you want to help to plugin development and if you can do so please make a donation to the project and encourage others to do so, for more updates and more features.', 'auto-upload-images'); ?> <a href="https://irani.im/wp-auto-upload-images.html#donate" title="Support & Donate" target="_blank"><?php _e('Make a Donation', 'auto-upload-images') ?></a></p>
                             <hr>
                             <p><?php _e('If you are a wp developer and like to contribute to this plugin development or you are a translator and want to have this plugin in your language you can start from <a href="https://github.com/airani/wp-auto-upload" target="_blank">plugin Github repository</a>.', 'auto-upload-images') ?></p>
                         </div>

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Auto Upload Images v1.5\n"
-"POT-Creation-Date: 2019-05-12 02:02+0430\n"
-"PO-Revision-Date: 2019-05-12 02:05+0430\n"
+"POT-Creation-Date: 2021-10-10 21:37+0330\n"
+"PO-Revision-Date: 2021-10-10 21:39+0330\n"
 "Last-Translator: \n"
 "Language-Team: P30Design <info@p30design.net>\n"
 "Language: de\n"
@@ -11,24 +11,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-Basepath: D:/wamp/www/wp3\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SearchPath-0: wp-content/plugins/auto-upload-images\n"
 
-#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:119
+#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:137
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:4
 msgid "Auto Upload Images Settings"
 msgstr "Einstellungen Automatischer Bilderupload"
 
-#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:120
+#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:138
 msgid "Auto Upload Images"
 msgstr "Automatischer Bilderupload"
 
-#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:186
+#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:204
 msgid "Settings Saved."
 msgstr "Einstellungen gespeichert."
 
-#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:190
+#: wp-content/plugins/auto-upload-images/src/WpAutoUpload.php:208
 msgid "Successfully settings reset to defaults."
 msgstr ""
 
@@ -126,23 +126,23 @@ msgid "Information"
 msgstr ""
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:123
-msgid "Report Bug and Issues"
+msgid "Support and Donate to the Plugin"
 msgstr ""
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:126
-msgid "Github Repository"
+msgid "Report Bug and Issues"
 msgstr ""
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:129
+msgid "Github Repository"
+msgstr ""
+
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:132
 msgid "Plugin Page in WP"
 msgstr ""
 
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:133
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:136
 msgid "Rate to this plugin"
-msgstr ""
-
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:137
-msgid "Twitter of Plugin Developer"
 msgstr ""
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:140
@@ -150,6 +150,17 @@ msgid "Official Page"
 msgstr ""
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:144
+msgid ""
+"If you want to help to plugin development and if you can do so please make a "
+"donation to the project and encourage others to do so, for more updates and "
+"more features."
+msgstr ""
+
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:144
+msgid "Make a Donation"
+msgstr ""
+
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:146
 msgid ""
 "If you are a wp developer and like to contribute to this plugin development "
 "or you are a translator and want to have this plugin in your language you "
