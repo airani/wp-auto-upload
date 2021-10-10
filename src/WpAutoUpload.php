@@ -100,7 +100,7 @@ class WpAutoUpload
         if (count($srcsets) > 0) {
             $count = 0;
             foreach ($srcsets as $key => $srcset) {
-                preg_match_all('/https?:\/\/[^\s,]+/i', $srcset[1], $srcsetUrls, PREG_SET_ORDER);
+                preg_match_all('/(https?:)?\/\/[^\s,]+/i', $srcset[1], $srcsetUrls, PREG_SET_ORDER);
                 if (count($srcsetUrls) == 0) {
                     continue;
                 }

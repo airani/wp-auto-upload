@@ -177,6 +177,7 @@ class ImageUploader
      */
     public function downloadImage($url)
     {
+        $url = self::normalizeUrl($url);
         setlocale(LC_ALL, "en_US.UTF8");
         $args = [
             'user-agent' => ''
@@ -316,5 +317,17 @@ class ImageUploader
         );
 
         return array_key_exists($mime, $mimes) ? $mimes[$mime] : null;
+    }
+
+    /**
+     * @param $url
+     * @return string
+     */
+    public static function normalizeUrl($url)
+    {
+        if (preg_match('/^\/\/.*$/', $url)) {
+            return 'https:' . $url;
+        }
+        return $url;
     }
 }
