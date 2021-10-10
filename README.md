@@ -2,11 +2,11 @@
 
 [![Build Status](https://travis-ci.com/airani/wp-auto-upload.svg?branch=master)](https://travis-ci.com/airani/wp-auto-upload)
 
-**Version:** 3.2.2
+**Version:** 3.3
 
 **Requires at least:** 2.7
 
-**Tested up to:** 5.2
+**Tested up to:** 5.8.1
 
 **License:** GPLv2 or later
 
@@ -41,9 +41,10 @@ When you want to save a post, this plugin search for image urls which exists in 
 
 ### Links
 
-* [Official Plugin Page](https://p30design.irani.im/1391/08/wp-auto-upload-images.html)
+* [Official Plugin Page](https://irani.im/wp-auto-upload-images.html)
 * [Github Repository](https://github.com/airani/wp-auto-upload)
 * [Report Issues](https://github.com/airani/wp-auto-upload/issues/new)
+* [Make a Donation](https://irani.im/wp-auto-upload-images.html#donate)
 
 ## Installation
 
@@ -79,6 +80,14 @@ You can exclude many domains from the upload.
 ![2. Settings page in Persian language](https://ps.w.org/auto-upload-images/assets/screenshot-2.png)
 
 ## Changelog
+
+### 3.3
+* Add support urls without schemes
+* Add support to showing www if exists in base url #58
+* Fix duplicate images in attachments bug reported #59
+* Fix bug to download images from some urls #71
+* Integrate with Gutenberg editor 
+* Add Russian translation
 
 ### 3.2.2
 

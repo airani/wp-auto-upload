@@ -1,10 +1,10 @@
 === Auto Upload Images ===
 Contributors: airani
-Donate link: https://irani.im/
+Donate link: https://irani.im/wp-auto-upload-images.html#donate
 Tags: upload, auto, automatically, image, images, admin, administrator, post, save, media, automation, editor, filter
 Requires at least: 2.7
-Tested up to: 5.2
-Stable tag: 3.2.2
+Tested up to: 3.8.1
+Stable tag: 3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -41,9 +41,10 @@ When you want to save a post, this plugin search for image urls which exists in 
 
 = Links =
 
-* [Official Plugin Page](https://p30design.irani.im/1391/08/wp-auto-upload-images.html)
+* [Official Plugin Page](https://irani.im/wp-auto-upload-images.html)
 * [Github Repository](https://github.com/airani/wp-auto-upload)
 * [Report Issues](https://github.com/airani/wp-auto-upload/issues/new)
+* [Make a Donation](https://irani.im/wp-auto-upload-images.html#donate)
 
 == Installation ==
 
@@ -71,6 +72,14 @@ You can exclude many domains from the upload.
 2. Settings page in Persian language
 
 == Changelog ==
+
+= 3.3 =
+* Add support urls without schemes
+* Add support to showing www if exists in base url #58
+* Fix duplicate images in attachments bug reported #59
+* Fix bug to download images from some urls #71
+* Integrate with Gutenberg editor
+* Add Russian translation
 
 = 3.2.2 =
 * Add support for detecting images from "srcset" attribute in img tag
