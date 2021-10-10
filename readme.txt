@@ -3,7 +3,7 @@ Contributors: airani
 Donate link: https://irani.im/wp-auto-upload-images.html#donate
 Tags: upload, auto, automatically, image, images, admin, administrator, post, save, media, automation, editor, filter
 Requires at least: 2.7
-Tested up to: 3.8.1
+Tested up to: 5.8.1
 Stable tag: 3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
