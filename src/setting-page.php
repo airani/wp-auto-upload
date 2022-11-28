@@ -5,7 +5,7 @@
 
     <?php if (isset($message)) : ?>
     <div id="setting-error-settings_updated" class="updated settings-error">
-        <p><strong><?php echo $message; ?></strong></p>
+        <p><strong><?php echo esc_html($message); ?></strong></p>
     </div>
     <?php endif; ?>
 
@@ -55,9 +55,9 @@
                             </tr>
                             <?php if (function_exists('image_make_intermediate_size')) : ?>
                                 <?php $editor_supports = wp_image_editor_supports(); ?>
-                                <tr valign="top" <?= !$editor_supports ? 'style="background-color:#dedede;color:#6d6d6d;opacity:.8;"' : '' ?>>
+                                <tr valign="top" <?php echo !$editor_supports ? 'style="background-color:#dedede;color:#6d6d6d;opacity:.8;"' : '' ?>>
                                     <th scope="row">
-                                        <label <?= !$editor_supports ? 'style="color:#6d6d6d;"' : '' ?>><?php _e('Image Size:', 'auto-upload-images'); ?></label>
+                                        <label <?php echo !$editor_supports ? 'style="color:#6d6d6d;"' : '' ?>><?php _e('Image Size:', 'auto-upload-images'); ?></label>
                                         <?php if (!$editor_supports) : ?>
                                         <small style="color:#6d6d6d;"><?php _e('(Inactive)', 'auto-upload-images') ?></small>
                                         <?php endif; ?>
