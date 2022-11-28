@@ -3,8 +3,8 @@ Contributors: airani
 Donate link: https://irani.im/wp-auto-upload-images.html#donate
 Tags: upload, auto, automatically, image, images, admin, administrator, post, save, media, automation, editor, filter
 Requires at least: 2.7
-Tested up to: 5.8.1
-Stable tag: 3.3
+Tested up to: 6.1.1
+Stable tag: 3.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,9 @@ You can exclude many domains from the upload.
 2. Settings page in Persian language
 
 == Changelog ==
+
+= 3.3.1 =
+* Fix security vulnerability protecting settings form from xss and csrf
 
 = 3.3 =
 * Add support urls without schemes

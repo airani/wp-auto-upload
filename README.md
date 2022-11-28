@@ -2,11 +2,11 @@
 
 [![Build Status](https://travis-ci.com/airani/wp-auto-upload.svg?branch=master)](https://travis-ci.com/airani/wp-auto-upload)
 
-**Version:** 3.3
+**Version:** 3.3.1
 
 **Requires at least:** 2.7
 
-**Tested up to:** 5.8.1
+**Tested up to:** 6.1.1
 
 **License:** GPLv2 or later
 
@@ -80,6 +80,9 @@ You can exclude many domains from the upload.
 ![2. Settings page in Persian language](https://ps.w.org/auto-upload-images/assets/screenshot-2.png)
 
 ## Changelog
+
+### 3.3.1
+* Fix security vulnerability protecting settings form from xss and csrf
 
 ### 3.3
 * Add support urls without schemes
