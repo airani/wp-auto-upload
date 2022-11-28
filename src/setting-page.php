@@ -14,6 +14,7 @@
             <div id="post-body-content" style="position: relative">
                 <div class="stuffbox" style="padding: 0 20px">
                     <form method="POST">
+                        <?php echo wp_nonce_field('aui_settings'); ?>
                         <table class="form-table">
                             <tr valign="top">
                                 <th scope="row">
@@ -22,7 +23,7 @@
                                     </label>
                                 </th>
                                 <td>
-                                    <input type="text" name="base_url" value="<?php echo self::getOption('base_url'); ?>" class="regular-text" dir="ltr" />
+                                    <input type="text" name="base_url" value="<?php echo esc_attr(self::getOption('base_url')); ?>" class="regular-text" dir="ltr" />
                                     <p class="description"><?php _e('If you need to choose a new base URL for the images that will be automatically uploaded. Ex:', 'auto-upload-images'); ?> <code>https://irani.im</code>, <code>https://cdn.irani.im</code>, <code>/</code></p>
                                 </td>
                             </tr>
@@ -33,7 +34,7 @@
                                     </label>
                                 </th>
                                 <td>
-                                    <input type="text" name="image_name" value="<?php echo self::getOption('image_name'); ?>" class="regular-text" dir="ltr" />
+                                    <input type="text" name="image_name" value="<?php echo esc_attr(self::getOption('image_name')); ?>" class="regular-text" dir="ltr" />
                                     <p class="description">
                                         <?php printf(__('Choose a custom filename for the new images will be uploaded. You can also use these shortcodes %s.', 'auto-upload-images'), '<code dir="ltr">%filename%</code>, <code dir="ltr">%image_alt%</code>, <code dir="ltr">%url%</code>, <code dir="ltr">%date%</code>, <code dir="ltr">%year%</code>, <code dir="ltr">%month%</code>, <code dir="ltr">%day%</code>, <code dir="ltr">%random%</code>, <code dir="ltr">%timestamp%</code>, <code dir="ltr">%postname%</code>, <code dir="ltr">%post_id%</code>') ?>
                                     </p>
@@ -46,7 +47,7 @@
                                     </label>
                                 </th>
                                 <td>
-                                    <input type="text" name="alt_name" value="<?php echo self::getOption('alt_name'); ?>" class="regular-text" dir="ltr" />
+                                    <input type="text" name="alt_name" value="<?php echo esc_attr(self::getOption('alt_name')); ?>" class="regular-text" dir="ltr" />
                                     <p class="description">
                                         <?php printf(__('Choose a custom alt name for the new images will be uploaded. You can also use these shortcodes %s.', 'auto-upload-images'), '<code dir="ltr">%filename%</code>, <code dir="ltr">%image_alt%</code>, <code dir="ltr">%url%</code>, <code dir="ltr">%date%</code>, <code dir="ltr">%year%</code>, <code dir="ltr">%month%</code>, <code dir="ltr">%day%</code>, <code dir="ltr">%random%</code>, <code dir="ltr">%timestamp%</code>, <code dir="ltr">%postname%</code>, <code dir="ltr">%post_id%</code>') ?>
                                     </p>
@@ -63,9 +64,9 @@
                                     </th>
                                     <td>
                                         <label for="max_width"><?php _e('Max Width', 'auto-upload-images'); ?></label>
-                                        <input name="max_width" type="number" step="5" min="0" id="max_width" placeholder="600" class="small-text" value="<?php echo self::getOption('max_width'); ?>" <?php echo !$editor_supports ? 'disabled' : '' ?>>
+                                        <input name="max_width" type="number" step="5" min="0" id="max_width" placeholder="600" class="small-text" value="<?php echo esc_attr(self::getOption('max_width')); ?>" <?php echo !$editor_supports ? 'disabled' : '' ?>>
                                         <label for="max_height"><?php _e('Max Height', 'auto-upload-images'); ?></label>
-                                        <input name="max_height" type="number" step="5" min="0" id="max_height" placeholder="400" class="small-text" value="<?php echo self::getOption('max_height'); ?>" <?php echo !$editor_supports ? 'disabled' : '' ?>>
+                                        <input name="max_height" type="number" step="5" min="0" id="max_height" placeholder="400" class="small-text" value="<?php echo esc_attr(self::getOption('max_height')); ?>" <?php echo !$editor_supports ? 'disabled' : '' ?>>
                                         <p class="description"><?php _e('You can choose max width and height for images uploaded by this plugin on your site. If you leave empty each one of fields by default use the original size of the image.', 'auto-upload-images'); ?></p>
                                         <?php if (!$editor_supports) : ?>
                                         <p style="color:#535353;font-weight: bold;"><?php _e('To activate this feature please enable Gd or Imagick extensions of PHP.', 'auto-upload-images') ?></p>
@@ -84,7 +85,7 @@
                                         <?php $excludePostTypes = self::getOption('exclude_post_types'); ?>
                                         <?php foreach (get_post_types() as $post_type): ?>
                                             <label>
-                                                <input type="checkbox" name="exclude_post_types[]" value="<?php echo $post_type ?>" <?php echo is_array($excludePostTypes) && in_array($post_type, $excludePostTypes, true) ? 'checked' : ''; ?>> <?php echo $post_type ?>
+                                                <input type="checkbox" name="exclude_post_types[]" value="<?php echo esc_attr($post_type) ?>" <?php echo is_array($excludePostTypes) && in_array($post_type, $excludePostTypes, true) ? 'checked' : ''; ?>> <?php echo esc_attr($post_type) ?>
                                                 <br>
                                             </label>
                                         <?php endforeach; ?>
@@ -100,7 +101,7 @@
                                 </th>
                                 <td>
                                     <p><?php _e('Enter the domains you wish to be excluded from uploading images: (One domain per line)', 'auto-upload-images'); ?></p>
-                                    <p><textarea name="exclude_urls" rows="10" cols="50" id="exclude_urls" class="large-text code" placeholder="https://irani.im"><?php echo self::getOption('exclude_urls'); ?></textarea></p>
+                                    <p><textarea name="exclude_urls" rows="10" cols="50" id="exclude_urls" class="large-text code" placeholder="https://irani.im"><?php echo esc_textarea(self::getOption('exclude_urls')); ?></textarea></p>
                                 </td>
                             </tr>
                         </table>
