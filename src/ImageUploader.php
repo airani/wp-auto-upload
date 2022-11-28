@@ -178,7 +178,6 @@ class ImageUploader
     public function downloadImage($url)
     {
         $url = self::normalizeUrl($url);
-        setlocale(LC_ALL, "en_US.UTF8");
         $args = [
             'user-agent' => ''
         ];
