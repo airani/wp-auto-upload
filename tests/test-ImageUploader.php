@@ -106,6 +106,7 @@ class ImageUploaderTest extends WP_UnitTestCase
             array('https://d418bv7mr3wfv.cloudfront.net/s3/W1siZiIsIjIwMTgvMTAvMTEvMjMvMDIvNTUvMjQxL1dlIGFzayBxdWVzdGlvbnMgdGhhdCBjcmVhdGUgbWFnaWNhbCBjb25uZWN0aW9ucyAoNCkucG5nIl1d', 'img_%s.png', 'image/png', 'png'),
             array('https://www.geocaching.com/help/index.php?pg=file&from=2&id=760', 'img_%s.jpg', 'image/jpeg', 'jpg'),
             array('https://images.unsplash.com/photo-1511988617509-a57c8a288659?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjI1NDQxfQ&s=e91ec3d695b7e406f29dd80a706fc0ad&w=1000', 'img_%s.jpg', 'image/jpeg', 'jpg'),
+            array('https://res.cloudinary.com/airani/image/upload/v1669669791/مادر-شهید_paixih.jpg', 'img_%s.jpg', 'image/jpeg', 'jpg')
         );
     }
 
