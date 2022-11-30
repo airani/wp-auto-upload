@@ -194,10 +194,18 @@ class WpAutoUpload
     public function settingPage()
     {
         if (isset($_POST['submit']) && check_admin_referer('aui_settings')) {
-            $fields = array('base_url', 'image_name', 'alt_name', 'exclude_urls', 'max_width', 'max_height', 'exclude_post_types');
-            foreach ($fields as $field) {
+            $textFields = array('base_url', 'image_name', 'alt_name', 'max_width', 'max_height');
+            foreach ($textFields as $field) {
                 if (array_key_exists($field, $_POST) && $_POST[$field]) {
-                    static::$_options[$field] = esc_attr($_POST[$field]);
+                    static::$_options[$field] = sanitize_text_field($_POST[$field]);
+                }
+            }
+            if (array_key_exists('exclude_urls', $_POST) && $_POST['exclude_urls']) {
+                static::$_options['exclude_urls'] = sanitize_textarea_field($_POST['exclude_urls']);
+            }
+            if (array_key_exists('exclude_post_types', $_POST) && $_POST['exclude_post_types']) {
+                foreach ($_POST['exclude_post_types'] as $typ) {
+                    static::$_options['exclude_post_types'][] = sanitize_text_field($typ);
                 }
             }
             update_option(self::WP_OPTIONS_KEY, static::$_options);
