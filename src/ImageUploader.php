@@ -83,15 +83,13 @@ class ImageUploader
      */
     protected function getOriginalFilename()
     {
-        $urlPath = parse_url($this->url, PHP_URL_PATH);
-        $baseName = sanitize_file_name(wp_basename($urlPath));
+        $urlParts = pathinfo($this->url);
 
-        // Validate an absolute file name with true image extension
-        if (!preg_match('/(.*)\.(jpg|jpeg|jpe|png|gif|bmp|tiff|tif)$/i', $baseName, $nameParts)) {
+        if (!isset($urlParts['filename'])) {
             return null;
         }
 
-        return $nameParts[1];
+        return sanitize_file_name($urlParts['filename']);
     }
 
     private $_uploadDir;
