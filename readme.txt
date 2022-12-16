@@ -4,7 +4,7 @@ Donate link: https://irani.im/wp-auto-upload-images.html#donate
 Tags: upload, auto, automatically, image, images, admin, administrator, post, save, media, automation, editor, filter
 Requires at least: 2.7
 Tested up to: 6.1.1
-Stable tag: 3.3.1
+Stable tag: 3.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,11 @@ You can exclude many domains from the upload.
 2. Settings page in Persian language
 
 == Changelog ==
+
+= 3.3.2 =
+* Add support for `webp` images
+* Add `%today_date%`, `%today_day%`, `%post_date%`, `%post_year%`, `%post_month%`, `%post_day%` patterns for image alt and filename
+* Fix bug in resolve `%date%` and `%day%` patterns and deprecated these patterns
 
 = 3.3.1 =
 * Fix security vulnerability protecting settings form from xss and csrf

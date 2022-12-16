@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/airani/wp-auto-upload.svg?branch=master)](https://travis-ci.com/airani/wp-auto-upload)
 
-**Version:** 3.3.1
+**Version:** 3.3.2
 
 **Requires at least:** 2.7
 
@@ -80,6 +80,11 @@ You can exclude many domains from the upload.
 ![2. Settings page in Persian language](https://ps.w.org/auto-upload-images/assets/screenshot-2.png)
 
 ## Changelog
+
+### 3.3.2
+* Add support for `webp` images
+* Add `%today_date%`, `%today_day%`, `%post_date%`, `%post_year%`, `%post_month%`, `%post_day%` patterns for image alt and filename
+* Fix bug in resolve `%date%` and `%day%` patterns and deprecated these patterns
 
 ### 3.3.1
 * Fix security vulnerability protecting settings form from xss and csrf
