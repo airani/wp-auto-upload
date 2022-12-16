@@ -313,6 +313,7 @@ class ImageUploader
             'image/gif'  => 'gif',
             'image/bmp'  => 'bmp',
             'image/tiff' => 'tif',
+            'image/webp' => 'webp',
         );
 
         return array_key_exists($mime, $mimes) ? $mimes[$mime] : null;
