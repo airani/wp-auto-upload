@@ -189,6 +189,29 @@ class WpAutoUpload
     }
 
     /**
+     * Returns fixed and replace deprecated patterns
+     * @param $pattern
+     * @return string
+     */
+    public function replaceDeprecatedPatterns($pattern)
+    {
+        preg_match_all('/%(date|day)%/', $pattern, $rules);
+
+        $patterns = array(
+            '%date%' => '%today_date%',
+            '%day%' => '%today_day%',
+        );
+
+        if ($rules[0]) {
+            foreach ($rules[0] as $rule) {
+                $pattern = preg_replace("/$rule/", array_key_exists($rule, $patterns) ? $patterns[$rule] : $rule, $pattern);
+            }
+        }
+
+        return $pattern;
+    }
+
+    /**
      * Settings page contents
      */
     public function settingPage()
@@ -197,6 +220,10 @@ class WpAutoUpload
             $textFields = array('base_url', 'image_name', 'alt_name', 'max_width', 'max_height');
             foreach ($textFields as $field) {
                 if (array_key_exists($field, $_POST) && $_POST[$field]) {
+                    if ($field === 'image_name' || $field === 'alt_name') {
+                        $_POST[$field] = $this->replaceDeprecatedPatterns($_POST[$field]);
+                    }
+
                     static::$_options[$field] = sanitize_text_field($_POST[$field]);
                 }
             }

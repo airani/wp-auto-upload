@@ -129,10 +129,12 @@ class ImageUploader
         $patterns = array(
             '%filename%' => $this->getOriginalFilename(),
             '%image_alt%' => $this->alt,
-            '%date%' => date('Y-m-j'),
+            '%date%' => date('Y-m-j'), // deprecated
+            '%today_date%' => date('Y-m-j'),
             '%year%' => date('Y'),
             '%month%' => date('m'),
-            '%day%' => date('j'),
+            '%day%' => date('j'), // deprecated
+            '%today_day%' => date('j'),
             '%url%' => self::getHostUrl(get_bloginfo('url')),
             '%random%' => uniqid('img_', false),
             '%timestamp%' => time(),
