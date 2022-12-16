@@ -135,6 +135,10 @@ class ImageUploader
             '%month%' => date('m'),
             '%day%' => date('j'), // deprecated
             '%today_day%' => date('j'),
+            '%post_date%' => date('Y-m-j', strtotime($this->post['post_date_gmt'])),
+            '%post_year%' => date('Y', strtotime($this->post['post_date_gmt'])),
+            '%post_month%' => date('m', strtotime($this->post['post_date_gmt'])),
+            '%post_day%' => date('j', strtotime($this->post['post_date_gmt'])),
             '%url%' => self::getHostUrl(get_bloginfo('url')),
             '%random%' => uniqid('img_', false),
             '%timestamp%' => time(),

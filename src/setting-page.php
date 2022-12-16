@@ -36,7 +36,7 @@
                                 <td>
                                     <input type="text" name="image_name" value="<?php echo esc_attr(self::getOption('image_name')); ?>" class="regular-text" dir="ltr" />
                                     <p class="description">
-                                        <?php printf(__('Choose a custom filename for the new images will be uploaded. You can also use these shortcodes %s.', 'auto-upload-images'), '<code dir="ltr">%filename%</code>, <code dir="ltr">%image_alt%</code>, <code dir="ltr">%url%</code>, <code dir="ltr">%today_date%</code>, <code dir="ltr">%year%</code>, <code dir="ltr">%month%</code>, <code dir="ltr">%today_day%</code>, <code dir="ltr">%random%</code>, <code dir="ltr">%timestamp%</code>, <code dir="ltr">%postname%</code>, <code dir="ltr">%post_id%</code>') ?>
+                                        <?php printf(__('Choose a custom filename for the new images will be uploaded. You can also use these shortcodes %s.', 'auto-upload-images'), '<code dir="ltr">%filename%</code>, <code dir="ltr">%image_alt%</code>, <code dir="ltr">%url%</code>, <code dir="ltr">%today_date%</code>, <code dir="ltr">%year%</code>, <code dir="ltr">%month%</code>, <code dir="ltr">%today_day%</code>, <code dir="ltr">%post_date%</code>, <code dir="ltr">%post_year%</code>, <code dir="ltr">%post_month%</code>, <code dir="ltr">%post_day%</code>, <code dir="ltr">%random%</code>, <code dir="ltr">%timestamp%</code>, <code dir="ltr">%postname%</code>, <code dir="ltr">%post_id%</code>') ?>
                                     </p>
                                 </td>
                             </tr>
@@ -49,7 +49,7 @@
                                 <td>
                                     <input type="text" name="alt_name" value="<?php echo esc_attr(self::getOption('alt_name')); ?>" class="regular-text" dir="ltr" />
                                     <p class="description">
-                                        <?php printf(__('Choose a custom alt name for the new images will be uploaded. You can also use these shortcodes %s.', 'auto-upload-images'), '<code dir="ltr">%filename%</code>, <code dir="ltr">%image_alt%</code>, <code dir="ltr">%url%</code>, <code dir="ltr">%today_date%</code>, <code dir="ltr">%year%</code>, <code dir="ltr">%month%</code>, <code dir="ltr">%today_day%</code>, <code dir="ltr">%random%</code>, <code dir="ltr">%timestamp%</code>, <code dir="ltr">%postname%</code>, <code dir="ltr">%post_id%</code>') ?>
+                                        <?php printf(__('Choose a custom alt name for the new images will be uploaded. You can also use these shortcodes %s.', 'auto-upload-images'), '<code dir="ltr">%filename%</code>, <code dir="ltr">%image_alt%</code>, <code dir="ltr">%url%</code>, <code dir="ltr">%today_date%</code>, <code dir="ltr">%year%</code>, <code dir="ltr">%month%</code>, <code dir="ltr">%today_day%</code>, <code dir="ltr">%post_date%</code>, <code dir="ltr">%post_year%</code>, <code dir="ltr">%post_month%</code>, <code dir="ltr">%post_day%</code>, <code dir="ltr">%random%</code>, <code dir="ltr">%timestamp%</code>, <code dir="ltr">%postname%</code>, <code dir="ltr">%post_id%</code>') ?>
                                     </p>
                                 </td>
                             </tr>
