@@ -76,7 +76,7 @@ class WpAutoUpload
         }
 
         foreach ($images as $image) {
-            $uploader = new ImageUploader($image['url'], $image['alt'], $postarr);
+            $uploader = new ImageUploader(htmlspecialchars_decode($image['url']), $image['alt'], $postarr);
             if ($uploadedImage = $uploader->save()) {
                 $urlParts = parse_url($uploadedImage['url']);
                 $base_url = $uploader::getHostUrl(null, true, true);
