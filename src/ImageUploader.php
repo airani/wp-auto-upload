@@ -14,6 +14,14 @@ class ImageUploader
         $this->post = $post;
         $this->url = $url;
         $this->alt = $alt;
+
+        if (empty($this->post['post_date'])) {
+            $this->post['post_date'] = date('Y-m-d H:i:s');
+        }
+        if (empty($this->post['post_date_gmt'])) {
+            $timestamp = strtotime($this->post['post_date']);
+            $this->post['post_date_gmt'] = gmdate('Y-m-d H:i:s', $timestamp);
+        }
     }
 
     /**
@@ -103,7 +111,8 @@ class ImageUploader
     protected function getUploadDir($field)
     {
         if ($this->_uploadDir === null) {
-            $this->_uploadDir = wp_upload_dir(date('Y/m', time()));
+            $timestamp = strtotime($this->post['post_date_gmt']);
+            $this->_uploadDir = wp_upload_dir(date('Y/m', $timestamp));
         }
         return is_array($this->_uploadDir) && array_key_exists($field, $this->_uploadDir) ? $this->_uploadDir[$field] : null;
     }
@@ -263,7 +272,9 @@ class ImageUploader
             'post_mime_type' => $image['mime_type'],
             'post_title' => $this->alt ?: preg_replace('/\.[^.]+$/', '', $image['filename']),
             'post_content' => '',
-            'post_status' => 'inherit'
+            'post_status' => 'inherit',
+            'post_date' => $this->post['post_date'],
+            'post_date_gmt' => $this->post['post_date_gmt'],
         );
         $attach_id = wp_insert_attachment($attachment, $image['path'], $this->post['ID']);
         if (!function_exists('wp_generate_attachment_metadata')) {
