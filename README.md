@@ -41,10 +41,10 @@ When you want to save a post, this plugin search for image urls which exists in 
 
 ### Links
 
-* [Official Plugin Page](https://irani.im/wp-auto-upload-images.html)
+* [Official Plugin Page](https://github.com/airani/wp-auto-upload)
 * [Github Repository](https://github.com/airani/wp-auto-upload)
 * [Report Issues](https://github.com/airani/wp-auto-upload/issues/new)
-* [Make a Donation](https://irani.im/wp-auto-upload-images.html#donate)
+* [Make a Donation](https://github.com/airani/wp-auto-upload#donate)
 
 ## Installation
 

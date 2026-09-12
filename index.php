@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Auto Upload Images
-Plugin URI: https://irani.im/wp-auto-upload-images.html
+Plugin URI: https://github.com/airani/wp-auto-upload
 Description: Automatically upload and import external images of a post to Wordpress upload directory and media management
 Version: 3.3.2
 Author: Ali Irani
