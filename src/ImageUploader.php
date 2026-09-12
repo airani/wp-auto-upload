@@ -194,9 +194,17 @@ class ImageUploader
      */
     protected function getOriginalFilename()
     {
-        $urlParts = pathinfo($this->url);
+        // Strip query string and fragment: pathinfo() on a full URL mangles it (issue #96)
+        $path = parse_url($this->url, PHP_URL_PATH);
+        if (empty($path)) {
+            return null;
+        }
 
-        if (!isset($urlParts['filename'])) {
+        $urlParts = pathinfo($path);
+
+        // Only accept image-like extensions
+        $ext = isset($urlParts['extension']) ? strtolower($urlParts['extension']) : '';
+        if (in_array($ext, array('jpg', 'jpeg', 'png', 'gif', 'bmp', 'tif', 'tiff', 'webp'), true) === false) {
             return null;
         }
 
@@ -238,6 +246,10 @@ class ImageUploader
     {
         preg_match_all('/%[^%]*%/', $pattern, $rules);
 
+        $postDateGmt = isset($this->post['post_date_gmt']) && $this->post['post_date_gmt']
+            ? strtotime($this->post['post_date_gmt'])
+            : false;
+
         $patterns = array(
             '%filename%' => $this->getOriginalFilename(),
             '%image_alt%' => $this->alt,
@@ -247,10 +259,10 @@ class ImageUploader
             '%month%' => date('m'),
             '%day%' => date('j'), // deprecated
             '%today_day%' => date('j'),
-            '%post_date%' => date('Y-m-j', strtotime($this->post['post_date_gmt'])),
-            '%post_year%' => date('Y', strtotime($this->post['post_date_gmt'])),
-            '%post_month%' => date('m', strtotime($this->post['post_date_gmt'])),
-            '%post_day%' => date('j', strtotime($this->post['post_date_gmt'])),
+            '%post_date%' => date('Y-m-j', $postDateGmt ?: time()),
+            '%post_year%' => date('Y', $postDateGmt ?: time()),
+            '%post_month%' => date('m', $postDateGmt ?: time()),
+            '%post_day%' => date('j', $postDateGmt ?: time()),
             '%url%' => self::getHostUrl(get_bloginfo('url')),
             '%random%' => uniqid('img_', false),
             '%timestamp%' => time(),

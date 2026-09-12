@@ -14,6 +14,7 @@ class ImageUploaderTest extends WP_UnitTestCase
         $samplePost = array(
             'ID' => 1,
             'post_name' => 'sample',
+            'post_date_gmt' => date('Y-m-d H:i:s'),
         );
 
         $this->imageUploader = new ImageUploader('https://irani.im/images/ali-irani.jpg', 'sample alt', $samplePost);
@@ -123,13 +124,22 @@ class ImageUploaderTest extends WP_UnitTestCase
             return;
         }
 
+        // Remove files from earlier tests so the sha1 dedup path does not skip resizing
+        $uploadDir = wp_upload_dir(date('Y/m', time()));
+        foreach (glob(rtrim($uploadDir['path'], '/') . '/ali-irani*') ?: array() as $oldFile) {
+            unlink($oldFile);
+        }
+
         $wpAutoUpload = new WpAutoUpload();
         $_POST['submit'] = true;
         $_POST['max_width'] = 50;
         $_POST['max_height'] = 50;
+        $_REQUEST['_wpnonce'] = wp_create_nonce('aui_settings');
+        $_REQUEST['_wp_http_referer'] = '';
         ob_start();
         $wpAutoUpload->settingPage();
         ob_end_clean();
+        unset($_POST['submit'], $_POST['max_width'], $_POST['max_height'], $_REQUEST['_wpnonce'], $_REQUEST['_wp_http_referer']);
         $this->imageUploader->url = 'https://irani.im/images/ali-irani.jpg';
         $result = $this->imageUploader->downloadImage('https://irani.im/images/ali-irani.jpg');
         $this->assertTrue(is_array($result));
