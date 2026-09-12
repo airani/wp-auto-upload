@@ -7,7 +7,7 @@ class ImageUploaderTest extends WP_UnitTestCase
      */
     public $imageUploader;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

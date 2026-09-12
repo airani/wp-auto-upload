@@ -81,8 +81,11 @@ class WpAutoUpload
                 $urlParts = parse_url($uploadedImage['url']);
                 $base_url = $uploader::getHostUrl(null, true, true);
                 $image_url = $base_url . $urlParts['path'];
-                $content = preg_replace('/'. preg_quote($image['url'], '/') .'/', $image_url, $content);
-                $content = preg_replace('/alt=["\']'. preg_quote($image['alt'], '/') .'["\']/', "alt='{$uploader->getAlt()}'", $content);
+                $image_url = esc_url($image_url);
+                $content = str_replace($image['url'], $image_url, $content);
+                if (!empty($image['alt'])) {
+                    $content = preg_replace('/alt=["\']' . preg_quote($image['alt'], '/') . '["\']/', "alt='" . $uploader->getAlt() . "'", $content);
+                }
             }
         }
         return $content;
@@ -105,9 +108,11 @@ class WpAutoUpload
                     continue;
                 }
                 foreach ($srcsetUrls as $srcsetUrl) {
-                    $urls1[$count][] = $srcset[0];
-                    $urls1[$count][] = $srcsetUrl[0];
-                    $count++;
+                    if (self::isValidImageUrl($srcsetUrl[0])) {
+                        $urls1[$count][] = $srcset[0];
+                        $urls1[$count][] = $srcsetUrl[0];
+                        $count++;
+                    }
                 }
             }
         }
@@ -119,13 +124,32 @@ class WpAutoUpload
             return array();
         }
         foreach ($urls as $index => &$url) {
+            if (!self::isValidImageUrl($url[1])) {
+                unset($urls[$index]);
+                continue;
+            }
             $images[$index]['alt'] = preg_match('/<img[^>]*alt=["\']([^"\']*)[^"\']*["\'][^>]*>/i', $url[0], $alt) ? $alt[1] : null;
             $images[$index]['url'] = $url = $url[1];
         }
         foreach (array_unique($urls) as $index => $url) {
             $unique_array[] = $images[$index];
         }
-        return $unique_array;
+        return isset($unique_array) ? $unique_array : array();
+    }
+
+    /**
+     * Basic validation for image urls extracted from content
+     * @param string $url
+     * @return bool
+     */
+    public static function isValidImageUrl($url)
+    {
+        if (!is_string($url) || strlen($url) > 2048) {
+            return false;
+        }
+
+        // Must start with http:// or https:// or be protocol-relative
+        return (bool) preg_match('/^(https?:)?\/\//', $url);
     }
 
     /**
@@ -204,7 +228,7 @@ class WpAutoUpload
 
         if ($rules[0]) {
             foreach ($rules[0] as $rule) {
-                $pattern = preg_replace("/$rule/", array_key_exists($rule, $patterns) ? $patterns[$rule] : $rule, $pattern);
+                $pattern = str_replace($rule, array_key_exists($rule, $patterns) ? $patterns[$rule] : $rule, $pattern);
             }
         }
 
@@ -239,7 +263,7 @@ class WpAutoUpload
             $message = __('Settings Saved.', 'auto-upload-images');
         }
 
-        if (isset($_POST['reset']) && self::resetOptionsToDefaults()) {
+        if (isset($_POST['reset']) && check_admin_referer('aui_settings') && self::resetOptionsToDefaults()) {
             $message = __('Successfully settings reset to defaults.', 'auto-upload-images');
         }
 

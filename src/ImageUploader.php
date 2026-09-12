@@ -47,6 +47,18 @@ class ImageUploader
      */
     public function validate()
     {
+        $parsedUrl = parse_url($this->url);
+
+        // Only allow http(s) urls with a host
+        if (!$parsedUrl || !isset($parsedUrl['host']) || !in_array(strtolower(isset($parsedUrl['scheme']) ? $parsedUrl['scheme'] : ''), array('http', 'https'), true)) {
+            return false;
+        }
+
+        // Block SSRF targets (private/reserved IPs, cloud metadata, ...)
+        if (!self::isHostSafe($parsedUrl['host'])) {
+            return false;
+        }
+
         $url = self::getHostUrl($this->url);
         $site_url = self::getHostUrl() === null ? self::getHostUrl(site_url('url')) : self::getHostUrl();
 
@@ -61,6 +73,105 @@ class ImageUploader
                 if ($url === self::getHostUrl(trim($exclude_url))) {
                     return false;
                 }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Check if a host resolves only to safe public IPs (SSRF protection)
+     * Blocks redirects to private addresses: wp_remote_get follows redirects without re-validation.
+     * ponytail: full fix needs a custom redirect handler that re-checks each hop; add if a redirect-following request API becomes available.
+     * @param string $host
+     * @return bool
+     */
+    public static function isHostSafe($host)
+    {
+        // Strip brackets from IPv6 literals and port
+        $host = trim(preg_replace('/^\[(.+)\]$/', '$1', $host));
+
+        if (filter_var($host, FILTER_VALIDATE_IP)) {
+            return self::isIpSafe($host);
+        }
+
+        // Resolve all A/AAAA records once; every resolved IP must be safe
+        $ips = array();
+        foreach (array(DNS_A => 'ip', DNS_AAAA => 'ipv6') as $type => $field) {
+            $records = @dns_get_record($host, $type);
+            if (is_array($records)) {
+                foreach ($records as $record) {
+                    if (isset($record[$field])) {
+                        $ips[] = $record[$field];
+                    }
+                }
+            }
+        }
+
+        if (empty($ips)) {
+            $ip = @gethostbyname($host);
+            if ($ip !== $host && filter_var($ip, FILTER_VALIDATE_IP)) {
+                $ips[] = $ip;
+            }
+        }
+
+        if (empty($ips)) {
+            return false; // unresolvable host
+        }
+
+        foreach (array_unique($ips) as $ip) {
+            if (!self::isIpSafe($ip)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Check if an IP is public and safe to fetch from
+     * @param string $ip
+     * @return bool
+     */
+    public static function isIpSafe($ip)
+    {
+        if (!filter_var($ip, FILTER_VALIDATE_IP)) {
+            return false;
+        }
+
+        // Blocks private (10/8, 172.16/12, 192.168/16, fc00::/7, ...) and reserved ranges.
+        // Note: PHP's FILTER_FLAG_NO_RES_RANGE misses 224/4 multicast, 100.64/10 CGNAT and IPv4-mapped IPv6 (::ffff:x) — covered below.
+        if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+            return false;
+        }
+
+        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+            $ipLong = ip2long($ip);
+            foreach (array(
+                array(0,          16777215),    // 0.0.0.0/8        "this host"
+                array(1681915904, 1686110207),  // 100.64.0.0/10    carrier-grade NAT
+                array(2851995648, 2852061183),  // 169.254.0.0/16   link-local / cloud metadata
+                array(3758096384, 4026531839),  // 224.0.0.0/4      multicast
+            ) as $range) {
+                if ($ipLong >= $range[0] && $ipLong <= $range[1]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // IPv6: block IPv4-mapped/compatible, link-local, ULA, multicast (first byte)
+        $packed = @inet_pton($ip);
+        $firstByte = ord($packed);
+        if ($firstByte === 0 || ($firstByte & 0xfe) === 0xfe) { // ::x family (::ffff:x, ::1), fe80::/10, ff00::/8
+            return false;
+        }
+
+        // 6to4 (2002::/16) and Teredo (2001:0::/32) embed an IPv4 address; check it too
+        if (substr($packed, 0, 2) === "\x20\x02" || substr($packed, 0, 4) === "\x20\x01\x00\x00") {
+            $embedded = substr($packed, $packed[1] === "\x02" ? 2 : 12, 4);
+            if ($embedded !== false && strlen($embedded) === 4) {
+                return self::isIpSafe(inet_ntop($embedded));
             }
         }
 
@@ -114,7 +225,7 @@ class ImageUploader
      */
     public function getAlt()
     {
-        return $this->resolvePattern(WpAutoUpload::getOption('alt_name'));
+        return esc_attr($this->resolvePattern(WpAutoUpload::getOption('alt_name')));
     }
 
     /**
@@ -182,13 +293,24 @@ class ImageUploader
     public function downloadImage($url)
     {
         $url = self::normalizeUrl($url);
-        $args = [
-            'user-agent' => ''
-        ];
+
         $parsedUrl = parse_url($url);
-        if (isset($parsedUrl['host'])){
-            $args['headers']['host'] = $parsedUrl['host'];
+        if (!$parsedUrl || !isset($parsedUrl['scheme'], $parsedUrl['host']) || !in_array(strtolower($parsedUrl['scheme']), array('http', 'https'), true)) {
+            return new WP_Error('aui_invalid_url', 'AUI: Invalid URL provided.');
         }
+
+        // Final SSRF check before making request
+        if (!self::isHostSafe($parsedUrl['host'])) {
+            return new WP_Error('aui_blocked_url', 'AUI: URL blocked for security reasons.');
+        }
+
+        $args = array(
+            'user-agent' => 'WordPress/' . get_bloginfo('version') . '; ' . home_url(),
+            'timeout' => 30,
+            'redirection' => 3,
+            'sslverify' => true,
+            'limit_response_size' => 50 * 1024 * 1024, // 50MB
+        );
         $response = wp_remote_get($url, $args);
 
         if ($response instanceof WP_Error) {
@@ -199,6 +321,10 @@ class ImageUploader
             return new WP_Error('aui_download_failed', 'AUI: Image file bad response.');
         }
 
+        if (empty($response['body'])) {
+            return new WP_Error('aui_empty_response', 'AUI: Empty response body.');
+        }
+
         $tempFile = tempnam(sys_get_temp_dir(), 'WP_AUI');
         file_put_contents($tempFile, $response['body']);
         $mime = wp_get_image_mime($tempFile);
@@ -207,6 +333,8 @@ class ImageUploader
         if ($mime === false || strpos($mime, 'image/') !== 0) {
             return new WP_Error('aui_invalid_file', 'AUI: File type is not image.');
         }
+
+        $body = $response['body'];
 
         $image = [];
         $image['mime_type'] = $mime;
@@ -234,9 +362,7 @@ class ImageUploader
             return $image;
         }
 
-        file_put_contents($image['path'], $response['body']);
-
-        if (!is_file($image['path'])) {
+        if (file_put_contents($image['path'], $body) === false || !is_file($image['path'])) {
             return new WP_Error('aui_image_save_failed', 'AUI: Image save to upload dir failed.');
         }
 
