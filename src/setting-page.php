@@ -159,7 +159,7 @@
                                     </a>
                                 </li>
                                 <li class="dashicons-before dashicons-admin-links" style="color: #82878c">
-                                    <a href="https://github.com/airani/wp-auto-upload" style="text-decoration: none" target="_blank"><?php _e('Official Page', 'auto-upload-images'); ?></a>
+                                    <a href="https://irani.im" style="text-decoration: none" target="_blank"><?php _e('Developer', 'auto-upload-images'); ?></a>
                                 </li>
                             </ul>
                             <hr>
