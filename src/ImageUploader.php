@@ -204,6 +204,7 @@ class ImageUploader
     }
 
     private $_uploadDir;
+    private $_redirects = 0;
 
     /**
      * Return information of upload directory
@@ -259,7 +260,8 @@ class ImageUploader
 
         if ($rules[0]) {
             foreach ($rules[0] as $rule) {
-                $pattern = preg_replace("/$rule/", array_key_exists($rule, $patterns) ? $patterns[$rule] : $rule, $pattern);
+                // str_replace: no regex interpretation of rule or replacement (ReDoS/injection safe)
+                $pattern = str_replace($rule, array_key_exists($rule, $patterns) ? $patterns[$rule] : $rule, $pattern);
             }
         }
 
@@ -307,11 +309,44 @@ class ImageUploader
         $args = array(
             'user-agent' => 'WordPress/' . get_bloginfo('version') . '; ' . home_url(),
             'timeout' => 30,
-            'redirection' => 3,
+            'redirection' => 0, // follow redirects manually so each hop is SSRF-checked
             'sslverify' => true,
             'limit_response_size' => 50 * 1024 * 1024, // 50MB
         );
         $response = wp_remote_get($url, $args);
+
+        // Manually follow redirects, re-validating each hop against SSRF
+        while ($response !== null && !is_wp_error($response) && isset($response['response']['code'])
+            && in_array($response['response']['code'], array(301, 302, 303, 307, 308), true)
+            && isset($response['headers']['location'])) {
+
+            if (++$this->_redirects > 3) {
+                return new WP_Error('aui_too_many_redirects', 'AUI: Too many redirects.');
+            }
+
+            $location = $response['headers']['location'];
+            // Resolve relative redirects against the current url
+            if (!preg_match('/^(https?:)?\/\//', $location)) {
+                $base = parse_url($url);
+                if ($base === false || !isset($base['scheme'], $base['host'])) {
+                    return new WP_Error('aui_invalid_redirect', 'AUI: Invalid redirect location.');
+                }
+                $location = $base['scheme'] . '://' . $base['host']
+                    . (isset($base['port']) ? ':' . $base['port'] : '')
+                    . (strpos($location, '/') === 0 ? $location : (isset($base['path']) ? rtrim(dirname($base['path']), '/') : '') . '/' . $location);
+            }
+            $url = self::normalizeUrl($location);
+
+            $parsedUrl = parse_url($url);
+            if (!$parsedUrl || !isset($parsedUrl['scheme'], $parsedUrl['host']) || !in_array(strtolower($parsedUrl['scheme']), array('http', 'https'), true)) {
+                return new WP_Error('aui_invalid_redirect', 'AUI: Invalid redirect location.');
+            }
+            if (!self::isHostSafe($parsedUrl['host'])) {
+                return new WP_Error('aui_blocked_url', 'AUI: Redirected URL blocked for security reasons.');
+            }
+
+            $response = wp_remote_get($url, $args);
+        }
 
         if ($response instanceof WP_Error) {
             return $response;

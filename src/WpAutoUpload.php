@@ -75,6 +75,9 @@ class WpAutoUpload
             return false;
         }
 
+        // Guard: a post with many external images can exhaust resources (each triggers a download)
+        $images = array_slice($images, 0, 50);
+
         foreach ($images as $image) {
             // Content stores urls html-encoded (e.g. &amp;); decode for download and replacement
             $image['url'] = htmlspecialchars_decode($image['url'], ENT_QUOTES);
