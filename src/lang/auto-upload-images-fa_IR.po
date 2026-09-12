@@ -129,15 +129,27 @@ msgstr "بازگردانی تنظیمات اصلی"
 msgid "Are you sure to reset all options to defaults?"
 msgstr "آیا از تغییر تمام تنظیمات این افزونه به حالت پیش‌فرض اطمینان دارید؟"
 
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:96
+msgid "Custom Fields:"
+msgstr "فیلدهای سفارشی:"
+
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:107
+msgid "No custom fields found."
+msgstr "هیچ فیلد سفارشی یافت نشد."
+
+#: wp-content/plugins/auto-upload-images/src/setting-page.php:111
+msgid ""
+"Image urls inside the selected custom fields are also uploaded and replaced "
+"when a post is saved (text values only)."
+msgstr ""
+"آدرس تصاویر موجود در فیلدهای سفارشی انتخاب‌شده نیز هنگام ذخیره مطلب، آپلود و "
+"جایگزین می‌شوند (فقط مقادیر متنی)."
+
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:118
 msgid "Information"
 msgstr "اطلاعات"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:123
-msgid "Support and Donate to the Plugin"
-msgstr "پشتیبانی و حمایت مالی از توسعه افزونه"
-
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:126
 msgid "Report Bug and Issues"
 msgstr "گزارش مشکل و درخواست بهبود"
 
@@ -156,20 +168,6 @@ msgstr "به این افزونه امتیاز دهید"
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:140
 msgid "Official Page"
 msgstr "صفحه رسمی افزونه"
-
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:144
-msgid ""
-"If you want to help to plugin development and if you can do so please make a "
-"donation to the project and encourage others to do so, for more updates and "
-"more features."
-msgstr ""
-"اگر تمایل دارید تا از توسعه این افزونه پشتیبانی کنید و اگر این افزونه برای شما "
-"کاربردی است با حمایت مالی خود از این افزونه به ادامه توسعه و بهبود های آینده و "
-"اضافه شدن ویژگی های جدید به افزونه کمک کنید."
-
-#: wp-content/plugins/auto-upload-images/src/setting-page.php:144
-msgid "Make a Donation"
-msgstr "حمایت مالی از توسعه افزونه"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:146
 msgid ""
