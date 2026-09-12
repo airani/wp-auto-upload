@@ -150,7 +150,7 @@ msgid "Rate to this plugin"
 msgstr ""
 
 #: src/setting-page.php:152
-msgid "Official Page"
+msgid "Developer"
 msgstr ""
 
 #: src/setting-page.php:155

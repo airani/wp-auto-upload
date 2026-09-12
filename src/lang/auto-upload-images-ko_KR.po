@@ -157,8 +157,8 @@ msgid "Rate to this plugin"
 msgstr "이 플러그인 평가"
 
 #: src/setting-page.php:152
-msgid "Official Page"
-msgstr "공식 페이지"
+msgid "Developer"
+msgstr ""
 
 #: src/setting-page.php:155
 msgid ""
@@ -170,6 +170,9 @@ msgstr ""
 "당신이 WP 개발자이고 이 플러그인 개발에 기여하고 싶거나 이 플러그 인을 변환기"
 "로 사용하고 싶은 경우 <a href=\"https://github.com/airani/wp-auto-upload\" "
 "target=\"_blank\">플러그인 Github 저장소</a> 에서 시작 할 수 있습니다."
+
+#~ msgid "Official Page"
+#~ msgstr "공식 페이지"
 
 #~ msgid "Twitter of Plugin Developer"
 #~ msgstr "플러그인 개발자 트윗"

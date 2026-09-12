@@ -166,8 +166,8 @@ msgid "Rate to this plugin"
 msgstr "به این افزونه امتیاز دهید"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:140
-msgid "Official Page"
-msgstr "صفحه رسمی افزونه"
+msgid "Developer"
+msgstr "توسعه‌دهنده"
 
 #: wp-content/plugins/auto-upload-images/src/setting-page.php:146
 msgid ""
