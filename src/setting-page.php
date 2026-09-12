@@ -104,6 +104,30 @@
                                     <p><textarea name="exclude_urls" rows="10" cols="50" id="exclude_urls" class="large-text code" placeholder="https://irani.im"><?php echo esc_textarea(self::getOption('exclude_urls')); ?></textarea></p>
                                 </td>
                             </tr>
+                            <tr valign="top">
+                                <th scope="row">
+                                    <label for="custom_fields">
+                                        <?php _e('Custom Fields:', 'auto-upload-images'); ?>
+                                    </label>
+                                </th>
+                                <td>
+                                    <p>
+                                        <?php $selectedFields = self::getOption('custom_fields'); ?>
+                                        <?php $customFields = self::getCustomFields(); ?>
+                                        <?php if (count($customFields) > 0): ?>
+                                            <?php foreach ($customFields as $field): ?>
+                                                <label>
+                                                    <input type="checkbox" name="custom_fields[]" value="<?php echo esc_attr($field) ?>" <?php echo is_array($selectedFields) && in_array($field, $selectedFields, true) ? 'checked' : ''; ?>> <?php echo esc_attr($field) ?>
+                                                    <br>
+                                                </label>
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <em><?php _e('No custom fields found.', 'auto-upload-images'); ?></em>
+                                        <?php endif; ?>
+                                    </p>
+                                    <p class="description"><?php _e('Image urls inside the selected custom fields are also uploaded and replaced when a post is saved (text values only).', 'auto-upload-images'); ?></p>
+                                </td>
+                            </tr>
                         </table>
                         <p class="submit">
                             <?php submit_button(null, 'primary', 'submit', false); ?>
