@@ -76,13 +76,15 @@ class WpAutoUpload
         }
 
         foreach ($images as $image) {
+            // Content stores urls html-encoded (e.g. &amp;); decode for download and replacement
+            $image['url'] = htmlspecialchars_decode($image['url'], ENT_QUOTES);
             $uploader = new ImageUploader($image['url'], $image['alt'], $postarr);
             if ($uploadedImage = $uploader->save()) {
                 $urlParts = parse_url($uploadedImage['url']);
                 $base_url = $uploader::getHostUrl(null, true, true);
                 $image_url = $base_url . $urlParts['path'];
                 $image_url = esc_url($image_url);
-                $content = str_replace($image['url'], $image_url, $content);
+                $content = str_replace(array($image['url'], htmlspecialchars($image['url'], ENT_QUOTES)), $image_url, $content);
                 if (!empty($image['alt'])) {
                     $content = preg_replace('/alt=["\']' . preg_quote($image['alt'], '/') . '["\']/', "alt='" . $uploader->getAlt() . "'", $content);
                 }
