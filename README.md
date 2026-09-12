@@ -2,11 +2,11 @@
 
 [![Build Status](https://travis-ci.com/airani/wp-auto-upload.svg?branch=master)](https://travis-ci.com/airani/wp-auto-upload)
 
-**Version:** 3.3.2
+**Version:** 3.4.0
 
-**Requires at least:** 2.7
+**Requires at least:** 5.0
 
-**Tested up to:** 6.1.1
+**Tested up to:** 7.1
 
 **License:** GPLv2 or later
 
@@ -21,12 +21,14 @@ When you want to save a post, this plugin search for image urls which exists in 
 * Automatically find images in posts and save them to the your server and wp media library
 * Update posts with new image urls in your server
 * Add images saved by plugin to the Wordpress media library
+* Process image urls inside selected custom fields, in addition to the post content
 * Select custom post types for excluding auto upload images
 * Choose exclude domain to save images from this domain address
 * Choose custom your base url for images
 * Choose custom images file name with patterns
 * Choose custom image alt name with patterns
 * Choose max width and height for images uploaded
+* Protect your site from SSRF attacks: private and reserved IP addresses, cloud metadata endpoints and non-HTTP protocols are blocked, redirects are re-validated
 
 ### Translators
 
@@ -44,7 +46,6 @@ When you want to save a post, this plugin search for image urls which exists in 
 * [Official Plugin Page](https://github.com/airani/wp-auto-upload)
 * [Github Repository](https://github.com/airani/wp-auto-upload)
 * [Report Issues](https://github.com/airani/wp-auto-upload/issues/new)
-* [Make a Donation](https://github.com/airani/wp-auto-upload#donate)
 
 ## Installation
 
@@ -53,7 +54,7 @@ To change settings go to "Settings > Auto Upload Images" and change it.
 
 ## Frequently Asked Questions
 
-### Working with Gutenburg editor in wp 3.1 and later?
+### Working with Gutenberg editor?
 
 Yes, but after save with ajax not show urls immediately in editor.
 
@@ -69,6 +70,10 @@ You can change the final filename of the image uploaded.
 
 You can exclude many domains from the upload.
 
+### What is "Custom Fields" in settings page?
+
+Select the custom fields (post meta) that should be scanned for external image urls when a post is saved. Only text values are processed.
+
 ## Screenshots
 
 ### 1. Settings page in English language
@@ -80,6 +85,18 @@ You can exclude many domains from the upload.
 ![2. Settings page in Persian language](https://ps.w.org/auto-upload-images/assets/screenshot-2.png)
 
 ## Changelog
+
+### 3.4.0
+* Add custom fields support: image urls inside selected post meta fields are uploaded and replaced too
+* Fix SSRF vulnerability: block private/reserved IP addresses (IPv4/IPv6), cloud metadata endpoints and non-HTTP protocols
+* Re-validate every redirect hop against SSRF protections
+* Add download limits: 50MB max file size, 30s timeout, max 50 images per post save
+* Fix image replacement for urls with query parameters (`&amp;` encoded urls)
+* Fix undefined `post_date_gmt` error for posts created via REST API
+* Fix mangled original filenames extracted from urls with query strings
+* Fix PHP 8.1 deprecation warning for images without alt attribute
+* Sanitize alt attributes and replacement urls against XSS
+* Add nonce verification to the settings reset action
 
 ### 3.3.2
 * Add support for `webp` images

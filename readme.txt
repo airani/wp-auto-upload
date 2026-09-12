@@ -1,10 +1,9 @@
 === Auto Upload Images ===
 Contributors: airani
-Donate link: https://github.com/airani/wp-auto-upload#donate
 Tags: upload, auto, automatically, image, images, admin, administrator, post, save, media, automation, editor, filter
-Requires at least: 2.7
-Tested up to: 6.1.1
-Stable tag: 3.3.2
+Requires at least: 5.0
+Tested up to: 7.1
+Stable tag: 3.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,32 +18,31 @@ When you want to save a post, this plugin search for image urls which exists in 
 * Automatically find images in posts and save them to the your server and wp media library
 * Update posts with new image urls in your server
 * Add images saved by plugin to the Wordpress media library
+* Process image urls inside selected custom fields, in addition to the post content
 * Select custom post types for excluding auto upload images
 * Choose exclude domain to save images from this domain address
 * Choose custom your base url for images
 * Choose custom images file name with patterns
 * Choose custom image alt name with patterns
 * Choose max width and height for images uploaded
-
+* Protect your site from SSRF attacks: private and reserved IP addresses, cloud metadata endpoints and non-HTTP protocols are blocked, redirects are re-validated
 
 = Translators =
 
 * English
 * Persian (fa_IR) - [Ali Irani](https://irani.im)
 * Español (es) - [Diego Herrera](https://github.com/diegoh)
-* Russion (ru_RU) - [Артём Рябков](https://github.com/rad96)
+* Russian (ru_RU) - [Артём Рябков](https://github.com/rad96)
 * German (de_DE) - [Till Zimmermann](https://github.com/tillz)
 * French (fr_FR) - [Malaiac](https://github.com/Malaiac)
 * Korean (ko_KR) - [Shodan](https://github.com/luvrei)
 * Italian (it_IT) - Patryk Chmura
-
 
 = Links =
 
 * [Official Plugin Page](https://github.com/airani/wp-auto-upload)
 * [Github Repository](https://github.com/airani/wp-auto-upload)
 * [Report Issues](https://github.com/airani/wp-auto-upload/issues/new)
-* [Make a Donation](https://github.com/airani/wp-auto-upload#donate)
 
 == Installation ==
 
@@ -53,9 +51,8 @@ To change settings go to "Settings > Auto Upload Images" and change it.
 
 == Frequently Asked Questions ==
 
-= Working with Gutenburg editor in wp 3.1 and later? =
+= Working with Gutenberg editor? =
 Yes, but after save with ajax not show urls immediately in editor.
-
 
 = What is "Base URL" in settings page? =
 This URL is used as the new URL image.
@@ -66,12 +63,27 @@ You can change the final filename of the image uploaded.
 = What is "Exclude Domains" in settings page? =
 You can exclude many domains from the upload.
 
+= What is "Custom Fields" in settings page? =
+Select the custom fields (post meta) that should be scanned for external image urls when a post is saved. Only text values are processed.
+
 == Screenshots ==
 
 1. Settings page in English language
 2. Settings page in Persian language
 
 == Changelog ==
+
+= 3.4.0 =
+* Add custom fields support: image urls inside selected post meta fields are uploaded and replaced too
+* Fix SSRF vulnerability: block private/reserved IP addresses (IPv4/IPv6), cloud metadata endpoints and non-HTTP protocols
+* Re-validate every redirect hop against SSRF protections
+* Add download limits: 50MB max file size, 30s timeout, max 50 images per post save
+* Fix image replacement for urls with query parameters (`&amp;` encoded urls)
+* Fix undefined `post_date_gmt` error for posts created via REST API
+* Fix mangled original filenames extracted from urls with query strings
+* Fix PHP 8.1 deprecation warning for images without alt attribute
+* Sanitize alt attributes and replacement urls against XSS
+* Add nonce verification to the settings reset action
 
 = 3.3.2 =
 * Add support for `webp` images
