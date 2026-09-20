@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/airani/wp-auto-upload.svg?branch=master)](https://travis-ci.com/airani/wp-auto-upload)
 
-**Version:** 3.4.0
+**Version:** 3.4.1
 
 **Requires at least:** 5.0
 
@@ -85,6 +85,10 @@ Select the custom fields (post meta) that should be scanned for external image u
 ![2. Settings page in Persian language](https://ps.w.org/auto-upload-images/assets/screenshot-2.png)
 
 ## Changelog
+
+### 3.4.1
+* Fix critical bug introduced in 3.4.0: post content was returned unslashed from the `wp_insert_post_data` filter, so one level of backslashes was stripped from every save and Gutenberg block attribute escapes (`\u002d\u002d`, `\u003c`, `\u003e`, `\u0026`, `\u0022`) were permanently corrupted in the database
+* Fix the same slash round trip for custom fields, which are now re-slashed before being written back
 
 ### 3.4.0
 * Add custom fields support: image urls inside selected post meta fields are uploaded and replaced too

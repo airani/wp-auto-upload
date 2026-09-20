@@ -81,7 +81,10 @@ class WpAutoUpload
             if (!is_string($meta) || $meta === '') {
                 continue; // only simple string values
             }
-            if ($newMeta = $this->save($postarr, $meta)) {
+            // get_post_meta returns unslashed data, but save() expects slashed input
+            // (like post_content in the wp_insert_post_data filter). Re-slash on the way
+            // in and out so update_post_meta()'s wp_unslash() restores the exact value.
+            if ($newMeta = $this->save($postarr, wp_slash($meta))) {
                 update_post_meta($postId, $field, $newMeta);
             }
         }
@@ -128,7 +131,11 @@ class WpAutoUpload
                 }
             }
         }
-        return $content;
+        // Callers (wp_insert_post_data filter, update_post_meta) expect slashed data:
+        // they will wp_unslash() it before storing. Re-slash to preserve the level we
+        // removed at the top of this method, otherwise backslashes are silently lost
+        // and Gutenberg escapes like \u002d\u002d get corrupted in the database.
+        return wp_slash($content);
     }
 
     /**

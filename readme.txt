@@ -3,7 +3,7 @@ Contributors: airani
 Tags: upload, auto, automatically, image, images, admin, administrator, post, save, media, automation, editor, filter
 Requires at least: 5.0
 Tested up to: 7.1
-Stable tag: 3.4.0
+Stable tag: 3.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,10 @@ Select the custom fields (post meta) that should be scanned for external image u
 2. Settings page in Persian language
 
 == Changelog ==
+
+= 3.4.1 =
+* Fix critical bug introduced in 3.4.0: post content was returned unslashed from the `wp_insert_post_data` filter, so one level of backslashes was stripped from every save and Gutenberg block attribute escapes (`\u002d\u002d`, `\u003c`, `\u003e`, `\u0026`, `\u0022`) were permanently corrupted in the database
+* Fix the same slash round trip for custom fields, which are now re-slashed before being written back
 
 = 3.4.0 =
 * Add custom fields support: image urls inside selected post meta fields are uploaded and replaced too
