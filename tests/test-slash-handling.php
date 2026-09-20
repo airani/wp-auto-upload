@@ -108,7 +108,8 @@ class SlashHandlingTest extends WP_UnitTestCase
     {
         $postId = $this->factory->post->create(array('post_type' => 'post'));
         $markup = 'var(' . '\u002d\u002d' . 'gb-container-width) <img src="' . self::$baseUrl . '/test.jpg" alt="a test image" />';
-        update_post_meta($postId, 'custom_markup', $markup);
+        // update_post_meta() expects slashed input (it wp_unslash()es before storing).
+        update_post_meta($postId, 'custom_markup', wp_slash($markup));
 
         $prop = new ReflectionProperty('WpAutoUpload', '_options');
         $prop->setAccessible(true);
@@ -120,5 +121,6 @@ class SlashHandlingTest extends WP_UnitTestCase
         $stored = get_post_meta($postId, 'custom_markup', true);
         $this->assertStringContainsString('\u002d\u002d', $stored, 'meta backslashes must survive the round trip');
         $this->assertStringNotContainsString('u002du002dgb', $stored);
+        $this->assertSame($markup, $stored, 'meta must round-trip unchanged');
     }
 }
